@@ -1,0 +1,681 @@
+openapi: 3.2.0
+info:
+  description: 'Endpoints for doing various actions connected to the Card entity.
+
+    All date-time fields adhere to the ISO 8601 standard unless specified otherwise.
+
+    For example: 2024-05-31T06:55:17Z'
+  version: '1'
+  title: Update card API
+  contact:
+    name: Enfuce Financial Services
+    url: https://enfuce.com
+    email: info@enfuce.com
+servers:
+- url: https://api.{{tenant}}.ext-uat1-sandbox.mycore.enfuce.com/issuer
+  description: UAT Sandbox
+- url: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Update card
+  description: Endpoints for updating a card
+paths:
+  /v1/cards/{id}:
+    patch:
+      tags:
+      - Update card
+      summary: Partially Update Card
+      description: Send a request to this endpoint when you want to update details of a specific card.
+      operationId: patchCard
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the card that you want to update.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/x-audit-user'
+      requestBody:
+        description: Details of the card that you want to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCardBody'
+      responses:
+        '200':
+          description: Successful update of the card.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/cards/{id}/replace:
+    post:
+      tags:
+      - Update card
+      summary: Replace Card
+      description: Send a request to this endpoint when you want to replace the current card. The old card is closed and a new card is issued, where the PAN and the expiry date are updated.
+      operationId: replaceCard
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the card to be replaced.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: header
+        name: x-idempotency-key
+        required: false
+        description: Idempotency key of the request.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/x-audit-user'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceCardBody'
+      responses:
+        '200':
+          description: Successful replacement of card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/cards/{id}/reissue:
+    post:
+      tags:
+      - Update card
+      summary: Reissue Card
+      description: Send a request to this endpoint when you want to reissue a card.
+      operationId: reissueCard
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the card that you want to reissue.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: header
+        name: x-idempotency-key
+        required: false
+        description: Idempotency key of the request
+        schema:
+          type: string
+      - $ref: '#/components/parameters/x-audit-user'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReissueCardBody'
+      responses:
+        '200':
+          description: Successful reissue of the card.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/cards/{id}/activate:
+    post:
+      tags:
+      - Update card
+      summary: Activate Card
+      description: To change the latest card version status from `INITIAL` to `ACTIVE`, send a request to this endpoint.
+      operationId: activateCard
+      parameters:
+      - name: id
+        in: path
+        description: Unique ID of the card that you want to activate.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: header
+        name: x-idempotency-key
+        required: false
+        description: Idempotency key of the request
+        schema:
+          type: string
+      - $ref: '#/components/parameters/x-audit-user'
+      responses:
+        '200':
+          description: The card is successfully activated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/cards/{id}/reorder-pin:
+    post:
+      tags:
+      - Update card
+      operationId: reorderPin
+      summary: Reorder PIN for Card
+      description: Send a request to this endpoint when you want to reorder existing PIN for a plastic card, if the cardholder has forgotten it. The PIN is delivered to the `preferredPinAddress`. If `preferredPinAddress` is absent, the PIN is delivered to the `preferredCardAddress`.
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the card for which you want to reorder PIN.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: header
+        name: x-idempotency-key
+        required: false
+        description: Idempotency key of the request.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/x-audit-user'
+      responses:
+        '200':
+          description: Successful reordering of PIN.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: 'JSON parse error: Unexpected character...'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0400
+            timestamp: '2026-02-24T12:34:56Z'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Internal Server Error
+            status: 500
+            detail: Unexpected error occurred.
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0500
+            timestamp: '2026-02-24T12:34:56Z'
+    Unauthorized:
+      description: Unauthorized
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Conflict
+            status: 409
+            detail: Customer number is not unique.
+            instance: /v1/cardholders
+            id: 5cc541cb-f456-4331-b537-d2380fca0409
+            timestamp: '2026-02-26T10:34:47.522+00:00'
+    NotFound:
+      description: Not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Not Found
+            status: 404
+            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0404
+            timestamp: '2026-02-24T12:34:56Z'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Forbidden
+            status: 403
+            detail: Access Denied
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0403
+            timestamp: '2026-02-24T12:34:56Z'
+  schemas:
+    Id:
+      type: string
+      format: uuid
+      description: Unique identifier of a resource.
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
+    AdditionalValues:
+      type: object
+      description: 'You can include up to **30 additional key-value pairs** in the embossing file sent to the card manufacturer.
+
+
+        - **Keys** must follow the pattern: `^[a-zA-Z0-9-]{1,36}$` (only letters, numbers, and hyphens, with a maximum length of 36 characters).
+
+        - **Values** must follow the pattern: `^[a-zA-Z0-9|\-_ +.@éàèùçâêîôûëïü''/=]{1,1000}$`.
+
+
+        Enfuce **does not perform any additional validation** on these key-value pairs beyond ensuring they match the specified patterns.
+
+
+        These fields are intended for **storing data without further processing**. If you need to store a **complex structure**, you can **base64 encode** the value. The encoded value will be passed as entered, without modifications.
+
+
+        ⚠ **Important:** Any usage of these fields should be agreed upon with the manufacturer.
+
+        '
+      maxProperties: 30
+      additionalProperties:
+        type: string
+      example:
+        keyWithPlainTextValue: value1
+        keyWithBase64Value: dmFsdWUyYmFzZTY0ZW5jb2RlZA==
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          description: The problem type.
+          type: string
+        title:
+          description: The reason phrase of HttpStatus.
+          type: string
+        status:
+          description: HTTP problem status.
+          type: number
+        detail:
+          description: The problem detail.
+          type: string
+        instance:
+          description: The request path.
+          type: string
+        id:
+          description: Unique error identifier.
+          type: string
+          format: uuid
+        timestamp:
+          description: Date-time when error occurred.
+          type: string
+          format: date-time
+    ResourceResponse:
+      type: object
+      properties:
+        description:
+          type: string
+          description: A description of the response returned.
+        id:
+          allOf:
+          - $ref: '#/components/schemas/Id'
+          description: A unique identifier assigned to identify the endpoint request.
+    CardStatus:
+      type: string
+      description: '- ACTIVE - Card is active and is enabled for normal usage.
+
+        - BLOCKED - Card is temporarily blocked.
+
+        - BLOCKED_SUSPECTED_FRAUD - Card is temporarily blocked due to suspected fraud.
+
+        - CLOSED_DUE_TO_FRAUD - Card has been closed due to fraud.
+
+        - CLOSED_LOST - Card has been closed due to being lost.
+
+        - CLOSED_STOLEN - Card has been closed due to being stolen.
+
+        - CLOSED - Card has been manually closed.
+
+        - CLOSED_EXPIRED - Card has no active or initial card versions and cannot be used.
+
+        '
+      enum:
+      - ACTIVE
+      - BLOCKED
+      - BLOCKED_SUSPECTED_FRAUD
+      - CLOSED_DUE_TO_FRAUD
+      - CLOSED_LOST
+      - CLOSED_STOLEN
+      - CLOSED
+      - CLOSED_EXPIRED
+      example: ACTIVE
+    Printed:
+      type: boolean
+      description: 'Indicates whether the specific card would be printed or not. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      example: true
+    UpdatePlasticBody:
+      type: object
+      properties:
+        embossingName:
+          $ref: '#/components/schemas/EmbossingName'
+        preferredCardAddress:
+          $ref: '#/components/schemas/Address'
+        preferredCardDeliveryType:
+          $ref: '#/components/schemas/CardDeliveryType'
+        preferredPinAddress:
+          $ref: '#/components/schemas/Address'
+        preferredPinDeliveryType:
+          $ref: '#/components/schemas/PinDeliveryType'
+        manufacturerId:
+          $ref: '#/components/schemas/OptionalId'
+        externalLayoutCode:
+          $ref: '#/components/schemas/ExternalLayoutCode'
+    ExternalLayoutCode:
+      type: string
+      description: Unique code forwarded to the embossing house; the code identifies the plastic layout to be used for printing the new card. Ensure beforehand, the selected embossing house is aligned with the code used for each layout.
+      minLength: 1
+      maxLength: 32
+      pattern: ^[a-zA-Z0-9-_]+$
+      example: 1
+    ChipEnabled:
+      type: boolean
+      description: 'Whether the card should be visible in card terminal or not. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      example: true
+    EmbossingName:
+      type: string
+      description: The name to be embossed on the card. Max character limit is 26.
+      minLength: 1
+      maxLength: 26
+      pattern: ^[A-Za-z0-9 /.,&+'\- ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ ĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹ ĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰű ŲųŴŵŶŷŸŹźŻżŽžſǪǫȘșȚțȪȫȮȯȲȳḐḑṢṣẞỌọ]+$
+      example: John Doe
+    ImpactTokenStatus:
+      type: boolean
+      default: true
+      description: 'If set to true, the card status change will impact the status of all tokens.
+
+        If set to false, the card status change will not impact the status of all tokens.
+
+        '
+    Address:
+      type: object
+      properties:
+        address1:
+          description: First line of address.
+          type: string
+          minLength: 1
+          maxLength: 255
+          pattern: ^(?!\s)(?!.*\s$).+(?<!\s)$
+          example: Kings street 12
+        address2:
+          type: string
+          pattern: ^(?!\s)(?!.*\s$).*(?<!\s)$
+          description: Second line of address. Any string without trailing or leading whitespaces, or an empty string.
+          maxLength: 255
+          example: Apartment 5B
+        address3:
+          type: string
+          pattern: ^(?!\s)(?!.*\s$).*(?<!\s)$
+          description: Third line of address. Any string without trailing or leading whitespaces, or an empty string.
+          maxLength: 255
+          example: Building C
+        address4:
+          type: string
+          pattern: ^(?!\s)(?!.*\s$).*(?<!\s)$
+          description: Fourth line of the address. Any string without trailing or leading whitespaces, or an empty string.
+          maxLength: 255
+          example: Entrance North
+        city:
+          type: string
+          minLength: 1
+          maxLength: 255
+          pattern: ^(?!\s)(?!.*\s$).+(?<!\s)$
+          example: Mariehamn
+        country:
+          type: string
+          description: A valid ISO-3166-1 alpha-3 country code.
+          pattern: '[A-Z]{3}'
+          example: FIN
+        region:
+          type: string
+          maxLength: 32
+          example: Åland Islands
+        zipCode:
+          type: string
+          minLength: 1
+          maxLength: 32
+          pattern: ^(?!\s)(?!.*\s$).+(?<!\s)$
+          example: 22100
+      required:
+      - address1
+      - city
+      - country
+      - zipCode
+    CardDeliveryType:
+      type: string
+      description: Select the type of delivery you prefer for the new card being created. - MAIL - The card would be sent via mail services. - COURIER - The card would be sent via courier services. - CUSTOM_1–CUSTOM_5 - Custom delivery types that can be used for shipping methods agreed between the customer and the bureau.
+      enum:
+      - MAIL
+      - COURIER
+      - CUSTOM_1
+      - CUSTOM_2
+      - CUSTOM_3
+      - CUSTOM_4
+      - CUSTOM_5
+      example: MAIL
+    ReplaceCardBody:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of why the card should be replaced.
+          example: The cardholder’s wallet was stolen, so the card must be replaced.
+        pinStatus:
+          $ref: '#/components/schemas/ChangePinStatus'
+    AccountId:
+      type: string
+      description: Unique identifier of an account.
+      minLength: 1
+      maxLength: 36
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
+      pattern: ^[a-zA-Z0-9-]+$
+    ContactPriorityLevel:
+      type: integer
+      description: 'The contact priority level for given card. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      format: int32
+      minimum: 0
+    PinDeliveryType:
+      type: string
+      description: Select the type of delivery you prefer for sending the card PIN. - MAIL - The card PIN would be sent via mail services. - COURIER - The card PIN would be sent via courier services. - EPIN - The card PIN would be sent digitally.
+      enum:
+      - MAIL
+      - COURIER
+      - EPIN
+      example: MAIL
+    ApplicationName:
+      type: string
+      description: 'Name of the application. Max character limit is 16. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      minLength: 1
+      maxLength: 16
+      pattern: ^[a-zA-Z ]+$
+      example: Credit Application
+    AutomaticRenewal:
+      type: boolean
+      description: A flag indicating whether automatic renewal is enabled or not.
+    UpdatePinStatus:
+      type: string
+      description: '- GENERATED - A pin should be randomly generated for the card.
+
+        '
+      enum:
+      - GENERATED
+      example: GENERATED
+    ChangePinStatus:
+      type: string
+      description: '- GENERATED - A pin should be randomly generated for the card.
+
+        - WAITING - A pin is waiting to be set on the card.
+
+        '
+      enum:
+      - GENERATED
+      - WAITING
+      example: GENERATED
+    ContactlessPriorityLevel:
+      type: integer
+      description: 'The contactless priority level of the given card. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      format: int32
+      minimum: 0
+    FeeConfigId:
+      type: string
+      description: 'Unique identifier of a fee configuration. When provided, this value overrides the program default. This feature must be enabled for the tenant; otherwise, this field can be left null and will not be used.
+
+        '
+      minLength: 1
+      maxLength: 36
+      example: SILVER
+      pattern: ^[a-zA-Z0-9_-]+$
+    OptionalId:
+      type:
+      - string
+      - 'null'
+      format: uuid
+      description: Unique identifier of an entity.
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
+    UpdateCardBody:
+      type: object
+      properties:
+        chipEnabled:
+          $ref: '#/components/schemas/ChipEnabled'
+        digitalLayoutCode:
+          $ref: '#/components/schemas/DigitalLayoutCode'
+        applicationName:
+          $ref: '#/components/schemas/ApplicationName'
+        contactPriorityLevel:
+          $ref: '#/components/schemas/ContactPriorityLevel'
+        contactlessPriorityLevel:
+          $ref: '#/components/schemas/ContactlessPriorityLevel'
+        printed:
+          $ref: '#/components/schemas/Printed'
+        cardholderId:
+          $ref: '#/components/schemas/Id'
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        automaticRenewal:
+          $ref: '#/components/schemas/AutomaticRenewal'
+        plastic:
+          $ref: '#/components/schemas/UpdatePlasticBody'
+        cardStatus:
+          $ref: '#/components/schemas/CardStatus'
+        impactTokenStatus:
+          $ref: '#/components/schemas/ImpactTokenStatus'
+        pinStatus:
+          $ref: '#/components/schemas/UpdatePinStatus'
+        additionalValues:
+          $ref: '#/components/schemas/AdditionalValues'
+        feeConfigId:
+          allOf:
+          - $ref: '#/components/schemas/FeeConfigId'
+    DigitalLayoutCode:
+      type: string
+      description: The digital layout code for the card. Max character limit is 36.
+      minLength: 1
+      maxLength: 36
+      pattern: ^[a-zA-Z0-9-]+$
+      example: 9
+    ReissueCardBody:
+      type: object
+      properties:
+        pinStatus:
+          $ref: '#/components/schemas/ChangePinStatus'
+  parameters:
+    x-audit-user:
+      in: header
+      name: x-audit-user
+      required: false
+      description: Optional audit user header
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

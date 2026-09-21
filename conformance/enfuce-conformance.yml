@@ -1,0 +1,30 @@
+generated: '2026-09-21'
+method: searched
+generator: extract-docs-artifacts.py (local)
+source: https://docs.enfuce.com/guides/peace-of-mind/global-compliance/pci.md
+sources:
+- https://docs.enfuce.com/guides/peace-of-mind/global-compliance/pci.md
+- https://docs.enfuce.com/guides/peace-of-mind/global-compliance/privacy-and-data-protection.md
+standards:
+- id: pci-dss
+  conforms: true
+  evidence: As a card payment processor, we get assessed yearly and are certified for PCI DSS Level 1 and PCI 3DS.
+- id: pci-dss
+  conforms: true
+  evidence: As a card payment processor, we get assessed yearly and are certified for PCI DSS Level 1 and PCI 3DS.
+- id: openapi-3.0
+  conforms: true
+  evidence: the document declares 3.0.3
+- id: oauth2
+  conforms: false
+  evidence: 'securitySchemes: bearerAuth (http)'
+- id: rfc9457
+  conforms: true
+  evidence: application/problem+json on 51 response(s), e.g. POST /v1/cards 400
+- id: idempotency
+  conforms: true
+  evidence: x-idempotency-key declared on 5 of 9 mutating operations (partial)
+- id: openapi-3.2
+  conforms: true
+  evidence: the document declares 3.2.0
+docs: https://docs.enfuce.com/guides/peace-of-mind/global-compliance/pci.md

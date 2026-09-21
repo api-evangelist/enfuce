@@ -1,0 +1,20 @@
+generated: '2026-09-21'
+method: searched
+generator: extract-docs-artifacts.py (local)
+source: https://docs.enfuce.com/payment/api/rate-limits.md
+sources:
+- https://docs.enfuce.com/payment/api/rate-limits.md
+name: Enfuce rate limits
+limits:
+- name: default per second
+  limit_text: 50 API requests/per second
+  max: 50
+  window: per second
+  scope: per customer
+- name: default per minute
+  limit_text: 3000 API requests/per minute
+  max: 3000
+  window: per minute
+  scope: per customer
+exhaustion_status: 429
+docs: https://docs.enfuce.com/payment/api/rate-limits.md

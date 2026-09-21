@@ -1,23 +1,164 @@
 aid: enfuce
 name: Enfuce
-description: 'Enfuce is a company surfaced via the API Evangelist harvest backlog (source: payments) and
-  added to the network as a stub for full-pipeline profiling.'
+image: https://enfuce.com/uploads/Product-images/_1200x630_crop_center-center_82_none/resized_2552x1436.png?mtime=1788270445
+description: Enfuce provides a cloud‑native, tenant‑isolated, API‑first platform for card issuing, processing, licensing, ledger, fraud & dispute
+  management, and data analytics. It serves banks, fintechs, fleet providers and enterprises, offering real‑time decisioning at scale, modular
+  services, and compliance with PSD3, DORA and AMLA standards.
 url: https://raw.githubusercontent.com/api-evangelist/enfuce/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:payments
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-09-21 (modular-v1; was harvest)
 specificationVersion: '0.20'
 created: '2026-09-21'
 modified: '2026-09-21'
 tags:
 - Company
-apis: []
+- Payments
+- Card Issuing
+- FinTech
+- API Platform
+apis:
+- aid: enfuce:enfuce-authorisation-request-api-api
+  name: Enfuce Authorisation Request API
+  description: >-
+    The Authorisation Request API API from Enfuce — 1 operation(s) for authorisation request api.
+  humanURL: https://docs.enfuce.com/nextgen-json-files/card.openapi.json
+  baseURL: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  tags:
+  - Authorisation Request API
+  properties:
+  - type: OpenAPI
+    url: openapi/enfuce-authorisation-request-api-api-openapi.yml
+- aid: enfuce:enfuce-create-card-api
+  name: Enfuce Create Card API
+  description: Endpoints for creating a card
+  humanURL: https://docs.enfuce.com/nextgen-json-files/card.openapi.json
+  baseURL: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  tags:
+  - Create Card
+  properties:
+  - type: OpenAPI
+    url: openapi/enfuce-create-card-api-openapi.yml
+- aid: enfuce:enfuce-create-pin-control-access-token-api
+  name: Enfuce Create PIN Control access token API
+  description: >-
+    The Create PIN Control access token API from Enfuce — 1 operation(s) for create pin control access
+    token.
+  humanURL: https://docs.enfuce.com/nextgen-json-files/card.openapi.json
+  baseURL: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  tags:
+  - Create PIN Control access token
+  properties:
+  - type: OpenAPI
+    url: openapi/enfuce-create-pin-control-access-token-api-openapi.yml
+- aid: enfuce:enfuce-get-card-api
+  name: Enfuce Get card API
+  description: Endpoints for fetching a card
+  humanURL: https://docs.enfuce.com/nextgen-json-files/card.openapi.json
+  baseURL: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  tags:
+  - Get card
+  properties:
+  - type: OpenAPI
+    url: openapi/enfuce-get-card-api-openapi.yml
+- aid: enfuce:enfuce-get-card-payment-info-api
+  name: Enfuce Get Card Payment Info API
+  description: The Get Card Payment Info API from Enfuce — 1 operation(s) for get card payment info.
+  humanURL: https://docs.enfuce.com/nextgen-json-files/card.openapi.json
+  baseURL: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  tags:
+  - Get Card Payment Info
+  properties:
+  - type: OpenAPI
+    url: openapi/enfuce-get-card-payment-info-api-openapi.yml
+- aid: enfuce:enfuce-get-plastic-manufacturing-history-api
+  name: Enfuce Get plastic manufacturing history API
+  description: >-
+    The Get plastic manufacturing history API from Enfuce — 1 operation(s) for get plastic manufacturing
+    history.
+  humanURL: https://docs.enfuce.com/nextgen-json-files/card.openapi.json
+  baseURL: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  tags:
+  - Get plastic manufacturing history
+  properties:
+  - type: OpenAPI
+    url: openapi/enfuce-get-plastic-manufacturing-history-api-openapi.yml
+- aid: enfuce:enfuce-update-card-api
+  name: Enfuce Update card API
+  description: Endpoints for updating a card
+  humanURL: https://docs.enfuce.com/nextgen-json-files/card.openapi.json
+  baseURL: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  tags:
+  - Update card
+  properties:
+  - type: OpenAPI
+    url: openapi/enfuce-update-card-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: AgentSkill
+  url: skills/_index.yml
+- type: AgenticAccess
+  url: agentic-access/enfuce-agentic-access.yml
+- type: RateLimits
+  url: rate-limits/enfuce-rate-limits.yml
+- type: DataModel
+  url: data-model/enfuce-data-model.yml
+- type: ChangeLog
+  url: changelog/enfuce-changelog.yml
+- type: Idempotency
+  url: conventions/enfuce-conventions.yml
+- type: Conventions
+  url: conventions/enfuce-conventions.yml
+- type: ErrorCatalog
+  url: errors/enfuce-problem-types.yml
+- type: Conformance
+  url: conformance/enfuce-conformance.yml
+- type: Overlay
+  url: overlays/enfuce-advanced-spend-control-v1-overlay.yml
+- type: LLMsTxt
+  url: llms/enfuce-llms.txt
+- type: AgentCard
+  url: a2a/enfuce-a2a.yml
+- type: StatusPage
+  url: https://status.enfuce.com/
+- type: Pricing
+  url: https://enfuce.com/pricing
+- type: Newsroom
+  url: https://enfuce.com/who-we-are/newsroom
+- type: Login
+  url: https://console.myedge.enfuce.com/signin
+- type: ChangeLog
+  url: https://docs.enfuce.com/updates/release-notes
+- type: Authentication
+  url: authentication/enfuce-authentication.yml
+- type: DomainSecurity
+  url: security/enfuce-domain-security.yml
 - type: Website
   url: https://enfuce.com/
+- type: Documentation
+  url: https://docs.enfuce.com/
+- type: APIReference
+  url: https://docs.enfuce.com/payment/api
+- type: GettingStarted
+  url: https://docs.enfuce.com/guides/start-developing-with-enfuce.md
+- type: Blog
+  url: https://enfuce.com/blog
+- type: Support
+  url: https://enfuce.com/contact
+- type: PrivacyPolicy
+  url: https://enfuce.com/privacy-and-data-protection
+- type: TermsOfService
+  url: https://enfuce.com/website-terms-of-use
+- type: GitHubOrganization
+  url: https://github.com/enfuce
+x-enrichment:
+  date: '2026-09-21'
+  status: enriched
+  artifacts_added: 19
+  pass: modular-v1
+  engine: identity=local,contract=local,surfaces=local,docs=local,docs (promoted)=anthropic

@@ -1,0 +1,301 @@
+openapi: 3.2.0
+info:
+  description: 'Endpoints for doing various actions connected to the Card entity.
+
+    All date-time fields adhere to the ISO 8601 standard unless specified otherwise.
+
+    For example: 2024-05-31T06:55:17Z'
+  version: '1'
+  title: Get Card Payment Info API
+  contact:
+    name: Enfuce Financial Services
+    url: https://enfuce.com
+    email: info@enfuce.com
+servers:
+- url: https://api.{{tenant}}.ext-uat1-sandbox.mycore.enfuce.com/issuer
+  description: UAT Sandbox
+- url: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Get Card Payment Info
+paths:
+  /v1/cards/{id}/encrypt:
+    post:
+      tags:
+      - Get Card Payment Info
+      summary: Retrieve Card Data | Additional Method
+      description: 'This is a web service designed to retrieve the card data required for completing e-commerce payments — PAN, CVC2/CVV2, expiry date of the card can be retrieved. The returned payload is encrypted with an asymmetric public key; this enables end-to-end encryption to the card holder device. The parameters that were included in the request are only returned. The caller is responsible of validating the integrity of the public key.
+
+
+        Send a request to this endpoint, if you are not using the Enfuce BIN sponsorship.
+
+
+        Retrieving card data through this endpoint implies PCI DSS compliance of the client with the Scheme. An easier method that you can use is the `Initiate Card Data Retrieval` endpoint — this endpoint enables rendering of card information to the cardholder''s device without requiring compliance of the client with PCI DSS.
+
+
+        ## Example:
+
+
+        ```java
+
+        // ...
+
+
+        import java.security.KeyFactory;
+
+        import java.security.PrivateKey;
+
+        import java.security.spec.PKCS8EncodedKeySpec;
+
+        import java.util.Base64;
+
+        import javax.crypto.Cipher;
+
+
+        // ...
+
+
+        ## Example of decrypting an encrypted field
+
+
+        ```java
+
+        private String decrypt(String data, String privKeyPEM) throws Exception {
+
+
+        ## Example of preparing the key
+
+
+        ```java
+
+        String privKeyString = privKeyPEM.replaceAll("\\n", "").replace("REDACTED_PRIVATE_KEY_EXAMPLE", "");
+
+        byte[] encodedKey = Base64.getDecoder().decode(privKeyString);
+
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(encodedKey);
+
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+
+        PrivateKey privateKey = kf.generatePrivate(spec);
+
+
+        ## Example of preparing the decryption
+
+
+        ```java
+
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+
+
+        ## Example of preparing the data
+
+
+        ```java
+
+        byte[] cryptogram = Base64.getDecoder().decode(data);
+
+
+        ## Example of decryption
+
+
+        ```java
+
+        byte[] decryptedBytes = cipher.doFinal(cryptogram);
+
+        return new String(decryptedBytes);'
+      operationId: encryptCardPaymentInfo
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the card whose details you want to retrieve.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/x-audit-user'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EncryptCardPaymentInfoRequestBody'
+      responses:
+        '200':
+          description: Successful retrieval of the card data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncryptCardPaymentInfoResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: 'JSON parse error: Unexpected character...'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0400
+            timestamp: '2026-02-24T12:34:56Z'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Internal Server Error
+            status: 500
+            detail: Unexpected error occurred.
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0500
+            timestamp: '2026-02-24T12:34:56Z'
+    Unauthorized:
+      description: Unauthorized
+    NotFound:
+      description: Not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Not Found
+            status: 404
+            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0404
+            timestamp: '2026-02-24T12:34:56Z'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Forbidden
+            status: 403
+            detail: Access Denied
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0403
+            timestamp: '2026-02-24T12:34:56Z'
+  schemas:
+    SequenceNumber:
+      type: integer
+      minimum: 1
+      description: The sequence number of the card version, this value is also known as PSN (pan sequence number)
+      example: 1
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          description: The problem type.
+          type: string
+        title:
+          description: The reason phrase of HttpStatus.
+          type: string
+        status:
+          description: HTTP problem status.
+          type: number
+        detail:
+          description: The problem detail.
+          type: string
+        instance:
+          description: The request path.
+          type: string
+        id:
+          description: Unique error identifier.
+          type: string
+          format: uuid
+        timestamp:
+          description: Date-time when error occurred.
+          type: string
+          format: date-time
+    EncryptCardPaymentInfoResponseBody:
+      type: object
+      properties:
+        primaryAccountNumber:
+          type: string
+          description: The encrypted full card number (PAN) — Base64 encoded.
+          example: Z5zt5TbIc2jZ/iCnleh7pBIxxf/M046X7t7zhl/YPVl5wep3HulMqYKE3mgjqo/H+dUVlk6PcgvcQR4Gb/tYG6UVZhR+S9xfswEXB8RwLdqBc5mlCZNkCxlTeyqWfQcmknXdQY25+Yeg/z9DVEmNqxzhAOfx5KYsILdc8k9svMj+UWU64SDKbIqTVuP0D/UMbJEixLknRtyXu1j80ZOJCKGvW+aBwrEiOTp07teKcFu43ND5m083e9OqFE7qcnFAj7CNeIRRP9rDOK+qvEvs+h28yAytG2NS5Qwt9gulpaE9gz+ClS3wCVG9uPRyrrKtVGRrgDfDaf6AngVPmJ3EeA==
+        expirationDate:
+          type: string
+          description: The expiration date of the card in MMYY format.
+          example: '1227'
+        cvv2:
+          type: string
+          description: The encrypted CVV2 (for Visa) or CVC2 (for Mastercard) value — Base64 encoded.
+          example: PitrZmfUd6blAk8SLZFkCBXql+UKrR+Q79VImTrZfZu24zwGjYQML2h563HYM8KvoqdNIk2gQ6jSYt81d/0I/1ZoDmTcJsduoGmHSwATuQh2c926O/SMa4cbnR8JQHZ7FaExgsc2dZ/ZjYcf1Ehsg0r4CDcZ6MUYBrCUTlaPbTksjxQhj3fqovBBN1smfR4No5BHTyPvJmeUPQiqtlrLzBvQj+PxYRukrkxGkgZ+HmRg+zWNbS6sWmurvR0gb1l1GRPGG132L6oFcqpjZxZYTsq5yf0hEDXZdWo6oYc3JJ2s7SVxVNwoMvQQi7YV+iZD7wyPXgeHFFXZGhKyYY3F7w==
+      required:
+      - primaryAccountNumber
+      - expirationDate
+      - cvv2
+      title: EncryptCardPaymentInfoResponseBody
+    EncryptCardPaymentInfoRequestBody:
+      type: object
+      properties:
+        encryptionKey:
+          type: string
+          minLength: 1
+          description: Public key used to encrypt the fields in the result.
+          example: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArMRPoM6Za3XDIsomnVObGJsrHHHIRZ5zRsVoU8Unie9QvK9OBf0cCGyXd8XPky7W3m/KDKLGUnfne8vAMOeT1NpBgQnv2lcpIfBMLjSUKT5gIcJMY00Asqjvi4YFwRdW9AxSThxtkb7AIsJJiRwbAGFDnt+Ic/gIQS5s1vnuIjaYBTbzYtwnh3WBQ7DJsCVes81onwapGtdiswQD15cNhAI5853/uB/vno3j3tOq3gpm9+qLa6FYGfWZan07k+RMCVF1v6kxa9teCj6V3cysdtPeK9+gQnBjuuSESQL7/s/BgC7QxLqBCabkFyLo+3QO+iKmfeKPX8imV1rUgyjo3QIDAQAB
+        encryptionMethod:
+          type: string
+          enum:
+          - RSA_ECB_OAEP_SHA256_MGF1_2048
+          example: RSA_ECB_OAEP_SHA256_MGF1_2048
+          description: In this field the encryption method is selected. This is to prepared for future use since only one method is now supported.
+        fields:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            enum:
+            - PRIMARY_ACCOUNT_NUMBER
+            - EXPIRATION_DATE
+            - CVV2
+            example: PRIMARY_ACCOUNT_NUMBER
+          description: In this field you can include the parameters that you want to be returned in an encrypted way. If a field is not listed, it will be left out from the response. Note that only primaryAccountNumber and CVV2 will be encrypted.
+        sequenceNumber:
+          allOf:
+          - $ref: '#/components/schemas/SequenceNumber'
+          description: The sequence number of the card version to use. If not specified, the latest card version is used by default.
+      required:
+      - encryptionKey
+      - encryptionMethod
+      - fields
+      title: EncryptCardPaymentInfoRequestBody
+  parameters:
+    x-audit-user:
+      in: header
+      name: x-audit-user
+      required: false
+      description: Optional audit user header
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

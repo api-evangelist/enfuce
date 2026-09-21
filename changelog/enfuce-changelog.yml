@@ -1,0 +1,73 @@
+generated: '2026-09-21'
+method: searched
+generator: extract-docs-artifacts.py (local)
+source: https://docs.enfuce.com/updates/release-notes.md
+sources:
+- https://docs.enfuce.com/updates/release-notes.md
+entries:
+- breaking: false
+  highlights:
+  - You can now change the status of an individual token linked to a card, without affecting the card or the other tokens linked to it.
+  - Use `suspend` and `resume` to block and restore a token temporarily, `activate` to enable an inactive token, and `deactivate` to disable one
+    permanently.
+  date: '2026-09-17'
+- breaking: false
+  highlights:
+  - Transaction responses now include the `messageCategory` attribute in `transactionType`.
+  - When available, it identifies the category of the source message.
+  date: '2026-08-21'
+- breaking: false
+  highlights:
+  - Transaction reason objects now include the required `type` parameter in update requests and the corresponding attribute in responses.
+  - Use `RISK` for a risk reason or `NO_RISK` for a no-risk reason so that the API can determine the reason object type.
+  date: '2026-08-18'
+- breaking: false
+  highlights:
+  - The Authorisation Control webhook now includes the `merchantZipCode` attribute in `merchantData`.
+  - This is the postal code of the card acceptor.
+  - The attribute is `null` when the card scheme does not provide it; for Visa it is best‑effort and may frequently be absent.
+  date: '2026-07-31'
+- breaking: false
+  highlights:
+  - 'Transaction line items now include four new settlement‑currency attributes:'
+  - '`totalSettlementNetAmount` — total net amount after discount, excluding VAT'
+  - '`perUnitSettlementGrossAmount` — gross amount per unit'
+  - '`perUnitSettlementGrossDiscountAmount` — gross discount amount per unit'
+  - '`vatSettlementAmount` — total VAT amount after discount'
+  date: '2026-07-31'
+- breaking: false
+  highlights:
+  - Resolved an issue where retail authorization reversal transactions (authorizationType = AUTH, code = R1, name = Retail) were returning positive
+    values; these transactions now correctly return negative values as expected.
+  date: '2026-02-16'
+- breaking: false
+  highlights:
+  - You can now render card data and PIN to cardholders in customised layouts.
+  date: '2026-01-22'
+- breaking: false
+  highlights:
+  - From **15 January 2026**, Apple would mandate the card continuity feature — your cardholders do not need to enter the CVV2, when they add
+    their card to new or additional Apple devices.
+  date: '2025-11-05'
+- breaking: false
+  highlights:
+  - The Get Card API endpoint now returns a truncated PAN, showing the first 8 digits and the last 4 digits of the card number.
+  - Previously, the format displayed the first 6 and the last 4 digits.
+  date: '2025-10-15'
+- breaking: false
+  highlights:
+  - 'For `TRANSACTION` type, two new enums of `subType` are introduced:'
+  - '`AUTH_UNBLOCK`: Release funds when a transaction is purged.'
+  - '`AUTH_VERIFICATION`: Verifies the cardholder''s account with 0.00 amount.'
+  date: '2025-09-26'
+- breaking: false
+  highlights:
+  - For more information on Visa Click to Pay, see Visa Click to Pay.
+  date: '2025-09-17'
+- breaking: false
+  highlights:
+  - The `feeAmount` returned in endpoints' response would no longer retrieve interchange fees (`SOURCE_FEE_AMOUNT` and `TARGET_FEE_AMOUNT`).
+  date: '2025-09-08'
+current_version: '2026-09-17'
+note: Versioning scheme is based on release dates (YYYY‑MM‑DD).
+docs: https://docs.enfuce.com/updates/release-notes.md

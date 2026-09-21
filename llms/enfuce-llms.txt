@@ -1,0 +1,440 @@
+# Enfuce
+
+- [Quick guide to Enfuce](https://docs.enfuce.com/guides/guides-overview.md): First of all, nice to meet you! Here’s a short introduction to get to know us better
+- [Start developing with Enfuce](https://docs.enfuce.com/guides/start-developing-with-enfuce.md): Congratulations on taking the first step to building flexible, modern payment cards! You are probably eager to get going and start creating your card product.
+- [BIN sponsorship](https://docs.enfuce.com/guides/the-essentials/bin-sponsorship.md): Enfuce License Services (ELS) is the licensed Enfuce group entity offering BIN sponsorship and card issuance in the EEA area under our EMI authorisation from the FIN-FSA, passported to the EEA.
+- [Revolving credit product – Interest accrual](https://docs.enfuce.com/guides/the-essentials/credit-solution-flexible-ledger/interest-accrual.md): Enfuce offers several options for the interest calculation.
+- [Revolving credit product – Instalments](https://docs.enfuce.com/guides/the-essentials/credit-solution-flexible-ledger/revolving-credit-product-instalments.md): Enfuce credit product has also an instalment feature, which can be separately configured.
+- [Revolving credit product – Segregation of balances](https://docs.enfuce.com/guides/the-essentials/credit-solution-flexible-ledger/segregation-of-balances.md): The Enfuce credit account product has several technical accounts that enable the segregation of balances. This, in turn, allows you to keep track of the age of overdue amounts and a variety of interest calculation models.
+- [Revolving credit product – Invoicing process](https://docs.enfuce.com/guides/the-essentials/credit-solution-flexible-ledger/invoicing-process.md): Enfuce provides the issuer invoice data (“statement”) on account level once per month. You can use the provided data for creating and sending invoices to your customers.
+- [Revolving credit product – Customer Payments](https://docs.enfuce.com/guides/the-essentials/credit-solution-flexible-ledger/customer-payments.md)
+- [Revolving credit product – Reminder and collection process](https://docs.enfuce.com/guides/the-essentials/credit-solution-flexible-ledger/reminder-and-collection-process.md)
+- [MyEnfuce customer portal – a gateway to your cardholder data](https://docs.enfuce.com/guides/the-essentials/customer-portal/myenfuce.md): MyEnfuce is the customer portal that gives you secure and convenient access to your cardholder information — all in one place.
+- [Registration and login](https://docs.enfuce.com/guides/the-essentials/customer-portal/registration-and-login.md)
+- [MyEnfuce – Customer Portal Guide](https://docs.enfuce.com/guides/the-essentials/customer-portal/customer-portal.md)
+- [User Management](https://docs.enfuce.com/guides/the-essentials/customer-portal/user-management.md)
+- [Developer Portal](https://docs.enfuce.com/guides/the-essentials/customer-portal/developer-portal.md)
+- [Introduction to transactions](https://docs.enfuce.com/guides/the-essentials/global-processing/introduction-to-transactions.md): All transactions have one common characteristic. They are designed to either increase or decrease the account balance. The term ‘transaction’ includes all transaction-related communication between the merchant, an issuing processor and the issuer.
+- [Transaction conditions](https://docs.enfuce.com/guides/the-essentials/global-processing/transaction-conditions.md): Transaction conditions define the specific circumstances under which a card transaction occurred. For example, they describe whether the chip was read or if the transaction was contactless, how the cardholder was authenticated, and whether the transaction was e-commerce or card-present.
+- [Authorisation and authentication of payments](https://docs.enfuce.com/guides/the-essentials/global-processing/authorisation-and-authentication-of-payments.md): An authorisation refers to the merchant obtaining approval or denial of a card transaction from the issuer. The authorisation process starts when a customer makes a purchase.
+- [Discounts](https://docs.enfuce.com/guides/the-essentials/global-processing/discounts.md): Discounts enable issuers to offer discounts for single transactions or linked line items. You can offer your customers a rewards program with transaction-specific cash backs and discounts – making your payment product highly attractive to a range of end users. You have full control over how much dis…
+- [Financial transaction](https://docs.enfuce.com/guides/the-essentials/global-processing/financial-transaction.md): A financial transaction is defined as a transaction that either increases or decreases the account balance. This section will describe both card scheme transactions that are posted when cards are used at merchants and API triggered transactions that can be posted via Enfuce APIs.
+- [Linking authorisation with transaction](https://docs.enfuce.com/guides/the-essentials/global-processing/linking-authorisation-with-transaction.md): There may be situations when you need to be able to link authorisations or notifications of authorisations with financial transactions. For example, some issuers send a notification to their customer after an authorisation, requesting the customer to take an action based on it (like take a picture o…
+- [Transfer API](https://docs.enfuce.com/guides/the-essentials/global-processing/transfer-api.md): This API allows you to do peer-to-peer transfers between accounts and cards residing in Enfuce.
+- [Purchase details](https://docs.enfuce.com/guides/the-essentials/global-processing/purchase-details.md): This solution enables enriching transactional data with, for example, receipt line items, quantity of items or travel details. While normal card transactions have a lot of information, it lacks detailed data about what was bought.
+- [Card](https://docs.enfuce.com/guides/the-essentials/issue-any-card/payment-cards.md): A card serves as the actual payment instrument. Cards can take many forms: They can be plastic, virtual or tokenised elements that work though a variety of devices, like smart watches, mobile phones and rings.
+- [Disposable Cards](https://docs.enfuce.com/guides/the-essentials/issue-any-card/disposable-card.md)
+- [Digital card – creating the omnichannel payment card experience](https://docs.enfuce.com/guides/the-essentials/issue-any-card/digital-card-creating-the-omnichannel-payment-card-experience.md): A card as a payment instrument can take many forms nowadays, virtual, tokenised, and physical one. A modern issuer needs to be able to support these multiple representations of cards, as well as manage the varying preferences of their end users.
+- [Customer](https://docs.enfuce.com/guides/the-essentials/issue-any-card/customer.md): A customer is the entity to which a card and/or an account is issued to. A customer can be a private person, a corporate customer, or even an item, like a vehicle.
+- [All-in-One card](https://docs.enfuce.com/guides/the-essentials/issue-any-card/all-in-one-card.md): The All-in-One card combines multiple card applications (PANs) into one physical card.
+- [Account](https://docs.enfuce.com/guides/the-essentials/issue-any-card/account.md): The account entity’s main functionality is to hold the balance. It also functions as the link in case several cards share the same balance. For credit products, the account also represents the invoice level from which invoices are generated.
+- [Account product types](https://docs.enfuce.com/guides/the-essentials/issue-any-card/account-product-types.md): Depending on your needs and the agreed setup between Enfuce and yourself, there are different types of account products.
+- [Account hierarchy](https://docs.enfuce.com/guides/the-essentials/issue-any-card/account-hierarchy.md): Account hierarchies allow you to create a hierarchical structure of your corporate customer accounts.
+- [Balance types](https://docs.enfuce.com/guides/the-essentials/issue-any-card/balance-types.md): Balance types are used to improve the financial information that is provided in the data export files.
+- [Introduction to our APIs](https://docs.enfuce.com/guides/the-control-you-want/card-management-apis/introduction-to-our-apis.md): A great cardholder experience is at the centre of what Enfuce does. This includes giving cardholders the ability to manage their cards themselves.
+- [Enfuce interfaces and data sharing](https://docs.enfuce.com/guides/the-control-you-want/card-management-apis/enfuce-interfaces-and-data-sharing.md): The Enfuce data approach is based on a generic solution that is designed to fit different types of payment products (credit, debit, consumer, corporate, fleet cards, etc.).
+- [Digital wallets](https://docs.enfuce.com/guides/the-control-you-want/digital-first-experience/digital-wallets.md): Integrate your cards with leading digital wallets like Apple Pay, Google Pay and Samsung Pay.
+- [Flexible Card Artwork and Branding in Digital Wallets](https://docs.enfuce.com/guides/the-control-you-want/digital-first-experience/flexible-card-artwork-and-branding-in-digital-wallets.md): Enfuce supports setting artwork and other assets on the card level for digital wallets. This feature enables multiple artworks and other assets within the same BIN range during card onboarding.
+- [View card data](https://docs.enfuce.com/guides/the-control-you-want/digital-first-experience/view-card-data.md): ‘View card data’ allows the cardholder to safely and conveniently access the data required for making an e-commerce purchase, without having access to a digital wallet or a physical card.
+- [View PIN](https://docs.enfuce.com/guides/the-control-you-want/digital-first-experience/view-pin.md): The ‘view PIN’ functionality allows your customer to safely and conveniently access their card’s PIN via a mobile or web app when needed.
+- [Set pin](https://docs.enfuce.com/guides/the-control-you-want/digital-first-experience/set-pin.md): Set PIN allows the customer to choose the PIN (Personal Identification Number) of the card. This can be done safely and conveniently through mobile or web app.
+- [Change PIN](https://docs.enfuce.com/guides/the-control-you-want/digital-first-experience/change-pin.md): Allowing the cardholder to choose a PIN of their choice improves the end-user experience as it reduces the burden of remembering multiple PINs and decreases the amount of failed transactions as well as requests for resetting the PIN attempts.
+- [Authorisation control](https://docs.enfuce.com/guides/the-control-you-want/authorisation-control.md): Authorisation control gives you the flexibility to create sophisticated rules for approving and declining transactions in real time.
+- [Spend controls](https://docs.enfuce.com/guides/the-control-you-want/spend-controls.md): Enfuce supports a range of spend controls that are used to provide the customer with the possibility to control the use of the card and improve trust and a sense of safety.
+- [Advanced spend controls](https://docs.enfuce.com/guides/the-control-you-want/advanced-spend-controls/advanced-spend-controls.md): Have full control over where your cards can be used, in what way, how much, and when.
+- [Enfuce data export files](https://docs.enfuce.com/guides/the-control-you-want/card-programme-insights/enfuce-data-export-files.md): Data export files are a set of files which are exported from the Enfuce data warehouse for the issuer.
+- [Account file description](https://docs.enfuce.com/guides/the-control-you-want/card-programme-insights/account-file-description.md)
+- [Card file description](https://docs.enfuce.com/guides/the-control-you-want/card-programme-insights/card-file-description.md)
+- [Customer file description](https://docs.enfuce.com/guides/the-control-you-want/card-programme-insights/customer-file-descriptions.md)
+- [Invoice file description](https://docs.enfuce.com/guides/the-control-you-want/card-programme-insights/invoice-file-description.md)
+- [Token file description](https://docs.enfuce.com/guides/the-control-you-want/card-programme-insights/token-file-description.md)
+- [Transaction file description](https://docs.enfuce.com/guides/the-control-you-want/card-programme-insights/transaction-file-description.md): The transaction file contains detailed information on each financial transaction. It includes key data fields such as transaction date, amounts, currencies, merchant details, authorization codes, and transaction status. This file serves as a comprehensive record for reconciling and analyzing transac…
+- [Carbon footprint tracking: Enfuce x Deedster](https://docs.enfuce.com/guides/the-control-you-want/card-programme-insights/carbon-footprint-tracking-enfuce-x-deedster.md): Lead the charge towards a sustainable future. Transform your digital banking services with cutting-edge carbon data and engaging experiences with Deedster.
+- [Cross-border payment regulation (CBPR)](https://docs.enfuce.com/guides/peace-of-mind/global-compliance/cross-border-payment-regulation.md): To comply with EU Cross Border Payment regulation (EU 2021/1230) and to enable improved end user experience, Enfuce provides a solution to disclose to the end user the exchange rates used for card payments.
+- [Payment Service Directive (PSD)](https://docs.enfuce.com/guides/peace-of-mind/global-compliance/payment-service-directive-psd.md): The EU Payment Service Directive includes multiple requirements that have to be considered by payment issuers.
+- [PCI](https://docs.enfuce.com/guides/peace-of-mind/global-compliance/pci.md): We develop and maintain all our services keeping in mind best practices for security and data protection.
+- [Privacy and data protection](https://docs.enfuce.com/guides/peace-of-mind/global-compliance/privacy-and-data-protection.md): The European Union’s General Data Protection Regulation (Regulation (EU) 2016/679) regulates the processing of personal data, which applies to financial data processed by Issuers of payment instruments.
+- [Transaction-specific strong customer authentication (SCA) data](https://docs.enfuce.com/guides/peace-of-mind/global-compliance/transaction-specific-strong-customer-authentication-data.md)
+- [3DS – authentication of online payments](https://docs.enfuce.com/guides/peace-of-mind/3ds-authentication-of-online-payments.md): 3-D Secure is designed to increase consumer confidence in online payments by providing additional authentication of the customer during the purchase process.
+- [Address verification service](https://docs.enfuce.com/guides/peace-of-mind/fraud-and-dispute-management/address-verification-service.md): The card schemes’ address verification service allows card-not-present merchants to check the cardholder’s billing address with the card issuer to increase security and protect against fraud.
+- [Fraud Management](https://docs.enfuce.com/guides/peace-of-mind/fraud-and-dispute-management/Fraud management/fraud-management.md): Protect your cardholders with Enfuce's fully managed fraud monitoring service — the Enfuce Bureau of Investigation (EBI).
+- [Key fraud considerations](https://docs.enfuce.com/guides/peace-of-mind/fraud-and-dispute-management/Fraud management/key-fraud-considerations.md)
+- [Case management in myenfuce](https://docs.enfuce.com/guides/peace-of-mind/fraud-and-dispute-management/Fraud management/case-management-in-myenfuce.md)
+- [Dispute management](https://docs.enfuce.com/guides/peace-of-mind/fraud-and-dispute-management/Dispute Management/dispute-management.md): Dispute management includes the initiation and management of your customers’ payment disputes.
+- [Partnerships](https://docs.enfuce.com/guides/programme-management/partnerships.md): We value collaboration with several trusted partners from both commercial and product perspectives.
+- [Customer success](https://docs.enfuce.com/guides/programme-management/customer-success.md): Enfuce offers comprehensive support throughout your lifecycle as a customer.
+- [MyApp – Cardholder app](https://docs.enfuce.com/guides/programme-management/myapp.md): Enfuce’s MyApp is a ready-to-launch mobile application (app) that lets you launch your card products with a branded card management app without binding internal development resources.
+- [MyCard – Embedded Card Bureau](https://docs.enfuce.com/guides/programme-management/mycard-embedded-card-bureau.md)
+- [Overview](https://docs.enfuce.com/payment/api.md): Here you'll find documentation about Payment API.
+- [Rate Limits](https://docs.enfuce.com/payment/api/rate-limits.md)
+- [Account Details](https://docs.enfuce.com/payment/api/account-details.md): Endpoint for doing various actions connected to a account
+- [Create an account](https://docs.enfuce.com/payment/api/create-an-account.md): Endpoints for creating an account
+- [Create credit account](https://docs.enfuce.com/payment/api/create-an-account/create-credit-account.md): This operation will create a credit account
+- [Create debit account](https://docs.enfuce.com/payment/api/create-an-account/create-debit-account.md): This operation will create a debit account
+- [Create prepaid account](https://docs.enfuce.com/payment/api/create-an-account/create-prepaid-account.md): This operation will create a prepaid account
+- [Create fleet account](https://docs.enfuce.com/payment/api/create-an-account/create-fleet-account.md): This operation will create a fleet account
+- [Create a multi-currency account](https://docs.enfuce.com/payment/api/create-an-account/create-a-multi-currency-account.md): This operation will create a multicurrency account
+- [Create account](https://docs.enfuce.com/payment/api/create-an-account/create-account.md): This operation will create an account
+- [Overview](https://docs.enfuce.com/payment/api/update-an-account.md): Endpoints for updating an account
+- [Update a credit account](https://docs.enfuce.com/payment/api/update-an-account/update-a-credit-account.md): This operation will update given fields given an account id
+- [Update a credit account reminder data](https://docs.enfuce.com/payment/api/update-an-account/update-a-credit-account-reminder-data.md): This operation will update given reminder data fields given an account id
+- [Update a debit account](https://docs.enfuce.com/payment/api/update-an-account/update-a-debit-account.md): This operation will update given fields given an account id
+- [Update a prepaid account](https://docs.enfuce.com/payment/api/update-an-account/update-a-prepaid-account.md): This operation will update given fields given an account id
+- [Update a fleet account](https://docs.enfuce.com/payment/api/update-an-account/update-a-fleet-account.md): This operation will update given fields given an account id
+- [Update a multicurrency account](https://docs.enfuce.com/payment/api/update-an-account/update-a-multicurrency-account.md): This operation will update given fields given an account id
+- [Update an account](https://docs.enfuce.com/payment/api/update-an-account/update-an-account.md): This operation will update given fields given an account id
+- [Update account](https://docs.enfuce.com/payment/api/update-an-account/update-account.md): Basic operation for updating an account. Check parameter updateProperty for possible parameters to update
+- [Get account information](https://docs.enfuce.com/payment/api/get-account-information.md): Endpoints for fetching an account
+- [Get account](https://docs.enfuce.com/payment/api/get-account-information/get-account.md): This operation will respond with an account given account id
+- [Get account by accountNumber](https://docs.enfuce.com/payment/api/get-account-information/get-account-by-accountnumber.md): This operation will respond with an account given account number
+- [Get accounts given customerId](https://docs.enfuce.com/payment/api/get-account-information/get-accounts-given-customerid.md): This operation will respond with a list of accounts given the customer id
+- [Get accounts lower in the hierarchy](https://docs.enfuce.com/payment/api/get-account-information/get-accounts-lower-in-the-hierarchy.md): This operation will respond with a list of accounts given the account id
+- [Get account](https://docs.enfuce.com/payment/api/get-account-information/get-account-1.md): This operation will respond with an account given account id
+- [Get accounts given customerId](https://docs.enfuce.com/payment/api/get-account-information/get-accounts-given-customerid-1.md): This operation will respond with a list of accounts given the customer id
+- [Authorisation Control](https://docs.enfuce.com/payment/api/authorisation-control.md): Authorisation control gives the issuer the flexibility to create sophisticated rules for approving and declining transactions in real time.
+- [Authorisation Control Webhook](https://docs.enfuce.com/payment/api/authorisation-control-webhook.md)
+- [Warm-up endpoint for initialising WebClient](https://docs.enfuce.com/payment/api/authorisation-control-webhook/outgoing-authorisation-control-webhook-warm-up-endpoint.md): This is not an endpoint. This is the description of the request that is warming up the WebClient.  It sends a lightweight JSON message to initialise network connections  and reduce latency for subsequent API requests.
+- [Outgoing authorisation control webhook endpoint](https://docs.enfuce.com/payment/api/authorisation-control-webhook/outgoing-authorisation-control-webhook-endpoint.md): This is not an endpoint. This is the description of a request that is sent to issuers' decision-making systems
+- [Authorisation Forwarding](https://docs.enfuce.com/payment/api/authorisation-forwarding.md)
+- [Forward authorisation webhook](https://docs.enfuce.com/payment/api/forward-authorisation-webhook.md)
+- [Request which is being send to customers decision making systems](https://docs.enfuce.com/payment/api/forward-authorisation-webhook/request-which-is-being-send-to-customers-decision-making-systems.md): This is not an endpoint. This is the description of request the which is being sent to customers decision making system if provided
+- [Card details](https://docs.enfuce.com/payment/api/card-details.md): Card API have different endpoints for creating, editing and updating a card via different methods.
+- [Create card](https://docs.enfuce.com/payment/api/create-card.md): Endpoints for creating a card
+- [Create a Multi-application card](https://docs.enfuce.com/payment/api/create-card/create-a-multi-application-card.md): This operation will create a credit or prepaid card media connected to given customer. An account id needs to be provided as well so we know to which account the card should be connected to.
+- [Create a MasterCard branded card](https://docs.enfuce.com/payment/api/create-card/create-a-mastercard-branded-card.md): This operation will create a credit or prepaid card media connected to given customer. An account id needs to be provided as well so we know to which account the card should be connected to.
+- [Create a virtual Mastercard branded card](https://docs.enfuce.com/payment/api/create-card/create-a-virtual-mastercard-branded-card.md): This operation will create a credit or prepaid card media connected to given customer. An account id needs to be provided as well so we know to which account the card should be connected to. > **Note:** You cannot
+- [Create a debit Mastercard branded card](https://docs.enfuce.com/payment/api/create-card/create-a-debit-mastercard-branded-card.md): This operation will create an debit card media connected to given customer. An account id needs to be provided as well so we know to which account the card should be connected to.
+- [Create a debit Mastercard VIRTUAL branded card](https://docs.enfuce.com/payment/api/create-card/create-a-debit-mastercard-virtual-branded-card.md): This operation will create a debit card media connected to given customer. An account id needs to be provided as well so we know to which account the card should be connected to. > **Note:** You cannot use this endpoint to order a physical plastic card. The virtual card does not have a PIN and hence…
+- [Create a VISA branded card](https://docs.enfuce.com/payment/api/create-card/create-a-visa-branded-card.md): This operation will create a credit or prepaid card media connected to given customer. An account id needs to be provided as well so we know to which account the card should be connected to.
+- [Create a virtual VISA branded card](https://docs.enfuce.com/payment/api/create-card/create-a-virtual-visa-branded-card.md): This operation will create a credit or prepaid card media connected to  a given customer. An account id needs to be provided as well so we know to which account the card should be connected to. > **Note:** You cannot use this endpoint to order a physical plastic card. The virtual card does not have…
+- [Create a debit VISA branded card](https://docs.enfuce.com/payment/api/create-card/create-a-debit-visa-branded-card.md): This operation will create an debit card media connected to given customer. An account id needs to be provided as well so we know to which account the card should be connected to.
+- [Create a debit VISA VIRTUAL branded card](https://docs.enfuce.com/payment/api/create-card/create-a-debit-visa-virtual-branded-card.md): This operation will create a debit card media connected to given customer. An account id needs to be provided as well so we know to which account the card should be connected to.  > **Note:** You cannot use this endpoint to order a physical plastic card. The virtual card does not have a PIN and henc…
+- [Create a fleet card](https://docs.enfuce.com/payment/api/create-card/create-a-fleet-card.md): This operation will create an credit card media connected to given customer. An account id needs to be provided as well so we know to which account the card should be connected to.
+- [Create card](https://docs.enfuce.com/payment/api/create-card/create-card.md): This operation will create an credit card media connected to given customer. An account id needs to be provided as well so we know to which account the card should be connected to.
+- [Update Card](https://docs.enfuce.com/payment/api/update-card.md): Endpoints for updating a card
+- [Update a Multi-application card](https://docs.enfuce.com/payment/api/update-card/update-a-multi-application-card.md): This operation will update given fields given a card id
+- [Update card](https://docs.enfuce.com/payment/api/update-card/update-card.md): Basic operation for updating a card. Check parameter updateProperty for possible parameters to update
+- [Update a Mastercard branded card](https://docs.enfuce.com/payment/api/update-card/update-a-mastercard-branded-card.md): This operation will update given fields given a card id
+- [Update a virtual Mastercard branded card](https://docs.enfuce.com/payment/api/update-card/update-a-virtual-mastercard-branded-card.md): This operation will update given fields given a card id. > **Note:** This endpoint is only for a virtual card and it cannot be converted to a physical format. The virtual card does not have a PIN and so, it might not work at ATMs. > **cardUsageBlocks support:** `cardUsageBlocks.cardPresent` is suppo…
+- [Update a debit Mastercard branded card](https://docs.enfuce.com/payment/api/update-card/update-a-debit-mastercard-branded-card.md): This operation will update given fields given a card id
+- [Update a virtual debit Mastercard branded card](https://docs.enfuce.com/payment/api/update-card/update-a-virtual-debit-mastercard-branded-card.md): This operation will update given fields given a card id. > **Note:** This endpoint is only for a virtual card and it cannot be converted to a physical format. The virtual card does not have a PIN and so, it might not work at ATMs. > **cardUsageBlocks support:** `cardUsageBlocks.cardPresent` is suppo…
+- [Update a VISA branded card](https://docs.enfuce.com/payment/api/update-card/update-a-visa-branded-card.md): This operation will update given fields given a card id
+- [Update a virtual VISA branded card](https://docs.enfuce.com/payment/api/update-card/update-a-virtual-visa-branded-card.md): This operation will update given fields given a card id. > **Note:** This endpoint is only for a virtual card and it cannot be converted to a physical format. The virtual card does not have a PIN and so, it might not work at ATMs. > **cardUsageBlocks support:** `cardUsageBlocks.cardPresent` is suppo…
+- [Update a debit VISA branded card](https://docs.enfuce.com/payment/api/update-card/update-a-debit-visa-branded-card.md): This operation will update given fields given a card id
+- [Update a virtual debit VISA branded card](https://docs.enfuce.com/payment/api/update-card/update-a-virtual-debit-visa-branded-card.md): This operation will update given fields given a card id. > **Note:** This endpoint is only for a virtual card and it cannot be converted to a physical format. The virtual card does not have a PIN and so, it might not work at ATMs. > **cardUsageBlocks support:** `cardUsageBlocks.cardPresent` is suppo…
+- [Update a fleet card](https://docs.enfuce.com/payment/api/update-card/update-a-fleet-card.md): This operation will update given fields given a card id
+- [Update card](https://docs.enfuce.com/payment/api/update-card/update-card-1.md): This operation will update given fields given a card id
+- [Get Application](https://docs.enfuce.com/payment/api/get-application.md): Endpoints for fetching an application
+- [Get application](https://docs.enfuce.com/payment/api/get-application/get-application.md): This operation will respond with an application
+- [Overview](https://docs.enfuce.com/payment/api/update-application.md): Endpoints for updating an application
+- [Update an application of a multi-application card](https://docs.enfuce.com/payment/api/update-application/update-an-application-of-a-multi-application-card.md): This operation will update given fields given a card id
+- [Get Card](https://docs.enfuce.com/payment/api/get-card.md): Endpoints for fetching a card
+- [Get card](https://docs.enfuce.com/payment/api/get-card/get-card.md): This operation will respond with a card
+- [Get card using card number (PAN)](https://docs.enfuce.com/payment/api/get-card/get-card-using-card-number-pan.md): This is a web service designed to lookup an card based on the card number. The payload in the request is  encrypted with JWE (JSON Web Encryption), to enable end-to-end encryption from source system to Enfuce.
+- [Get card using reference number](https://docs.enfuce.com/payment/api/get-card/get-card-using-reference-number.md): This operation will respond with a card
+- [Get cards given customerId](https://docs.enfuce.com/payment/api/get-card/get-cards-given-customerid.md): This operation will respond with a list of cards given the customerId
+- [Get cards given accountId](https://docs.enfuce.com/payment/api/get-card/get-cards-given-accountid.md): This operation will respond with a list of cards given the accountId
+- [Get Card Payment Info](https://docs.enfuce.com/payment/api/get-card/get-card-payment-info.md): This operation will respond with encrypted card payment info
+- [Initiate card data retrieval](https://docs.enfuce.com/payment/api/get-card/initiate-card-data-retrieval.md): Endpoint to initiate retrieval of card data. This will enable the end user make e-commerce transactions without  needing access to a plastic card. This means that the end user will get access to card number (PAN), expiry  date and CVC2/CVV2. This operation will generate an access token used to view…
+- [Get cards given customerId](https://docs.enfuce.com/payment/api/get-card/get-cards-given-customerid-1.md): This operation will respond with a list of cards given the customerId
+- [Get cards given accountId](https://docs.enfuce.com/payment/api/get-card/get-cards-given-accountid-1.md): This operation will respond with a list of cards given the accountId
+- [Get card](https://docs.enfuce.com/payment/api/get-card/get-card-1.md): This operation will respond with a card
+- [Get Plastic](https://docs.enfuce.com/payment/api/get-plastic.md): Endpoints for fetching a plastic
+- [Get a list of plastics for a given card](https://docs.enfuce.com/payment/api/get-plastic/get-a-list-of-plastics-for-a-given-card.md): This operation will respond with a list of plastics
+- [Get EMV scripts](https://docs.enfuce.com/payment/api/get-emv.md)
+- [Get a list of EMV scripts for a given plastic](https://docs.enfuce.com/payment/api/get-emv-scripts/get-a-list-of-emv-scripts-for-a-given-plastic.md): This operation will return a list of EMV script statuses
+- [Overview](https://docs.enfuce.com/payment/api/update-plastic.md): Endpoints for updating a plastic
+- [Update plastic](https://docs.enfuce.com/payment/api/update-plastic/update-plastic.md): This operation will update a given plastic for a card
+- [Customer details API](https://docs.enfuce.com/payment/api/customer.md): Endpoint for doing various actions connected to the customer domain
+- [Get customer information](https://docs.enfuce.com/payment/api/get-customer-information.md): Endpoints for fetching a customer
+- [Get customerId by customer regNo](https://docs.enfuce.com/payment/api/get-customer-information/get-customer-id-by-customer-reg-no.md): This operation will return the customer id related to given customer regNo
+- [Get customer by customer number](https://docs.enfuce.com/payment/api/get-customer-information/get-customer-by-customer-number.md): This operation will return customer data related to given customer number
+- [Get customer by customer id](https://docs.enfuce.com/payment/api/get-customer-information/get-customer-by-customer-id.md): This operation will return customer data related to give customer id
+- [Create a customer](https://docs.enfuce.com/payment/api/create-a-customer.md): Endpoints for creating a customer
+- [Create private customer](https://docs.enfuce.com/payment/api/create-a-customer/create-private-customer.md): This operation will create a private customer.
+- [Create corporate customer](https://docs.enfuce.com/payment/api/create-a-customer/create-corporate-customer.md): This operation will create a corporate customer.
+- [Update a customer](https://docs.enfuce.com/payment/api/update-a-customer.md): Endpoints for updating a customer
+- [Update a private customer](https://docs.enfuce.com/payment/api/update-a-customer/update-a-private-customer.md): This operation will update a given customer.
+- [Update a corporate customer](https://docs.enfuce.com/payment/api/update-a-customer/update-a-corporate-customer.md): This operation will update a given customer.
+- [Update a customer](https://docs.enfuce.com/payment/api/update-a-customer/update-a-customer.md): Basic operation for updating a customer. Check parameter updateProperty for possible parameters to update
+- [Customer hierarchy](https://docs.enfuce.com/payment/api/customer-hierarchy.md)
+- [Get linked customer by customer id](https://docs.enfuce.com/payment/api/customer-hierarchy/get-linked-customer-by-customer-id.md): This operation will return linked customer data related to give customer id
+- [Create a link to customer](https://docs.enfuce.com/payment/api/customer-hierarchy/create-a-link-to-customer.md): This operation will create a link to customer.
+- [Delete a link to customer](https://docs.enfuce.com/payment/api/customer-hierarchy/delete-a-link-to-customer.md): This operation will delete a link to customer.
+- [Exchange Rates API](https://docs.enfuce.com/payment/api/exchange-rate.md): Endpoint for querying FX rates of payment scheme (including benchmark to ECB FX rates). API enables the issuer to comply with regulation (EU) 2019/518) and provide the cardholder with a better user experience by providing real-time visibility to scheme FX rates that are used for card transactions.
+- [Get ECB exchange rate](https://docs.enfuce.com/payment/api/get-ECB-exchange-rate.md)
+- [ECB Exchange Rates](https://docs.enfuce.com/payment/api/get-ecb-exchange-rate/ecb-exchange-rates.md): Send a request to this endpoint to get ECB rate for a given “from” and “to” currency pair.
+- [Get ECB supported currencies](https://docs.enfuce.com/payment/api/get-ECB-supported-currencies.md)
+- [ECB Supported Currencies](https://docs.enfuce.com/payment/api/get-ecb-supported-currencies/ecb-supported-currencies.md): Send a request to this endpoint to retrieve the list of currencies that the ECB supports.
+- [Get FX exchange rates](https://docs.enfuce.com/payment/api/get-FX-exchange-rates.md)
+- [FX Exchange Rates for Visa and Mastercard](https://docs.enfuce.com/payment/api/get-fx-exchange-rates/fx-exchange-rates-for-supported-payment-schemas-visa-mastercard.md): Send a request to this endpoint to retrieve the Visa/Mastercard treasury FX rates for a given “from” and “to” currency pair.
+- [VISA FX Exchange Rates](https://docs.enfuce.com/payment/api/get-fx-exchange-rates/visa-fx-exchange-rates.md): This operation is to get the VISA treasury FX rates for a given “from” and “to” currency pair.
+- [Enfuce ID](https://docs.enfuce.com/payment/api/id.md): Endpoint for handling 3rd party authentication
+- [Initiate 3rd party authentication flow](https://docs.enfuce.com/payment/api/Initiate-3rd-party-authentication-flow.md)
+- [OOB Webhook Notification](https://docs.enfuce.com/payment/api/initiate-3rd-party-authentication-flow/outgoing-webhook-endpoint-to-initiate-3rd-party-authentication-flow.md): In Out-of-Band (OOB) authentication, a webhook notification is sent to the issuer-provided channel for cardholder's approval.
+- [Callback to complete authentication flow](https://docs.enfuce.com/payment/api/callback-to-complete-authentication-flow.md)
+- [Authentication response forwarded to Enfuce](https://docs.enfuce.com/payment/api/callback-to-complete-authentication-flow/callback-endpoint-to-be-used-by-3rd-party-authentication-system-to-report-about-authentication-validation.md): Send a request to this endpoint with the authentication result.  paths: > **Note**: Send this request within 150 seconds — for both successful and failed authentication results; else, the authentication request is timed out and this request to the endpoint is also invalidated.
+- [Instalment API](https://docs.enfuce.com/payment/api/instalment.md): Endpoint for manipulating instalments
+- [Instalment Operations](https://docs.enfuce.com/payment/api/instalment-controller.md)
+- [Create an instalment](https://docs.enfuce.com/payment/api/instalment-controller/create-an-instalment.md): This operation will create an instalment plan
+- [Close an existing instalment plan](https://docs.enfuce.com/payment/api/instalment-controller/close-an-existing-instalment-plan.md)
+- [Get instalment plans for a given account](https://docs.enfuce.com/payment/api/instalment-controller/get-instalment-plans-for-a-given-account.md)
+- [Get instalment portions](https://docs.enfuce.com/payment/api/instalment-controller/get-instalment-portions.md)
+- [Get Instalment by id](https://docs.enfuce.com/payment/api/instalment-controller/get-instalment-by-id.md)
+- [Get Instalment by transactionId](https://docs.enfuce.com/payment/api/instalment-controller/get-instalment-by-transactionid.md)
+- [Invoice API](https://docs.enfuce.com/payment/api/invoice.md): Endpoint for doing doing operations on a invoice
+- [Write off invoice](https://docs.enfuce.com/payment/api/write-off-invoice/write-off-invoice.md): Writes off the remaining unpaid amount of the invoice.
+- [Get invoice information](https://docs.enfuce.com/payment/api/get-invoice-information.md): Endpoints for fetching invoice information
+- [Get invoice for given invoice id](https://docs.enfuce.com/payment/api/get-invoice-information/get-invoice-for-given-invoice-id.md): This operation will respond with an invoice given invoice id
+- [Get invoices for a given accountId](https://docs.enfuce.com/payment/api/get-invoice-information/get-invoices-for-a-given-accountid.md): This operation returns invoices for a given account ordered in ascending order
+- [Get invoice for given reference number](https://docs.enfuce.com/payment/api/get-invoice-information/get-invoice-for-given-reference-number.md): This operation will respond with an invoice given invoice reference number (payment reference number)
+- [Update an invoice](https://docs.enfuce.com/payment/api/update-an-invoice.md): Endpoints for updating invoice information
+- [Update invoice fields](https://docs.enfuce.com/payment/api/update-an-invoice/update-invoice-fields.md): Update invoice fields:   * __dunning__ - Update dunning properties.   * __dueDate__ - Update invoice due date. Note: It is not possible to update both dunning and dueDate in the same request, as there are no invoice statuses that allow both updates simultaneously.
+- [Enfuce API - Notification](https://docs.enfuce.com/payment/api/notification.md): Endpoint for retrieving notifications for various entities from Enfuce system
+- [Receive a notification](https://docs.enfuce.com/payment/api/receive-a-notification.md)
+- [Outgoing webhook notification endpoint](https://docs.enfuce.com/payment/api/receive-a-notification/outgoing-webhook-notification-endpoint.md): Outgoing webhook endpoint to send notifications about changes on different entities within Enfuce system. This webhook needs to be implemented by a 3rd party system in order to get notifications. Enfuce is expecting a response within 1000 ms.
+- [Card PIN API](https://docs.enfuce.com/payment/api/pin.md): Endpoint for viewing and setting PIN.
+- [PIN operations with pre-shared key](https://docs.enfuce.com/payment/api/pin-operations-with-pre-shared-key.md): Endpoint for card PIN operations using pre-shared key.
+- [Get encrypted PIN](https://docs.enfuce.com/payment/api/pin-operations-with-pre-shared-key/get-encrypted-pin.md): This operation returns the encrypted PIN block in ISO format 1. The PIN block is encrypted using a pre-shared\ndouble-length 3DES key.
+- [Set PIN](https://docs.enfuce.com/payment/api/pin-operations-with-pre-shared-key/set-pin.md): This operation sets PIN with encrypted PIN block in ISO format 1. The PIN block is encrypted using a pre-shared\ndouble-length 3DES key.
+- [Get encrypted PIN](https://docs.enfuce.com/payment/api/pin-operations-with-pre-shared-key/get-encrypted-pin-1.md): This operation returns the encrypted PIN block in ISO format 1. The PIN block is encrypted using a pre-shared double-length 3DES key.
+- [PIN operations using PKI](https://docs.enfuce.com/payment/api/pin-operations-using-pki.md): Endpoint for Card PIN operations using public key cryptography.
+- [View PIN](https://docs.enfuce.com/payment/api/pin-operations-using-pki/view-pin.md): This operation retrieves card PIN encrypted with temporary PIN encryption key (tzpk) and tzpk encrypted with the provided RSA public key.
+- [Get TZPK for set PIN](https://docs.enfuce.com/payment/api/pin-operations-using-pki/get-tzpk-for-set-pin.md): This operation retrieves temporary PIN enryption key used for setting PIN. Returned tzpk is encrypted with the provided RSA public key.
+- [Set PIN](https://docs.enfuce.com/payment/api/pin-operations-using-pki/set-pin.md): This operation sets the card PIN. Provided PIN must be in ISO format 1 and encrypted with the tzpk received from the "Get tzpk" API call.
+- [View PIN](https://docs.enfuce.com/payment/api/pin-operations-using-pki/view-pin-1.md): This operation retrieves card PIN encrypted with temporary PIN encryption key (tzpk) and tzpk encrypted with the provided RSA public key.
+- [Get TZPK for set PIN](https://docs.enfuce.com/payment/api/pin-operations-using-pki/get-tzpk-for-set-pin-1.md): This operation retrieves temporary PIN enryption key used for setting PIN. Returned tzpk is encrypted with the provided RSA public key.
+- [Set PIN](https://docs.enfuce.com/payment/api/pin-operations-using-pki/set-pin-1.md): This operation sets the card PIN. Provided PIN must be in ISO format 1 and encrypted with the tzpk received from the "Get tzpk" API call.
+- [Card PIN Control API](https://docs.enfuce.com/payment/api/pin-control.md): Endpoint for managing an access token used to view or set PIN. This is a PCI DSS Category 2 service.
+- [PIN Control handling](https://docs.enfuce.com/payment/api/pin-control-handling.md): Endpoint for accessing PIN Control tokens
+- [Request PIN Control access token by plasticId.](https://docs.enfuce.com/payment/api/pin-control-handling/request-pin-control-access-token-by-plasticid.md): This operation is used to create the PIN control access token.
+- [Request PIN Control access token by plasticId](https://docs.enfuce.com/payment/api/pin-control-handling/request-pin-control-access-token-by-plasticid-1.md): This operation is used to create the PIN control access token.
+- [Request PIN Control access token by cardId.](https://docs.enfuce.com/payment/api/pin-control-handling/request-pin-control-access-token-by-cardid.md): This operation is used to create the PIN control access token. If there are multiple active plastics on one card object, the one with the highest sequence number will be used.
+- [Purchase Details API](https://docs.enfuce.com/payment/api/purchase-detail.md): API to manage purchase details
+- [Trigger repricing](https://docs.enfuce.com/payment/api/trigger-repricing.md): Endpoints for triggering repricing
+- [Trigger repricing](https://docs.enfuce.com/payment/api/trigger-repricing/trigger-repricing.md): This operation will trigger repricing for the given transactionId and its purchaseDetailIds
+- [Get purchase details](https://docs.enfuce.com/payment/api/get-purchase-details.md): Endpoints for fetching purchase details
+- [Retrieve a list of purchase details](https://docs.enfuce.com/payment/api/get-purchase-details/retrieve-a-list-of-purchase-details.md): This operation will return purchase details
+- [Retrieve one purchase detail](https://docs.enfuce.com/payment/api/get-purchase-details/retrieve-one-purchase-detail.md): This operation will return the purchase detail for given id
+- [Create purchase details](https://docs.enfuce.com/payment/api/create-purchase-details.md): Endpoint for creating purchase details
+- [Create a list of purchase details](https://docs.enfuce.com/payment/api/create-purchase-details/create-a-list-of-purchase-details.md): This operation will save the list of purchase details
+- [Update purchase details](https://docs.enfuce.com/payment/api/update-purchase-details.md): Endpoints for updating purchase details
+- [Update a a list of purchase details](https://docs.enfuce.com/payment/api/update-purchase-details/update-a-a-list-of-purchase-details.md): Update the purchase detail(s). Any field present in the body will be updated
+- [Delete a purchase detail](https://docs.enfuce.com/payment/api/update-purchase-details/delete-a-purchase-detail.md): Deletes the purchase detail that match the provided id
+- [Repricing API](https://docs.enfuce.com/payment/api/repricing.md): Endpoint for supporting repricing
+- [Create repricing agreements](https://docs.enfuce.com/payment/api/Create-repricing-agreements.md): Endpoints for creating repricing agreements
+- [Create a new price agreement](https://docs.enfuce.com/payment/api/create-repricing-agreements/create-a-new-price-agreement.md): This operation will create a new price agreement that will hold a number product codes and validity periods
+- [Create a new price agreement period](https://docs.enfuce.com/payment/api/create-repricing-agreements/create-a-new-price-agreement-period.md): This operation will create a new price agreement period
+- [Link accounts to agreement](https://docs.enfuce.com/payment/api/create-repricing-agreements/link-accounts-to-agreement.md): This operation will link the given list of accounts to a given agreement
+- [Get repricing agreements](https://docs.enfuce.com/payment/api/get-repricing-agreements.md): Endpoints for fetching repricing agreements
+- [Retrieves all price agreements](https://docs.enfuce.com/payment/api/get-repricing-agreements/retrieves-all-price-agreements.md): This operation will return the full list of saved price agreements
+- [Retrieves one price agreement](https://docs.enfuce.com/payment/api/get-repricing-agreements/retrieves-one-price-agreement.md): This operation will return the price agreement for given id
+- [Retrieves all price agreements periods](https://docs.enfuce.com/payment/api/get-repricing-agreements/retrieves-all-price-agreements-periods.md): This operation will return the full list of saved price agreements periods
+- [Retrieves a price agreement period](https://docs.enfuce.com/payment/api/get-repricing-agreements/retrieves-a-price-agreement-period.md): This operation will return a price agreement period
+- [Get all accounts linked to an agreement](https://docs.enfuce.com/payment/api/get-repricing-agreements/get-all-accounts-linked-to-an-agreement.md): This operation will returns a list of accounts connected to given agreement id
+- [Get agreements for linked account](https://docs.enfuce.com/payment/api/get-repricing-agreements/get-agreements-for-linked-account.md): This operation will returns a list of links between given account and it's linked agreements
+- [Retrieves the active price agreement period for a selected account and product](https://docs.enfuce.com/payment/api/get-repricing-agreements/retrieves-the-active-price-agreement-period-for-a-selected-account-and-product.md): Retrieve active price agreement period for selected account and product
+- [Update repricing agreements](https://docs.enfuce.com/payment/api/update-repricing-agreements.md): Endpoints for updating repricing agreements
+- [Update a price agreement](https://docs.enfuce.com/payment/api/update-repricing-agreements/update-a-price-agreement.md): Update the agreement connected to given id. Any field present in the body will be updated
+- [Delete a price agreement](https://docs.enfuce.com/payment/api/update-repricing-agreements/delete-a-price-agreement.md): If you delete a price agreement, all card links connections to that agreement will be deleted as well.
+- [Delete agreement period](https://docs.enfuce.com/payment/api/update-repricing-agreements/delete-agreement-period.md): You can only delete a period that is not active.
+- [Update a agreement period](https://docs.enfuce.com/payment/api/update-repricing-agreements/update-a-agreement-period.md): Update the agreement period
+- [Delete an account link to a agreement](https://docs.enfuce.com/payment/api/update-repricing-agreements/delete-an-account-link-to-a-agreement.md): This operation will delete the account link for the given id
+- [Update a agreement account link](https://docs.enfuce.com/payment/api/update-repricing-agreements/update-a-agreement-account-link.md): Update the agreement account link
+- [Create a new price list](https://docs.enfuce.com/payment/api/create-price-lists/create-a-new-price-list.md): This operation will create a new price list for the repricing process to use.
+- [Create a new price list period](https://docs.enfuce.com/payment/api/create-price-lists/create-a-new-price-list-period.md): This operation will create a new price list period for the provided price list id
+- [Get price lists](https://docs.enfuce.com/payment/api/get-price-lists.md): Endpoints for fetching price lists
+- [Retrieves all price lists](https://docs.enfuce.com/payment/api/get-price-lists/retrieves-all-price-lists.md): This operation will return the full list of saved price lists
+- [Retrieves the price list for the given priceListId](https://docs.enfuce.com/payment/api/get-price-lists/retrieves-the-price-list-for-the-given-pricelistid.md): This operation will return the full list of saved price lists
+- [Retrieves given price list and it's periods](https://docs.enfuce.com/payment/api/get-price-lists/retrieves-given-price-list-and-its-periods.md): This operation will return all the periods for the given price list id
+- [Retrieves active price list period for given price list](https://docs.enfuce.com/payment/api/get-price-lists/retrieves-active-price-list-period-for-given-price-list.md): This operation will return the active period for the given price list id
+- [Get price list period](https://docs.enfuce.com/payment/api/get-price-lists/get-price-list-period.md): Returns the price list period for the given period id
+- [Update price lists](https://docs.enfuce.com/payment/api/update-price-lists.md): Endpoints for updating price lists
+- [Update a price list](https://docs.enfuce.com/payment/api/update-price-lists/update-a-price-list.md): Update the ´code´ value of a price list.
+- [Delete a price list](https://docs.enfuce.com/payment/api/update-price-lists/delete-a-price-list.md): You can only delete a price list that does not have a active period connected to it. If you delete a price list, all inactive periods on that price list will be deleted as well.
+- [Update a price list period](https://docs.enfuce.com/payment/api/update-price-lists/update-a-price-list-period.md): Generally any field provided will be updated, with a few exceptions; If the given period is currently active you will only be able to update the `validTo` field. Neither will you be able to update a expired (validTo is less than current time) period.
+- [Delete a price list period](https://docs.enfuce.com/payment/api/update-price-lists/delete-a-price-list-period.md): You can only delete a price list period that has not yet been active (validFrom is in the future)
+- [Transaction Details API](https://docs.enfuce.com/payment/api/transaction.md): Endpoints for managing transaction data
+- [Test transactions](https://docs.enfuce.com/payment/api/test-transactions.md)
+- [Post test transactions to given card](https://docs.enfuce.com/payment/api/test-transactions/post-test-transactions-to-given-card.md): This operation will create a transaction given cardId. Only available in DEMO environment.
+- [Test authorizations](https://docs.enfuce.com/payment/api/test-authorization.md)
+- [Post test authorization to given card](https://docs.enfuce.com/payment/api/test-authorizations/post-test-authorization-to-given-card.md): This operation will create an authorization for given cardId without notification sending. Only available in DEMO environment.
+- [Get transaction data](https://docs.enfuce.com/payment/api/get-transaction-data.md): Endpoints for fetching transaction data
+- [Get all suspended transactions](https://docs.enfuce.com/payment/api/get-transaction-data/get-all-suspended-transactions.md): If any payment cannot be posted to any end-user account it will be posted to an institution suspense account for further processing by the issuer. The latest transactions will be listed in descending order by date.
+- [Get transactions and authorizations given accountId](https://docs.enfuce.com/payment/api/get-transaction-data/get-transactions-and-authorizations-given-accountid.md): This operation will respond with a list of transactions and authorizations given the accountId with the latest transactions in descending order by date.
+- [Get Account Interests](https://docs.enfuce.com/payment/api/get-transaction-data/get-account-interests.md)
+- [Get transactions and authorizations given cardId](https://docs.enfuce.com/payment/api/get-transaction-data/get-transactions-and-authorizations-given-cardid.md): This operation will respond with a list of transactions and authorizations given the cardId with the latest transactions in descending order by date.
+- [Get transaction and authorization given transactionId](https://docs.enfuce.com/payment/api/get-transaction-data/get-transaction-and-authorization-given-transactionid.md): This operation will respond with a transaction given transactionId.
+- [Get available transaction conditions](https://docs.enfuce.com/payment/api/get-transaction-data/get-available-transaction-conditions.md): This operation will respond with available transaction conditions.
+- [Create transactions](https://docs.enfuce.com/payment/api/create-transactions.md): Endpoints for creating transactions
+- [Post transactions to given account](https://docs.enfuce.com/payment/api/create-transactions/post-transactions-to-given-account.md): This operation will post transactions to account given by accountId
+- [Post transactions to given card](https://docs.enfuce.com/payment/api/create-transactions/post-transactions-to-given-card.md): This operation will post transactions to card given by cardId
+- [Post payment to given invoice](https://docs.enfuce.com/payment/api/create-transactions/post-payment-to-given-invoice.md): Creates a payment transaction that is allocated to the specified invoice.
+- [Create fees](https://docs.enfuce.com/payment/api/create-fees.md): Endpoints for creating fees
+- [Post fees to given account](https://docs.enfuce.com/payment/api/create-fees/post-fees-to-given-account.md): This operation will create a fee (transaction) given accountId
+- [Post fees to given card](https://docs.enfuce.com/payment/api/create-fees/post-fees-to-given-card.md): This operation will create a fee (transaction) given cardId
+- [Update a transaction](https://docs.enfuce.com/payment/api/update-a-transaction.md): Endpoint for updating a transaction.
+- [Update transaction](https://docs.enfuce.com/payment/api/update-a-transaction/update-transaction.md): Updates transation by given Id and propertyToUpdate
+- [Authorization Holds](https://docs.enfuce.com/payment/api/authorization-hold-endpoints.md)
+- [Get authorization holds](https://docs.enfuce.com/payment/api/authorization-hold-endpoints/get-authorization-holds.md): This operation will respond with authorization hold transactions.
+- [Create an authorization hold](https://docs.enfuce.com/payment/api/authorization-hold-endpoints/create-authorization-hold.md): Creates a new authorization hold transaction.
+- [Get authorization hold by id](https://docs.enfuce.com/payment/api/authorization-hold-endpoints/get-authorization-hold-by-id.md): This operation will respond with an authorization hold transaction given authorizationTransactionId.
+- [Reverse an authorization hold](https://docs.enfuce.com/payment/api/authorization-hold-endpoints/reverse-authorization-hold.md): Reverses (cancels) a previously created authorization hold
+- [Clear an authorization hold](https://docs.enfuce.com/payment/api/authorization-hold-endpoints/clear-authorization-hold.md): Converts a previously created authorization hold into a captured financial transaction
+- [Reverse clearing of authorisation hold](https://docs.enfuce.com/payment/api/authorization-hold-endpoints/reverse-authorization-hold-clearing.md): Reverses (cancels) a previously created authorization hold clearing
+- [Batch payment](https://docs.enfuce.com/payment/api/batch-payment.md): Batch file for payments.
+- [Transfer API](https://docs.enfuce.com/payment/api/transfer.md)
+- [Post account to account transfer](https://docs.enfuce.com/payment/api/post-account-to-account-transfer.md)
+- [Transfer balance from account to account](https://docs.enfuce.com/payment/api/post-account-to-account-transfer/transfer-balance-from-account-to-account.md): Please note that this feature requires manual configuration. If you want to use it, please contact your CSM.
+- [Account to account batch transfer](https://docs.enfuce.com/payment/api/account-to-account-batch-transfer.md)
+- [Create account to account batch transfer](https://docs.enfuce.com/payment/api/account-to-account-batch-transfer/create-account-to-account-batch-transfer.md): Please note that this feature requires manual configuration. If you want to use it, please contact your CSM.
+- [Get all batch transfers](https://docs.enfuce.com/payment/api/account-to-account-batch-transfer/get-all-batch-transfers.md): This operation will respond with a list of batch transfers for the institution defined by the authenticated user's context.
+- [Get full batch transfer information with transfer items by given ID](https://docs.enfuce.com/payment/api/account-to-account-batch-transfer/get-full-batch-transfer-information-with-transfer-items-by-given-id.md): This operation will respond with a batch transfer and a list of transfer items for the given batch transfer ID.
+- [Get batch transfer status by given ID](https://docs.enfuce.com/payment/api/account-to-account-batch-transfer/get-batch-transfer-status-by-given-id.md): This operation will respond with a batch transfer status for the given batch transfer ID.
+- [Post card to card transfer](https://docs.enfuce.com/payment/api/post-card-to-card-transfer.md)
+- [Transfer balance from card to card](https://docs.enfuce.com/payment/api/post-card-to-card-transfer/transfer-balance-from-card-to-card.md): Please note that this feature requires manual configuration. If you want to use it, please contact your CSM.
+- [Wallet operations](https://docs.enfuce.com/payment/api/wallet-operations.md): Wallet API enables getting needed data for tokenization and enablement in programs like Apple Pay and Google Pay.
+- [Push Provision](https://docs.enfuce.com/payment/api/push-provision.md)
+- [Apple Pay push provisioning](https://docs.enfuce.com/payment/api/push-provision/apple-pay-push-provisioning.md): This endpoint is only used for Apple Pay push provisioning. It requires a certificate and a nonce from Apple.
+- [Google Pay push provisioning](https://docs.enfuce.com/payment/api/push-provision/google-pay-push-provisioning.md): This endpoint is only used for Google Pay push provisioning.
+- [Samsung Pay push provisioning](https://docs.enfuce.com/payment/api/push-provision/samsung-pay-push-provisioning.md): This endpoint is only used for Samsung Pay push provisioning.
+- [MDES Issuer Wallet push provisioning](https://docs.enfuce.com/payment/api/push-provision/mdes-issuer-wallet-push-provisioning.md): This endpoint is only used with push provisioning for MDES Issuer Wallet.  The response is a JSON that must be sent to MDES.
+- [Activation data](https://docs.enfuce.com/payment/api/activation-data.md)
+- [In-app activation](https://docs.enfuce.com/payment/api/activation-data/in-app-activation.md): This is common for Apple Pay, Google Pay and Samsung Pay by using either WSD keys for VTS or TAV for MDES.  Note that these keys are handled and exchanged by Enfuce.
+- [Will create activationdata according to TAV format version 2 with encrypted card data to be sent to MDES.](https://docs.enfuce.com/payment/api/activation-data/will-create-activationdata-according-to-tav-format-version-2-with-encrypted-card-data-to-be-sent-to-mdes.md): This operation will read the card data, generate activation data according to MDES specification and respond. The activation data should in most cases be used when the card holder as added the card manually and not via the push / in-app provisioning, especially in flow that has done into none-green…
+- [Will create TAV according to TAV format version 2 with encrypted card data to be sent to MDES.](https://docs.enfuce.com/payment/api/activation-data/will-create-tav-according-to-tav-format-version-2-with-encrypted-card-data-to-be-sent-to-mdes.md): This operation will read the card data, generate activation data according to MDES specification TAV2 format and respond. Difference betwen v1 is that v2 will also contain the tokenUniqueReferenceId. The activation data should in most cases be used when the card holder as added the card manually and…
+- [Get tokens](https://docs.enfuce.com/payment/api/get-tokens.md)
+- [Get tokens for a given cardId](https://docs.enfuce.com/payment/api/get-tokens/get-tokens-for-a-given-cardid.md): This operation returns list of tokens for a given card Id. The response consists of Token Unique Reference ID,  Token Requestor ID, Wallet Provider (Apple/Google/Samsung/M4M), and Token status.
+- [Token management](https://docs.enfuce.com/payment/api/token-management.md): Endpoint for changing the status of a token
+- [Change the status of a token](https://docs.enfuce.com/payment/api/token-management/change-token-status.md): Change token status
+- [Overview](https://docs.enfuce.com/payment/api/visa-click2pay-enroll-and-manage/visa-click-to-pay-overview.md)
+- [Enrol a Cardholder and a Card in C2P](https://docs.enfuce.com/payment/api/visa-click2pay-enroll-and-manage/enroll-a-customer-and-a-payment-card-to-click-to-pay.md): Send a request to this endpoint to enrol a cardholder in Click to Pay and add a card to the account. You may override the cardholder’s email address and phone number, by using the field `overrides`. If you provide `cardOverrides`, the billing address fields present in `cardOverrides` override the co…
+- [Enrol Card by Card ID in C2P](https://docs.enfuce.com/payment/api/visa-click2pay-enroll-and-manage/enroll-card-with-cardid.md): Send a request to this endpoint to add a card to a pre-existing cardholder’s C2P profile. If you provide `cardOverrides`, the billing address fields present in `cardOverrides` override the corresponding values sent to Visa for this request. Any billing address fields omitted from `cardOverrides` fal…
+- [Get Cardholder by Cardholder ID from C2P](https://docs.enfuce.com/payment/api/visa-click2pay-enroll-and-manage/get-customer-with-customerid-from-c2p.md): Send a request to this endpoint to retrieve a cardholder’s details from their C2P account.
+- [Delete Card by Card ID from C2P](https://docs.enfuce.com/payment/api/visa-click2pay-enroll-and-manage/delete-card-with-cardid-from-c2p.md): Send a request to this endpoint to remove a card from a cardholder’s C2P profile.
+- [Delete Cardholder from C2P](https://docs.enfuce.com/payment/api/visa-click2pay-enroll-and-manage/delete-customer-with-customerid-from-c2p.md): Send a request to this endpoint to remove a cardholder’s profile from C2P. Note: The cards added to the profile are also removed.
+- [Update Card by Card ID in C2Pay](https://docs.enfuce.com/payment/api/visa-click2pay-enroll-and-manage/update-card-with-cardid-to-c2p.md): Send a request to this endpoint to update Card info. If you provide `cardOverrides`, the billing address fields present in `cardOverrides` override the corresponding values sent to Visa for this request. Any billing address fields omitted from `cardOverrides` fall back to the existing stored cardhol…
+- [Update Cardholder Status by Cardholder ID in C2P](https://docs.enfuce.com/payment/api/visa-click2pay-enroll-and-manage/update-customer-status-with-customerid-to-c2p.md): Send a request to this endpoint to specify the cardholder’s status.  Note:  - If the cardholder’s status is set to **false**, then cards of the specific issuer, added in the C2P profile, are deactivated.  Issuers can send request to this endpoint for multiple reasons, one of them is to prevent fraud…
+- [Update Cardholder by Cardholder ID in C2P](https://docs.enfuce.com/payment/api/visa-click2pay-enroll-and-manage/update-customer-with-customerid-to-c2p.md): Send a request to this endpoint to modify a cardholder’s details in C2P.  You may update the email ID and/or the phone number.
+- [Get Request Status by **requestTraceId** from C2P](https://docs.enfuce.com/payment/api/visa-click2pay-enroll-and-manage/get-status-of-visa-click-to-pay-operation.md): Send a request to this endpoint to retrieve details about a request sent to C2P through another endpoint.  This endpoint enables you to track the progress or outcome of operations, such as card enrolment, updates, or deletions.
+- [Test API](https://docs.enfuce.com/payment/api/test-api.md): This API is only available in DEMO environment and intended solely for testing purposes.
+- [test-auth-request-templates](https://docs.enfuce.com/payment/api/test-auth-request-templates.md)
+- [Generate retail offline pin auth request template](https://docs.enfuce.com/payment/api/test-auth-request-templates/generate-retail-offline-pin-auth-request-template.md)
+- [Generate retail ecommerce auth request template](https://docs.enfuce.com/payment/api/test-auth-request-templates/generate-retail-ecommerce-auth-request-template.md)
+- [test-authorizations](https://docs.enfuce.com/payment/api/test-authorizations.md)
+- [Send test authorization reversal request](https://docs.enfuce.com/payment/api/test-authorizations/send-test-authorization-reversal-request.md)
+- [Send test authorization request](https://docs.enfuce.com/payment/api/test-authorizations/send-test-authorization-request.md)
+- [Hierarchy API](https://docs.enfuce.com/payment/api/hierarchy.md): Card hierarchy defines a tree-structure that separates card space in non-intersecting groups. Such groups can be further used for ruleset attachments via Spend Control API.
+- [Card Hierarchy Management](https://docs.enfuce.com/payment/api/card-hierarchy-management.md)
+- [Create Card Hierarchy (Root Group)](https://docs.enfuce.com/payment/api/card-hierarchy-management/create-card-hierarchy-root-group.md): This operation creates a new card hierarchy, generating a root group with the specified name and ID. Only one card hierarchy can be active at a time.
+- [Get All Card Hierarchies](https://docs.enfuce.com/payment/api/card-hierarchy-management/get-all-card-hierarchies.md): This operation retrieves all the existing card hierarchies, including both active and inactive ones.
+- [Get Specific Card Hierarchy](https://docs.enfuce.com/payment/api/card-hierarchy-management/get-specific-card-hierarchy.md): This operation retrieves details of a specific card hierarchy using its ID.
+- [Update Card Hierarchy](https://docs.enfuce.com/payment/api/card-hierarchy-management/update-card-hierarchy.md): This operation updates the details of a specific card hierarchy, such as its name.
+- [Delete Card Hierarchy](https://docs.enfuce.com/payment/api/card-hierarchy-management/delete-card-hierarchy.md): This operation deletes a specific card hierarchy. If the hierarchy is active, use the `force` query parameter to allow deletion.
+- [Activate Card Hierarchy](https://docs.enfuce.com/payment/api/card-hierarchy-management/activate-card-hierarchy.md): This operation activates a specified card hierarchy. Only one card hierarchy can be active at a time.
+- [Card Hierarchy Group Management](https://docs.enfuce.com/payment/api/card-hierarchy-group-management.md)
+- [Create Card Hierarchy Group](https://docs.enfuce.com/payment/api/card-hierarchy-group-management/create-card-hierarchy-group.md): This operation creates a new group within a specified card hierarchy. The new group must have a parent group ID and can be either `INTERMEDIATE` or `CARD` type.
+- [Get All Groups in Card Hierarchy](https://docs.enfuce.com/payment/api/card-hierarchy-group-management/get-all-groups-in-card-hierarchy.md): This operation retrieves all groups within a specified card hierarchy, optionally filtering by card ID.
+- [Get Specific Card Hierarchy Group](https://docs.enfuce.com/payment/api/card-hierarchy-group-management/get-specific-card-hierarchy-group.md): This operation retrieves details of a specific group within a card hierarchy using the group ID.
+- [Update Card Hierarchy Group](https://docs.enfuce.com/payment/api/card-hierarchy-group-management/update-card-hierarchy-group.md): This operation updates the details of a specific group within a card hierarchy, such as its name.
+- [Delete Card Hierarchy Group](https://docs.enfuce.com/payment/api/card-hierarchy-group-management/delete-card-hierarchy-group.md): This operation deletes a specific group within a card hierarchy. If the group contains cards or subgroups, use the `recursive` query parameter to allow deletion.
+- [Card Management in Card Hierarchy Groups](https://docs.enfuce.com/payment/api/card-management-in-card-hierarchy-groups.md)
+- [Get Cards in Group](https://docs.enfuce.com/payment/api/card-management-in-card-hierarchy-groups/get-cards-in-group.md): This operation retrieves all cards within a specific group in a card hierarchy.
+- [Add Card to Group](https://docs.enfuce.com/payment/api/card-management-in-card-hierarchy-groups/add-card-to-group.md): This operation adds a card to a specified group within a card hierarchy.
+- [Delete Card from Group](https://docs.enfuce.com/payment/api/card-management-in-card-hierarchy-groups/delete-card-from-group.md): This operation deletes a card from a specified group within a card hierarchy.
+- [Move Card to Another Group](https://docs.enfuce.com/payment/api/card-management-in-card-hierarchy-groups/move-card-to-another-group.md): This operation moves a card to a different group within the same card hierarchy.
+- [Bulk Add Cards to Group](https://docs.enfuce.com/payment/api/card-management-in-card-hierarchy-groups/bulk-add-cards-to-group.md): This operation adds multiple cards to a specified group within a card hierarchy.
+- [Bulk Delete Cards from Group](https://docs.enfuce.com/payment/api/card-management-in-card-hierarchy-groups/bulk-delete-cards-from-group.md): This operation deletes multiple cards from a specified group within a card hierarchy.
+- [Bulk Move Cards to Another Group](https://docs.enfuce.com/payment/api/card-management-in-card-hierarchy-groups/bulk-move-cards-to-another-group.md): This operation moves multiple cards to a different group within the same card hierarchy.
+- [Spend Control API](https://docs.enfuce.com/payment/api/spend-control.md)
+- [Rule Sets Endpoints](https://docs.enfuce.com/payment/api/rule-sets-endpoints.md)
+- [Create Rule Set](https://docs.enfuce.com/payment/api/rule-sets-endpoints/create-rule-set.md): This operation creates a new rule set. Rule sets are collections of rules bound to entities.
+- [Get Rule Sets](https://docs.enfuce.com/payment/api/rule-sets-endpoints/get-rule-sets.md): This operation retrieves a list of all rule sets.
+- [Get Rule Set](https://docs.enfuce.com/payment/api/rule-sets-endpoints/get-rule-set.md): This operation retrieves details of a specific rule set identified by `rule-set-id`.
+- [Update Rule Set](https://docs.enfuce.com/payment/api/rule-sets-endpoints/update-rule-set.md): This operation updates an existing rule set. Only the properties present in the request are updated.
+- [Create Entity Bindings](https://docs.enfuce.com/payment/api/rule-sets-endpoints/create-entity-bindings.md): This operation adds entity bindings to a rule set, associating entities with the rule set.
+- [Get Entity Bindings for Rule Set](https://docs.enfuce.com/payment/api/rule-sets-endpoints/get-entity-bindings-for-rule-set.md): This operation retrieves entities bound to a specific rule set.
+- [Delete Entity Bindings](https://docs.enfuce.com/payment/api/rule-sets-endpoints/delete-entity-bindings.md): This operation removes entity bindings from a rule set.
+- [Rules Endpoints](https://docs.enfuce.com/payment/api/rules-endpoints.md)
+- [Create Rule](https://docs.enfuce.com/payment/api/rules-endpoints/create-rule.md): This operation adds a new rule to an existing rule set.
+- [Update Rule](https://docs.enfuce.com/payment/api/rules-endpoints/update-rule.md): This operation updates an existing rule. Only the properties present in the request are updated.
+- [Delete Rule](https://docs.enfuce.com/payment/api/rules-endpoints/delete-rule.md): This operation deletes an existing rule.
+- [Create Rule Filter](https://docs.enfuce.com/payment/api/rules-endpoints/create-rule-filter.md): This operation adds a new filter to an existing rule.
+- [Create Rule Parameter](https://docs.enfuce.com/payment/api/rules-endpoints/create-rule-parameter.md): This operation adds a parameter to a rule for a given entity. These parameters will override the rule defaults during processing.
+- [Delete Rule Parameter](https://docs.enfuce.com/payment/api/rules-endpoints/delete-rule-parameter.md): This operation removes parameter from a rule for given entity. Default parameter on rule will be used when processing rule for the entity.
+- [Get Parameters](https://docs.enfuce.com/payment/api/rules-endpoints/get-parameters.md): This operation retrieves parameters for particular rule
+- [Update Rule Filter](https://docs.enfuce.com/payment/api/rules-endpoints/update-rule-filter.md): This operation updates an existing filter. Only the properties present in the request are updated.
+- [Delete Rule Filter](https://docs.enfuce.com/payment/api/rules-endpoints/delete-rule-filter.md): This operation deletes an existing filter.
+- [Spend Control Test Endpoint](https://docs.enfuce.com/payment/api/spend-control-test-endpoint.md)
+- [Test Spend Control Rules Evaluation](https://docs.enfuce.com/payment/api/spend-control-test-endpoint/test-spend-control-rules-evaluation.md): This operation can be used to evaluate spend control rules for a test transaction.
+- [Spend Control STIP External Account Balance Endpoints](https://docs.enfuce.com/payment/api/spend-control-stip-external-account-balance-endpoints.md)
+- [Get Account External Balance](https://docs.enfuce.com/payment/api/spend-control-stip-external-account-balance-endpoints/get-external-account-balance.md): This operation can be used to retrieve external account balance.
+- [Update Account External Balance](https://docs.enfuce.com/payment/api/spend-control-stip-external-account-balance-endpoints/update-external-account-balance.md): This operation can be used to update external account balance.
+- [Spend Control Test Endpoint](https://docs.enfuce.com/payment/api/spend-control-test-stip-endpoint.md)
+- [Test Spend Control STIP Rules Evaluation](https://docs.enfuce.com/payment/api/spend-control-test-stip-endpoint/test-spend-control-stip-rules-evaluation.md): This operation can be used to evaluate STIP spend control rules for a test transaction.
+- [Overview](https://docs.enfuce.com/payment/api/fraud-case/fraud-case-overview.md)
+- [List fraud cases](https://docs.enfuce.com/payment/api/fraud-case/get-endpoints/get-fraud-cases.md): Returns a paginated list of fraud cases.
+- [Retrieve fraud case by ID](https://docs.enfuce.com/payment/api/fraud-case/get-endpoints/get-fraud-case-by-id.md): Retrieves detailed information for the fraud case identified by `{id}`.
+- [List fraud cases for a card](https://docs.enfuce.com/payment/api/fraud-case/get-endpoints/get-fraud-case-by-cardid.md): Returns a paginated list of fraud cases associated with the card identified by `{cardId}`.
+- [Partially update fraud case](https://docs.enfuce.com/payment/api/fraud-case/patch-endpoints/update-fraud-case.md): - Applies partial updates to case `{id}` and returns the **updated case**. - Omitting `comment` leaves the case comment unchanged. - Transactions **not** included in the payload are **not changed**. - Once any transaction has a customer decision, the case status changes from **OPEN** to **PENDING**.…
+- [Finalize case](https://docs.enfuce.com/payment/api/fraud-case/post-endpoint/finalise-fraud-case.md): Finalizes the fraud case identified by `{id}`. This action is allowed only if every transaction in the case has `customerDecision = RISK` or `NO_RISK`.
+- [Release Notes](https://docs.enfuce.com/updates/release-notes.md)
+
+## OpenAPI Specs
+
+- [account](/json-files/account.json)
+- [authorisation-control](/json-files/authorisation-control.json)
+- [authorisation-forwarding](/json-files/authorisation-forwarding.json)
+- [card](/json-files/card.json)
+- [customer](/json-files/customer.json)
+- [exchange-rate](/json-files/exchange-rate.json)
+- [fraud-case](/json-files/fraud-case.json)
+- [groups](/json-files/groups.json)
+- [hierarchy](/json-files/hierarchy.json)
+- [id](/json-files/id.json)
+- [instalment](/json-files/instalment.json)
+- [invoice](/json-files/invoice.json)
+- [matching](/json-files/matching.json)
+- [notification](/json-files/notification.json)
+- [pin](/json-files/pin.json)
+- [pincontrol](/json-files/pincontrol.json)
+- [purchase-detail](/json-files/purchase-detail.json)
+- [rba-forwarding](/json-files/rba-forwarding.json)
+- [repricing](/json-files/repricing.json)
+- [spend-control](/json-files/spend-control.json)
+- [test-ea](/json-files/test-ea.json)
+- [test](/json-files/test.json)
+- [transaction](/json-files/transaction.json)
+- [transfer](/json-files/transfer.json)
+- [volume-report](/json-files/volume-report.json)
+- [wallet](/json-files/wallet.json)
+- [web_push_provision_wallet](/json-files/web_push_provision_wallet.json)
+- [3ds-authentication-v1-openapi](/nextgen-json-files/3ds-authentication-v1-openapi.json)
+- [advanced-spend-control-v1.openapi](/nextgen-json-files/advanced-spend-control-v1.openapi.json)
+- [authorisation-control-v1.openapi](/nextgen-json-files/authorisation-control-v1.openapi.json)
+- [card-event.openapi](/nextgen-json-files/card-event.openapi.json)
+- [card.openapi](/nextgen-json-files/card.openapi.json)
+- [cardholder-event.openapi](/nextgen-json-files/cardholder-event.openapi.json)
+- [cardholder.openapi](/nextgen-json-files/cardholder.openapi.json)
+- [cards-v1.openapi](/nextgen-json-files/cards-v1.openapi.json)
+- [clearing-file-copy-v1.openapi](/nextgen-json-files/clearing-file-copy-v1.openapi.json)
+- [exchange-rate](/nextgen-json-files/exchange-rate.json)
+- [fee-config-v1.openapi](/nextgen-json-files/fee-config-v1.openapi.json)
+- [issuer-events.openapi](/nextgen-json-files/issuer-events.openapi.json)
+- [mycore-test-api.openapi](/nextgen-json-files/mycore-test-api.openapi.json)
+- [pin.openapi](/nextgen-json-files/pin.openapi.json)
+- [sms-configuration-binding-v1.openapi](/nextgen-json-files/sms-configuration-binding-v1.openapi.json)
+- [sms-configuration-v1.openapi](/nextgen-json-files/sms-configuration-v1.openapi.json)
+- [standard-spend-control-v1.openapi](/nextgen-json-files/standard-spend-control-v1.openapi.json)
+- [threeds-configuration-binding-v1.openapi](/nextgen-json-files/threeds-configuration-binding-v1.openapi.json)
+- [threeds-configuration-v1.openapi](/nextgen-json-files/threeds-configuration-v1.openapi.json)
+- [threeds-oob-v1.openapi](/nextgen-json-files/threeds-oob-v1.openapi.json)
+- [threeds-v1.openapi](/nextgen-json-files/threeds-v1.openapi.json)
+- [token-event.openapi](/nextgen-json-files/token-event.openapi.json)
+- [transaction-event-v1.openapi](/nextgen-json-files/transaction-event-v1.openapi.json)
+- [velocity-buckets-v1.openapi](/nextgen-json-files/velocity-buckets-v1.openapi.json)
+- [wallet.openapi](/nextgen-json-files/wallet.openapi.json)
+
+## Optional
+
+- [Platform](https://enfuce.com/product/platform/)

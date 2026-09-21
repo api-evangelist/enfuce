@@ -1,0 +1,2027 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "description": "Endpoints for doing various actions connected to the Card entity.\nAll date-time fields adhere to the ISO 8601 standard unless specified otherwise.\nFor example: 2024-05-31T06:55:17Z\n",
+    "version": "1",
+    "title": "Card API",
+    "contact": {
+      "name": "Enfuce Financial Services",
+      "url": "https://enfuce.com",
+      "email": "info@enfuce.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.{{tenant}}.ext-uat1-sandbox.mycore.enfuce.com/issuer",
+      "description": "UAT Sandbox"
+    },
+    {
+      "url": "https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Create Card",
+      "description": "Endpoints for creating a card"
+    },
+    {
+      "name": "Get card",
+      "description": "Endpoints for fetching a card"
+    },
+    {
+      "name": "Update card",
+      "description": "Endpoints for updating a card"
+    }
+  ],
+  "paths": {
+    "/v1/cards": {
+      "post": {
+        "tags": [
+          "Create Card"
+        ],
+        "summary": "Create Card",
+        "description": "Send a request to this endpoint to create a new card.",
+        "operationId": "createCard",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          },
+          {
+            "in": "header",
+            "name": "x-idempotency-key",
+            "required": false,
+            "description": "Idempotency key for the request.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateCardBody"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateMultiApplicationCardBody"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful creation of new card.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/CardResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CreateMultiApplicationCardResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Get card"
+        ],
+        "summary": "Get Card Applications for Main Card",
+        "description": "Send a request to this endpoint to return all card applications for a specific main card.\nIf the main card does not exist, an empty array is returned.\n",
+        "operationId": "getCards",
+        "parameters": [
+          {
+            "name": "mainCardId",
+            "in": "query",
+            "description": "Unique identifier of the main card for which you want to retrieve the list of card applications.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of card applications.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/cards/{id}": {
+      "get": {
+        "tags": [
+          "Get card"
+        ],
+        "summary": "Get Card",
+        "operationId": "getCard",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the card you want to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The card details are successfully retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Update card"
+        ],
+        "summary": "Partially Update Card",
+        "description": "Send a request to this endpoint when you want to update details of a specific card.",
+        "operationId": "patchCard",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the card that you want to update.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "requestBody": {
+          "description": "Details of the card that you want to update.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCardBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful update of the card.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/cards/{id}/replace": {
+      "post": {
+        "tags": [
+          "Update card"
+        ],
+        "summary": "Replace Card",
+        "description": "Send a request to this endpoint when you want to replace the current card. The old card is closed and a new card is issued, where the PAN and the expiry date are updated.",
+        "operationId": "replaceCard",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the card to be replaced.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-idempotency-key",
+            "required": false,
+            "description": "Idempotency key of the request.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplaceCardBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful replacement of card",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/cards/{id}/reissue": {
+      "post": {
+        "tags": [
+          "Update card"
+        ],
+        "summary": "Reissue Card",
+        "description": "Send a request to this endpoint when you want to reissue a card.",
+        "operationId": "reissueCard",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the card that you want to reissue.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-idempotency-key",
+            "required": false,
+            "description": "Idempotency key of the request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReissueCardBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful reissue of the card.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/cards/{id}/activate": {
+      "post": {
+        "tags": [
+          "Update card"
+        ],
+        "summary": "Activate Card",
+        "description": "To change the latest card version status from `INITIAL` to `ACTIVE`, send a request to this endpoint.",
+        "operationId": "activateCard",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique ID of the card that you want to activate.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-idempotency-key",
+            "required": false,
+            "description": "Idempotency key of the request",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The card is successfully activated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/cards/{id}/reorder-pin": {
+      "post": {
+        "tags": [
+          "Update card"
+        ],
+        "operationId": "reorderPin",
+        "summary": "Reorder PIN for Card",
+        "description": "Send a request to this endpoint when you want to reorder existing PIN for a plastic card, if the cardholder has forgotten it. The PIN is delivered to the `preferredPinAddress`. If `preferredPinAddress` is absent, the PIN is delivered to the `preferredCardAddress`.\n",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the card for which you want to reorder PIN.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-idempotency-key",
+            "required": false,
+            "description": "Idempotency key of the request.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful reordering of PIN.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/cards/{id}/manufacturing-history": {
+      "get": {
+        "tags": [
+          "Get plastic manufacturing history"
+        ],
+        "summary": "Retrieve Manufacturing History of Card",
+        "description": "Send a request to this endpoint to retrieve a detailed list of all past occurrences when the card has been physically manufactured.",
+        "operationId": "manufacturingHistory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the card for which you want to retrieve the manufacturing history.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful lookup of the card's manufacturing history.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlasticManufacturingHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/cards/{id}/encrypt": {
+      "post": {
+        "tags": [
+          "Get Card Payment Info"
+        ],
+        "summary": "Retrieve Card Data | Additional Method",
+        "description": "This is a web service designed to retrieve the card data required for completing e-commerce payments — PAN, CVC2/CVV2, expiry date of the card can be retrieved. The returned payload is encrypted with an asymmetric public key; this enables end-to-end encryption to the card holder device. The parameters that were included in the request are  only returned. The caller is responsible of validating the integrity of the public key.\n\n<Note><ul><li>Send a request to this endpoint, if you are not using the Enfuce BIN sponsorship.</li><li>Retrieving card data through this endpoint implies PCI DSS compliance of the client with the Scheme. An easier method that you can use is the `Initiate Card Data Retrieval` endpoint — this endpoint enables rendering of card information to the cardholder's device without requiring compliance of the client with PCI DSS.</li></ul></Note>\n\n## Example:\n\n```java\n// ...\n\nimport java.security.KeyFactory;\nimport java.security.PrivateKey;\nimport java.security.spec.PKCS8EncodedKeySpec;\nimport java.util.Base64;\nimport javax.crypto.Cipher;\n\n// ...\n\n\n## Example of decrypting an encrypted field\n\n```java\nprivate String decrypt(String data, String privKeyPEM) throws Exception {\n\n\n## Example of preparing the key\n\n```java\n  String privKeyString = privKeyPEM.replaceAll(\"\\\\n\", \"\").replace(\"REDACTED_PRIVATE_KEY_EXAMPLE\", \"\");\n  byte[] encodedKey = Base64.getDecoder().decode(privKeyString);\n  PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(encodedKey);\n  KeyFactory kf = KeyFactory.getInstance(\"RSA\");\n  PrivateKey privateKey = kf.generatePrivate(spec);\n\n\n ## Example of preparing the decryption\n\n  ```java\n  Cipher cipher = Cipher.getInstance(\"RSA/ECB/OAEPWithSHA-256AndMGF1Padding\");\n  cipher.init(Cipher.DECRYPT_MODE, privateKey);\n\n\n## Example of preparing the data\n\n ```java\n byte[] cryptogram = Base64.getDecoder().decode(data);\n\n\n## Example of decryption\n\n ```java\n byte[] decryptedBytes = cipher.doFinal(cryptogram);\nreturn new String(decryptedBytes);\n",
+        "operationId": "encryptCardPaymentInfo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the card whose details you want to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EncryptCardPaymentInfoRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of the card data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EncryptCardPaymentInfoResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/cards/{id}/controlToken": {
+      "post": {
+        "tags": [
+          "Get card"
+        ],
+        "summary": "Initiate Card Data Retrieval",
+        "description": "Send a request to this endpoint when the cardholder wants to retrieve card data, such as PAN, expiry and CVV2/CVC2.\nIf no sequence number is specified, the latest card version is used by default. Only card versions not in CLOSED status are allowed.\n",
+        "operationId": "getCardDataControlToken",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the card.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ControlTokenRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Control token generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardDataControlTokenResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v1/cards/{id}/pinControl": {
+      "post": {
+        "tags": [
+          "Create PIN Control access token"
+        ],
+        "summary": "Request PIN Control Access Token",
+        "description": "Send a request to this endpoint to generate a PIN control access token for a specific card version. The requested `scope` determines which PIN operation the token authorises: `VIEW_PIN`, `SET_PIN` or `CHANGE_PIN`. If no `sequenceNumber` is provided, the latest card version is used.\n\nFor the `SET_PIN` scope, `sequenceNumber` is ignored and the latest card version is always used, because a PIN can only be set on the latest card version.\n\nFor multi-application cards, the `SET_PIN` and `CHANGE_PIN` scopes can only be requested for the main card, not for its card applications; requesting either scope for a card application returns `400`.\n\nA successful response returns the token `id`, a `pinUrl` for the mobile device webview and a `pinFrameUrl` for the desktop browser iframe. Both URLs are specific to the requested `scope`. The token is valid for 30 seconds and is single-use: it is consumed by the first successful operation, so a reused or expired token is rejected. The token only authorises the `scope` it was created with; using it for another operation returns `400`.\n\nFor the mobile webview flow, the device sends another API request — a `POST` to the `pinUrl` with an `application/json` request body containing the token `id` in a field named `pinControlId`.\n\nFor the desktop browser flow, open an iframe to the `pinFrameUrl`. After the iframe has loaded, the browser makes a `window.postMessage()` call to the iframe. The message object contains an `operation` field (`view-pin` for the `VIEW_PIN` scope, `set-pin` for the `SET_PIN` and `CHANGE_PIN` scopes) and a `pinControlId` field (the token `id`).\n\nNote that you must use `set-pin` as the `operation` for the `CHANGE_PIN` scope as well.\n\nFor the `SET_PIN` and `CHANGE_PIN` scopes, the cardholder submits the PIN with the button inside the iframe. If you prefer to drive the submission from your own page instead, send a second `window.postMessage()` call with the `operation` field set to `set-pin-set` and no other fields; the iframe then submits the PIN currently entered in it.\n",
+        "operationId": "createPinControl",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the card for which you want to access the PIN.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-audit-user"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PinControlInfoRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful creation of the PIN control access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PinControlInfoResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "parameters": {
+      "x-audit-user": {
+        "in": "header",
+        "name": "x-audit-user",
+        "required": false,
+        "description": "Optional audit user header",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "schemas": {
+      "Id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique identifier of a resource.",
+        "example": "20218aae-b15e-406c-9e9f-23735cd86a48"
+      },
+      "Created": {
+        "type": "string",
+        "format": "date-time",
+        "description": "The date and time when the card was created."
+      },
+      "Updated": {
+        "type": "string",
+        "format": "date-time",
+        "description": "The date and time when the object/entity was updated last time."
+      },
+      "AccountId": {
+        "type": "string",
+        "description": "Unique identifier of an account.",
+        "minLength": 1,
+        "maxLength": 36,
+        "example": "20218aae-b15e-406c-9e9f-23735cd86a48",
+        "pattern": "^[a-zA-Z0-9-]+$"
+      },
+      "EmbossingName": {
+        "type": "string",
+        "description": "The name to be embossed on the card. Max character limit is 26.",
+        "minLength": 1,
+        "maxLength": 26,
+        "pattern": "^[A-Za-z0-9 /.,&+'\\- ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ ĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹ ĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰű ŲųŴŵŶŷŸŹźŻżŽžſǪǫȘșȚțȪȫȮȯȲȳḐḑṢṣẞỌọ]+$",
+        "example": "John Doe"
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "address1": {
+            "description": "First line of address.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^(?!\\s)(?!.*\\s$).+(?<!\\s)$",
+            "example": "Kings street 12"
+          },
+          "address2": {
+            "type": "string",
+            "pattern": "^(?!\\s)(?!.*\\s$).*(?<!\\s)$",
+            "description": "Second line of address. Any string without trailing or leading whitespaces, or an empty string.",
+            "maxLength": 255,
+            "example": "Apartment 5B"
+          },
+          "address3": {
+            "type": "string",
+            "pattern": "^(?!\\s)(?!.*\\s$).*(?<!\\s)$",
+            "description": "Third line of address. Any string without trailing or leading whitespaces, or an empty string.",
+            "maxLength": 255,
+            "example": "Building C"
+          },
+          "address4": {
+            "type": "string",
+            "pattern": "^(?!\\s)(?!.*\\s$).*(?<!\\s)$",
+            "description": "Fourth line of the address. Any string without trailing or leading whitespaces, or an empty string.",
+            "maxLength": 255,
+            "example": "Entrance North"
+          },
+          "city": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^(?!\\s)(?!.*\\s$).+(?<!\\s)$",
+            "example": "Mariehamn"
+          },
+          "country": {
+            "type": "string",
+            "description": "A valid ISO-3166-1 alpha-3 country code.",
+            "pattern": "[A-Z]{3}",
+            "example": "FIN"
+          },
+          "region": {
+            "type": "string",
+            "maxLength": 32,
+            "example": "Åland Islands"
+          },
+          "zipCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32,
+            "pattern": "^(?!\\s)(?!.*\\s$).+(?<!\\s)$",
+            "example": 22100
+          }
+        },
+        "required": [
+          "address1",
+          "city",
+          "country",
+          "zipCode"
+        ]
+      },
+      "CardDeliveryType": {
+        "type": "string",
+        "description": "Select the type of delivery you prefer for the new card being created. - MAIL - The card would be sent via mail services. - COURIER - The card would be sent via courier services. - CUSTOM_1–CUSTOM_5 - Custom delivery types that can be used for shipping methods agreed between the customer and the bureau.",
+        "enum": [
+          "MAIL",
+          "COURIER",
+          "CUSTOM_1",
+          "CUSTOM_2",
+          "CUSTOM_3",
+          "CUSTOM_4",
+          "CUSTOM_5"
+        ],
+        "example": "MAIL"
+      },
+      "PinDeliveryType": {
+        "type": "string",
+        "description": "Select the type of delivery you prefer for sending the card PIN. - MAIL - The card PIN would be sent via mail services. - COURIER - The card PIN would be sent via courier services. - EPIN - The card PIN would be sent digitally.",
+        "enum": [
+          "MAIL",
+          "COURIER",
+          "EPIN"
+        ],
+        "example": "MAIL"
+      },
+      "ExternalLayoutCode": {
+        "type": "string",
+        "description": "Unique code forwarded to the embossing house; the code identifies the plastic layout to be used for printing the new card. Ensure beforehand, the selected embossing house is aligned with the code used for each layout.",
+        "minLength": 1,
+        "maxLength": 32,
+        "pattern": "^[a-zA-Z0-9-_]+$",
+        "example": 1
+      },
+      "Plastic": {
+        "type": "object",
+        "properties": {
+          "embossingName": {
+            "$ref": "#/components/schemas/EmbossingName"
+          },
+          "preferredCardAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "preferredCardDeliveryType": {
+            "$ref": "#/components/schemas/CardDeliveryType"
+          },
+          "preferredPinAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "preferredPinDeliveryType": {
+            "$ref": "#/components/schemas/PinDeliveryType"
+          },
+          "manufacturerId": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "externalLayoutCode": {
+            "$ref": "#/components/schemas/ExternalLayoutCode"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/Created"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/Updated"
+          }
+        }
+      },
+      "CardVersionStatus": {
+        "type": "string",
+        "description": "- ACTIVE - The card is completely operational. You can perform all actions with the card.\n- ACTIVE_LIMITED - The card version is usable for digital transactions only. Provisioning, token payments and e-commerce transactions are allowed, while physical entry modes (chip, contactless, magstripe and ATM) are declined.\n- INITIAL - The specific card version is awaiting activation. During this state, the card can have limited usage, such as being added to a digital wallet or cardholder can view the PIN (if it is a plastic card). However, in the INITIAL state, the card cannot be used for payments.\n- CLOSED - The previous versions of the card are no longer valid as a new version is activated or the card is closed.\n",
+        "enum": [
+          "ACTIVE",
+          "ACTIVE_LIMITED",
+          "INITIAL",
+          "CLOSED"
+        ],
+        "example": "ACTIVE"
+      },
+      "ExpirationTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "The expiration date-time of the card, always at 23:59:59 UTC on the last day of a month.\n\nIf a different expiry than the program default is specified during card creation, it is\nconverted to UTC (if a different offset is given) and rounded up to 23:59:59 of the last day of\nits own month.\n\nTo be sure of the exact expiration month, always specify this value with a Z (UTC) offset. For\nexample, to expire the card in August 2030, set \"2030-08-31T23:59:59Z\".\n",
+        "example": "2030-08-31T23:59:59Z"
+      },
+      "RenewalDate": {
+        "type": "string",
+        "format": "date",
+        "description": "The date when the auto renewal occurs."
+      },
+      "SequenceNumber": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "The sequence number of the card version, this value is also known as PSN (pan sequence number)",
+        "example": 1
+      },
+      "KeySetId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "The id of the key set used by this card version",
+        "example": "01b20ad2-3c2a-48d2-ac2e-5bf6d8b246cd"
+      },
+      "CardVersion": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/CardVersionStatus"
+          },
+          "expirationTime": {
+            "$ref": "#/components/schemas/ExpirationTime"
+          },
+          "renewalDate": {
+            "$ref": "#/components/schemas/RenewalDate"
+          },
+          "sequenceNumber": {
+            "$ref": "#/components/schemas/SequenceNumber"
+          },
+          "keySetId": {
+            "$ref": "#/components/schemas/KeySetId"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/Created"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/Updated"
+          }
+        }
+      },
+      "CardRole": {
+        "type": "string",
+        "description": "The role of the card. Multi application cards will have one main card and multiple card applications. Single cards will be treated as main cards.",
+        "enum": [
+          "MAIN_CARD",
+          "CARD_APPLICATION"
+        ],
+        "example": "MAIN_CARD"
+      },
+      "CardConfigurationCode": {
+        "type": "string",
+        "description": "A unique code to identify the card configuration. Max character limit is 36.",
+        "example": "MC_DEBIT_1",
+        "minLength": 1,
+        "maxLength": 36,
+        "pattern": "^[A-Za-z0-9_-]+$"
+      },
+      "CardConfigurationType": {
+        "type": "string",
+        "description": "The type of card defined by this card configuration.",
+        "enum": [
+          "DEBIT",
+          "CREDIT",
+          "COMBO"
+        ],
+        "example": "CREDIT"
+      },
+      "CardScheme": {
+        "type": "string",
+        "enum": [
+          "MASTERCARD",
+          "VISA"
+        ],
+        "example": "MASTERCARD"
+      },
+      "MaskedPrimaryAccountNumber": {
+        "type": "string",
+        "description": "A masked version of the primary account number",
+        "example": "123456______4285"
+      },
+      "PinStatus": {
+        "type": "string",
+        "description": "- GENERATED - A pin has been randomly generated for the card.\n- WAITING - A pin is waiting to be set on the card.\n- SET - A pin has been manually set on the card.\n- INHERITED - For card applications only. The pin status is inherited from the main card.\n",
+        "enum": [
+          "GENERATED",
+          "WAITING",
+          "SET",
+          "INHERITED"
+        ],
+        "example": "GENERATED"
+      },
+      "CardStatus": {
+        "type": "string",
+        "description": "- ACTIVE - Card is active and is enabled for normal usage.\n- BLOCKED - Card is temporarily blocked.\n- BLOCKED_SUSPECTED_FRAUD - Card is temporarily blocked due to suspected fraud.\n- CLOSED_DUE_TO_FRAUD - Card has been closed due to fraud.\n- CLOSED_LOST - Card has been closed due to being lost.\n- CLOSED_STOLEN - Card has been closed due to being stolen.\n- CLOSED - Card has been manually closed.\n- CLOSED_EXPIRED - Card has no active or initial card versions and cannot be used.\n",
+        "enum": [
+          "ACTIVE",
+          "BLOCKED",
+          "BLOCKED_SUSPECTED_FRAUD",
+          "CLOSED_DUE_TO_FRAUD",
+          "CLOSED_LOST",
+          "CLOSED_STOLEN",
+          "CLOSED",
+          "CLOSED_EXPIRED"
+        ],
+        "example": "ACTIVE"
+      },
+      "AutomaticRenewal": {
+        "type": "boolean",
+        "description": "A flag indicating whether automatic renewal is enabled or not."
+      },
+      "DigitalLayoutCode": {
+        "type": "string",
+        "description": "The digital layout code for the card. Max character limit is 36.",
+        "minLength": 1,
+        "maxLength": 36,
+        "pattern": "^[a-zA-Z0-9-]+$",
+        "example": 9
+      },
+      "ApplicationName": {
+        "type": "string",
+        "description": "Name of the application. Max character limit is 16. Only applicable to multi-application cards.\nOtherwise, the request will return 400 Bad Request.\n",
+        "minLength": 1,
+        "maxLength": 16,
+        "pattern": "^[a-zA-Z ]+$",
+        "example": "Credit Application"
+      },
+      "ApplicationIndex": {
+        "type": "integer",
+        "description": "The index of the application",
+        "example": 1
+      },
+      "ContactPriorityLevel": {
+        "type": "integer",
+        "description": "The contact priority level for given card. Only applicable to multi-application cards.\nOtherwise, the request will return 400 Bad Request.\n",
+        "format": "int32",
+        "minimum": 0
+      },
+      "ContactlessPriorityLevel": {
+        "type": "integer",
+        "description": "The contactless priority level of the given card. Only applicable to multi-application cards.\nOtherwise, the request will return 400 Bad Request.\n",
+        "format": "int32",
+        "minimum": 0
+      },
+      "Printed": {
+        "type": "boolean",
+        "description": "Indicates whether the specific card would be printed or not. Only applicable to multi-application cards.\nOtherwise, the request will return 400 Bad Request.\n",
+        "example": true
+      },
+      "ChipEnabled": {
+        "type": "boolean",
+        "description": "Whether the card should be visible in card terminal or not. Only applicable to multi-application cards.\nOtherwise, the request will return 400 Bad Request.\n",
+        "example": true
+      },
+      "MultiApplicationProperties": {
+        "type": "object",
+        "properties": {
+          "applicationName": {
+            "$ref": "#/components/schemas/ApplicationName"
+          },
+          "applicationIndex": {
+            "$ref": "#/components/schemas/ApplicationIndex"
+          },
+          "contactPriorityLevel": {
+            "$ref": "#/components/schemas/ContactPriorityLevel"
+          },
+          "contactlessPriorityLevel": {
+            "$ref": "#/components/schemas/ContactlessPriorityLevel"
+          },
+          "printed": {
+            "$ref": "#/components/schemas/Printed"
+          },
+          "chipEnabled": {
+            "$ref": "#/components/schemas/ChipEnabled"
+          }
+        }
+      },
+      "UpdateCount": {
+        "type": "integer",
+        "description": "The version number of the entity.",
+        "example": 1
+      },
+      "AdditionalValues": {
+        "type": "object",
+        "description": "You can include up to **30 additional key-value pairs** in the embossing file sent to the card manufacturer.\n\n- **Keys** must follow the pattern: `^[a-zA-Z0-9-]{1,36}$` (only letters, numbers, and hyphens, with a maximum length of 36 characters).\n- **Values** must follow the pattern: `^[a-zA-Z0-9|\\-_ +.@éàèùçâêîôûëïü'/=]{1,1000}$`.\n\nEnfuce **does not perform any additional validation** on these key-value pairs beyond ensuring they match the specified patterns.\n\nThese fields are intended for **storing data without further processing**. If you need to store a **complex structure**, you can **base64 encode** the value. The encoded value will be passed as entered, without modifications.\n\n⚠ **Important:** Any usage of these fields should be agreed upon with the manufacturer.\n",
+        "maxProperties": 30,
+        "additionalProperties": {
+          "type": "string"
+        },
+        "example": {
+          "keyWithPlainTextValue": "value1",
+          "keyWithBase64Value": "dmFsdWUyYmFzZTY0ZW5jb2RlZA=="
+        }
+      },
+      "FeeConfigId": {
+        "type": "string",
+        "description": "Unique identifier of a fee configuration. When provided, this value overrides the program default. This feature must be enabled for the tenant; otherwise, this field can be left null and will not be used.\n",
+        "minLength": 1,
+        "maxLength": 36,
+        "example": "SILVER",
+        "pattern": "^[a-zA-Z0-9_-]+$"
+      },
+      "CardResponse": {
+        "type": "object",
+        "title": "Create Single Card",
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ],
+            "description": "Unique identifier of a card."
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/Created"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/Updated"
+          },
+          "programId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ],
+            "description": "The program ID associated with the card."
+          },
+          "cardholderId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ],
+            "description": "Unique identifier of the cardholder associated with the card."
+          },
+          "accountId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccountId"
+              }
+            ],
+            "description": "Unique identifier of the account associated with the card."
+          },
+          "plastic": {
+            "$ref": "#/components/schemas/Plastic"
+          },
+          "cardVersions": {
+            "type": "array",
+            "description": "Card versions ordered by sequence number ascending.",
+            "items": {
+              "$ref": "#/components/schemas/CardVersion"
+            }
+          },
+          "role": {
+            "$ref": "#/components/schemas/CardRole"
+          },
+          "mainCardId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ],
+            "description": "Unique identifier of the main card. Populated if this card is part of a card application"
+          },
+          "previousCardId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ],
+            "description": "Unique identifier of the card this card replaced. Populated if this card is a replacement of another card."
+          },
+          "cardConfigurationCode": {
+            "$ref": "#/components/schemas/CardConfigurationCode"
+          },
+          "cardConfigurationType": {
+            "$ref": "#/components/schemas/CardConfigurationType"
+          },
+          "cardScheme": {
+            "$ref": "#/components/schemas/CardScheme"
+          },
+          "maskedPan": {
+            "$ref": "#/components/schemas/MaskedPrimaryAccountNumber"
+          },
+          "pinStatus": {
+            "$ref": "#/components/schemas/PinStatus"
+          },
+          "cardStatus": {
+            "$ref": "#/components/schemas/CardStatus"
+          },
+          "automaticRenewal": {
+            "$ref": "#/components/schemas/AutomaticRenewal"
+          },
+          "digitalLayoutCode": {
+            "$ref": "#/components/schemas/DigitalLayoutCode"
+          },
+          "multiApplicationProperties": {
+            "$ref": "#/components/schemas/MultiApplicationProperties"
+          },
+          "updateCount": {
+            "$ref": "#/components/schemas/UpdateCount"
+          },
+          "additionalValues": {
+            "$ref": "#/components/schemas/AdditionalValues"
+          },
+          "feeConfigId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FeeConfigId"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The problem type.",
+            "type": "string"
+          },
+          "title": {
+            "description": "The reason phrase of HttpStatus.",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP problem status.",
+            "type": "number"
+          },
+          "detail": {
+            "description": "The problem detail.",
+            "type": "string"
+          },
+          "instance": {
+            "description": "The request path.",
+            "type": "string"
+          },
+          "id": {
+            "description": "Unique error identifier.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "timestamp": {
+            "description": "Date-time when error occurred.",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreatePinStatus": {
+        "type": "string",
+        "description": "- GENERATED - This endpoint request would generate a random PIN for the new card.\n- WAITING - The card PIN would be set later.\n",
+        "enum": [
+          "GENERATED",
+          "WAITING"
+        ],
+        "example": "GENERATED"
+      },
+      "CreatePlasticBody": {
+        "type": "object",
+        "properties": {
+          "embossingName": {
+            "$ref": "#/components/schemas/EmbossingName"
+          },
+          "preferredCardAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "preferredCardDeliveryType": {
+            "$ref": "#/components/schemas/CardDeliveryType"
+          },
+          "preferredPinAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "preferredPinDeliveryType": {
+            "$ref": "#/components/schemas/PinDeliveryType"
+          },
+          "externalLayoutCode": {
+            "$ref": "#/components/schemas/ExternalLayoutCode"
+          },
+          "manufacturerId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ],
+            "description": "The manufacturer id to use for this specific plastic if it deviates from the default manufacturer configured on the program"
+          }
+        }
+      },
+      "CreateCardBody": {
+        "type": "object",
+        "title": "Create Single Card",
+        "properties": {
+          "programId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ],
+            "description": "The program id that you want to associate with the new card you are creating."
+          },
+          "cardConfigurationCode": {
+            "$ref": "#/components/schemas/CardConfigurationCode"
+          },
+          "pinStatus": {
+            "$ref": "#/components/schemas/CreatePinStatus"
+          },
+          "cardholderId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ],
+            "description": "Unique identifier of the cardholder associated with the new card."
+          },
+          "expirationTime": {
+            "$ref": "#/components/schemas/ExpirationTime"
+          },
+          "accountId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccountId"
+              }
+            ],
+            "description": "Unique identifier of the account associated with the new card."
+          },
+          "plastic": {
+            "$ref": "#/components/schemas/CreatePlasticBody"
+          },
+          "automaticRenewal": {
+            "$ref": "#/components/schemas/AutomaticRenewal"
+          },
+          "digitalLayoutCode": {
+            "$ref": "#/components/schemas/DigitalLayoutCode"
+          },
+          "additionalValues": {
+            "$ref": "#/components/schemas/AdditionalValues"
+          },
+          "feeConfigId": {
+            "$ref": "#/components/schemas/FeeConfigId"
+          }
+        },
+        "required": [
+          "programId",
+          "cardConfigurationCode",
+          "accountId"
+        ]
+      },
+      "CreateMultiApplicationCardBody": {
+        "type": "object",
+        "title": "Create Multi-Application Card",
+        "properties": {
+          "mainCard": {
+            "title": "MainCard",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateCardBody"
+              }
+            ],
+            "properties": {
+              "multiApplicationProperties": {
+                "$ref": "#/components/schemas/MultiApplicationProperties"
+              }
+            }
+          },
+          "cardApplications": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cardConfigurationCode": {
+                  "$ref": "#/components/schemas/CardConfigurationCode"
+                },
+                "pinStatus": {
+                  "$ref": "#/components/schemas/CreatePinStatus"
+                },
+                "accountId": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/AccountId"
+                    }
+                  ],
+                  "description": "The account id that is connected to the card"
+                },
+                "digitalLayoutCode": {
+                  "$ref": "#/components/schemas/DigitalLayoutCode"
+                },
+                "multiApplicationProperties": {
+                  "$ref": "#/components/schemas/MultiApplicationProperties"
+                },
+                "additionalValues": {
+                  "$ref": "#/components/schemas/AdditionalValues"
+                },
+                "feeConfigId": {
+                  "$ref": "#/components/schemas/FeeConfigId"
+                }
+              },
+              "required": [
+                "cardConfigurationCode",
+                "accountId"
+              ],
+              "title": "CardApplication"
+            },
+            "minItems": 1,
+            "title": "CardApplications"
+          }
+        },
+        "required": [
+          "mainCard",
+          "cardApplications"
+        ]
+      },
+      "CreateMultiApplicationCardResponse": {
+        "type": "object",
+        "title": "Create Multi-Application Card",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CardResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "cardApplications": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CardResponse",
+                  "required": [
+                    "mainCardId"
+                  ]
+                },
+                "default": []
+              }
+            }
+          }
+        ]
+      },
+      "OptionalId": {
+        "type": "string",
+        "nullable": true,
+        "format": "uuid",
+        "description": "Unique identifier of an entity.",
+        "example": "20218aae-b15e-406c-9e9f-23735cd86a48"
+      },
+      "UpdatePlasticBody": {
+        "type": "object",
+        "properties": {
+          "embossingName": {
+            "$ref": "#/components/schemas/EmbossingName"
+          },
+          "preferredCardAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "preferredCardDeliveryType": {
+            "$ref": "#/components/schemas/CardDeliveryType"
+          },
+          "preferredPinAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "preferredPinDeliveryType": {
+            "$ref": "#/components/schemas/PinDeliveryType"
+          },
+          "manufacturerId": {
+            "$ref": "#/components/schemas/OptionalId"
+          },
+          "externalLayoutCode": {
+            "$ref": "#/components/schemas/ExternalLayoutCode"
+          }
+        }
+      },
+      "ImpactTokenStatus": {
+        "type": "boolean",
+        "default": true,
+        "description": "If set to true, the card status change will impact the status of all tokens.\nIf set to false, the card status change will not impact the status of all tokens.\n"
+      },
+      "UpdatePinStatus": {
+        "type": "string",
+        "description": "- GENERATED - A pin should be randomly generated for the card.\n",
+        "enum": [
+          "GENERATED"
+        ],
+        "example": "GENERATED"
+      },
+      "UpdateCardBody": {
+        "type": "object",
+        "properties": {
+          "chipEnabled": {
+            "$ref": "#/components/schemas/ChipEnabled"
+          },
+          "digitalLayoutCode": {
+            "$ref": "#/components/schemas/DigitalLayoutCode"
+          },
+          "applicationName": {
+            "$ref": "#/components/schemas/ApplicationName"
+          },
+          "contactPriorityLevel": {
+            "$ref": "#/components/schemas/ContactPriorityLevel"
+          },
+          "contactlessPriorityLevel": {
+            "$ref": "#/components/schemas/ContactlessPriorityLevel"
+          },
+          "printed": {
+            "$ref": "#/components/schemas/Printed"
+          },
+          "cardholderId": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/AccountId"
+          },
+          "automaticRenewal": {
+            "$ref": "#/components/schemas/AutomaticRenewal"
+          },
+          "plastic": {
+            "$ref": "#/components/schemas/UpdatePlasticBody"
+          },
+          "cardStatus": {
+            "$ref": "#/components/schemas/CardStatus"
+          },
+          "impactTokenStatus": {
+            "$ref": "#/components/schemas/ImpactTokenStatus"
+          },
+          "pinStatus": {
+            "$ref": "#/components/schemas/UpdatePinStatus"
+          },
+          "additionalValues": {
+            "$ref": "#/components/schemas/AdditionalValues"
+          },
+          "feeConfigId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FeeConfigId"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "ResourceResponse": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "A description of the response returned."
+          },
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ],
+            "description": "A unique identifier assigned to identify the endpoint request."
+          }
+        }
+      },
+      "ChangePinStatus": {
+        "type": "string",
+        "description": "- GENERATED - A pin should be randomly generated for the card.\n- WAITING - A pin is waiting to be set on the card.\n",
+        "enum": [
+          "GENERATED",
+          "WAITING"
+        ],
+        "example": "GENERATED"
+      },
+      "ReplaceCardBody": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Description of why the card should be replaced.",
+            "example": "The cardholder’s wallet was stolen, so the card must be replaced."
+          },
+          "pinStatus": {
+            "$ref": "#/components/schemas/ChangePinStatus"
+          }
+        }
+      },
+      "ReissueCardBody": {
+        "type": "object",
+        "properties": {
+          "pinStatus": {
+            "$ref": "#/components/schemas/ChangePinStatus"
+          }
+        }
+      },
+      "SentToManufacturer": {
+        "type": "string",
+        "format": "date-time",
+        "description": "The date and time when the card was sent to the manufacturer"
+      },
+      "manufacturingReason": {
+        "title": "ManufacturingReason",
+        "type": "string",
+        "description": "Reason for manufacturing the card.",
+        "enum": [
+          "NEW_CARD",
+          "REPLACE_CARD",
+          "REISSUE_CARD",
+          "REORDER_PIN",
+          "RENEW_CARD"
+        ],
+        "example": "NEW_CARD"
+      },
+      "ManufacturingStatus": {
+        "type": "string",
+        "description": "- AWAITING_CRYPTO_VALUES - The card is created and is awaiting to receive cryptographic values before being sent to the card manufacturer.\n- CRYPTO_VALUES_PROCESSED - The card is awaiting to be included in the next embossing file.\n- SENT_TO_MANUFACTURER - The card has been successfully processed and sent to the manufacturer.\n- MANUFACTURING_ABORTED - The manufacturing process is aborted.\n",
+        "enum": [
+          "AWAITING_CRYPTO_VALUES",
+          "CRYPTO_VALUES_PROCESSED",
+          "SENT_TO_MANUFACTURER",
+          "MANUFACTURING_ABORTED"
+        ],
+        "example": "SENT_TO_MANUFACTURER"
+      },
+      "PlasticManufacturingData": {
+        "type": "string",
+        "description": "The json data that was included in the plastic manufacturer file"
+      },
+      "PlasticManufacturingHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "manufacturingEntries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Id"
+                    }
+                  ],
+                  "description": "Unique identifer of a manufacturing request."
+                },
+                "createdAt": {
+                  "$ref": "#/components/schemas/Created"
+                },
+                "sentToManufacturerAt": {
+                  "$ref": "#/components/schemas/SentToManufacturer"
+                },
+                "manufacturerId": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Id"
+                    }
+                  ],
+                  "description": "Unique identifier of the manufacturer to whom the the card data wants sent for printing the physical card."
+                },
+                "cardVersionSequenceNumber": {
+                  "$ref": "#/components/schemas/SequenceNumber"
+                },
+                "manufacturingReason": {
+                  "$ref": "#/components/schemas/manufacturingReason"
+                },
+                "status": {
+                  "$ref": "#/components/schemas/ManufacturingStatus"
+                },
+                "data": {
+                  "$ref": "#/components/schemas/PlasticManufacturingData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "EncryptCardPaymentInfoRequestBody": {
+        "type": "object",
+        "properties": {
+          "encryptionKey": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Public key used to encrypt the fields in the result.",
+            "example": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArMRPoM6Za3XDIsomnVObGJsrHHHIRZ5zRsVoU8Unie9QvK9OBf0cCGyXd8XPky7W3m/KDKLGUnfne8vAMOeT1NpBgQnv2lcpIfBMLjSUKT5gIcJMY00Asqjvi4YFwRdW9AxSThxtkb7AIsJJiRwbAGFDnt+Ic/gIQS5s1vnuIjaYBTbzYtwnh3WBQ7DJsCVes81onwapGtdiswQD15cNhAI5853/uB/vno3j3tOq3gpm9+qLa6FYGfWZan07k+RMCVF1v6kxa9teCj6V3cysdtPeK9+gQnBjuuSESQL7/s/BgC7QxLqBCabkFyLo+3QO+iKmfeKPX8imV1rUgyjo3QIDAQAB"
+          },
+          "encryptionMethod": {
+            "type": "string",
+            "enum": [
+              "RSA_ECB_OAEP_SHA256_MGF1_2048"
+            ],
+            "example": "RSA_ECB_OAEP_SHA256_MGF1_2048",
+            "description": "In this field the encryption method is selected. This is to prepared for future use since only one method is now supported."
+          },
+          "fields": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "PRIMARY_ACCOUNT_NUMBER",
+                "EXPIRATION_DATE",
+                "CVV2"
+              ],
+              "example": "PRIMARY_ACCOUNT_NUMBER"
+            },
+            "description": "In this field you can include the parameters that you want to be returned in an encrypted way. If a field is not listed, it will be left out from the response. Note that only primaryAccountNumber and CVV2 will be encrypted."
+          },
+          "sequenceNumber": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SequenceNumber"
+              }
+            ],
+            "description": "The sequence number of the card version to use. If not specified, the latest card version is used by default."
+          }
+        },
+        "required": [
+          "encryptionKey",
+          "encryptionMethod",
+          "fields"
+        ],
+        "title": "EncryptCardPaymentInfoRequestBody"
+      },
+      "EncryptCardPaymentInfoResponseBody": {
+        "type": "object",
+        "properties": {
+          "primaryAccountNumber": {
+            "type": "string",
+            "description": "The encrypted full card number (PAN) — Base64 encoded.",
+            "example": "Z5zt5TbIc2jZ/iCnleh7pBIxxf/M046X7t7zhl/YPVl5wep3HulMqYKE3mgjqo/H+dUVlk6PcgvcQR4Gb/tYG6UVZhR+S9xfswEXB8RwLdqBc5mlCZNkCxlTeyqWfQcmknXdQY25+Yeg/z9DVEmNqxzhAOfx5KYsILdc8k9svMj+UWU64SDKbIqTVuP0D/UMbJEixLknRtyXu1j80ZOJCKGvW+aBwrEiOTp07teKcFu43ND5m083e9OqFE7qcnFAj7CNeIRRP9rDOK+qvEvs+h28yAytG2NS5Qwt9gulpaE9gz+ClS3wCVG9uPRyrrKtVGRrgDfDaf6AngVPmJ3EeA=="
+          },
+          "expirationDate": {
+            "type": "string",
+            "description": "The expiration date of the card in MMYY format.",
+            "example": "1227"
+          },
+          "cvv2": {
+            "type": "string",
+            "description": "The encrypted CVV2 (for Visa) or CVC2 (for Mastercard) value — Base64 encoded.",
+            "example": "PitrZmfUd6blAk8SLZFkCBXql+UKrR+Q79VImTrZfZu24zwGjYQML2h563HYM8KvoqdNIk2gQ6jSYt81d/0I/1ZoDmTcJsduoGmHSwATuQh2c926O/SMa4cbnR8JQHZ7FaExgsc2dZ/ZjYcf1Ehsg0r4CDcZ6MUYBrCUTlaPbTksjxQhj3fqovBBN1smfR4No5BHTyPvJmeUPQiqtlrLzBvQj+PxYRukrkxGkgZ+HmRg+zWNbS6sWmurvR0gb1l1GRPGG132L6oFcqpjZxZYTsq5yf0hEDXZdWo6oYc3JJ2s7SVxVNwoMvQQi7YV+iZD7wyPXgeHFFXZGhKyYY3F7w=="
+          }
+        },
+        "required": [
+          "primaryAccountNumber",
+          "expirationDate",
+          "cvv2"
+        ],
+        "title": "EncryptCardPaymentInfoResponseBody"
+      },
+      "ControlTokenRequestBody": {
+        "type": "object",
+        "properties": {
+          "sequenceNumber": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SequenceNumber"
+              }
+            ],
+            "description": "The sequence number of the card version to use. If not specified, the latest card version is used by default.\nOnly card versions not in CLOSED status are allowed.\n"
+          }
+        },
+        "title": "ControlTokenRequestBody"
+      },
+      "CardDataControlTokenResponseBody": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "The control token.",
+            "example": "eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIn0..pTLFy-lzse0ZmtOX.vjG0cY1uxH8v80amEjOgPs0zUv9lDXrskW0nM0MBArCBqzZ9Ph2k3Lt85L1uEq2RK0YG6mCTJdGOyOuuO3CmPE-_w941ya5y4RskdHefCkQDdRG3sesQ070d1nMgLRWFLorJKjn7umSyOrRMjMjQg684O5VWxlApPwgIt4sOXbTZKcrRh5qv-8cBDp4IYQ-HznucHiloVtjZf2he.UrmJDmSYeBSveB-uojVDnA"
+          },
+          "cardDataUrl": {
+            "type": "string",
+            "description": "The URL to call on mobile devices for accessing the card's data.",
+            "example": "https://api.tenant.sandbox.mycore.enfuce.com/issuer-web/card-data/view"
+          },
+          "cardDataFrameUrl": {
+            "type": "string",
+            "description": "The URL to open in iframe to access the card's data.",
+            "example": "https://api.tenant.sandbox.mycore.enfuce.com/issuer-web/card-data/view/frame"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "title": "CardDataControlTokenResponseBody"
+      },
+      "PinScope": {
+        "type": "string",
+        "description": "Describes the scope of the operation authorised by the user.",
+        "enum": [
+          "VIEW_PIN",
+          "SET_PIN",
+          "CHANGE_PIN"
+        ],
+        "example": "VIEW_PIN"
+      },
+      "PinControlInfoRequestBody": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "$ref": "#/components/schemas/PinScope"
+          },
+          "sequenceNumber": {
+            "$ref": "#/components/schemas/SequenceNumber"
+          }
+        },
+        "required": [
+          "scope"
+        ],
+        "title": "PinControlInfoRequestBody"
+      },
+      "PinControlInfoResponseBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ],
+            "description": "The ID of this PIN Control access token."
+          },
+          "pinUrl": {
+            "type": "string",
+            "description": "The URL that the cardholder's mobile device webview should browse to for accessing the PIN.",
+            "example": "https://api.tenant.sandbox.mycore.enfuce.com/issuer-web/pin/view"
+          },
+          "pinFrameUrl": {
+            "type": "string",
+            "description": "The URL of the iframe for desktop browser based flows for accessing PIN.",
+            "example": "https://api.tenant.sandbox.mycore.enfuce.com/issuer-web/pin/view/frame"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "PinControlInfoResponseBody"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "type": "about:blank",
+              "title": "Bad Request",
+              "status": 400,
+              "detail": "JSON parse error: Unexpected character...",
+              "instance": "/v1/cards",
+              "id": "5cc541cb-f456-4331-b537-d2380fca0400",
+              "timestamp": "2026-02-24T12:34:56Z"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized"
+      },
+      "Forbidden": {
+        "description": "Forbidden",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "type": "about:blank",
+              "title": "Forbidden",
+              "status": 403,
+              "detail": "Access Denied",
+              "instance": "/v1/cards",
+              "id": "5cc541cb-f456-4331-b537-d2380fca0403",
+              "timestamp": "2026-02-24T12:34:56Z"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal server error",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "type": "about:blank",
+              "title": "Internal Server Error",
+              "status": 500,
+              "detail": "Unexpected error occurred.",
+              "instance": "/v1/cards",
+              "id": "5cc541cb-f456-4331-b537-d2380fca0500",
+              "timestamp": "2026-02-24T12:34:56Z"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not found",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "type": "about:blank",
+              "title": "Not Found",
+              "status": 404,
+              "detail": "Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b",
+              "instance": "/v1/cards",
+              "id": "5cc541cb-f456-4331-b537-d2380fca0404",
+              "timestamp": "2026-02-24T12:34:56Z"
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "Conflict",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "type": "about:blank",
+              "title": "Conflict",
+              "status": 409,
+              "detail": "Customer number is not unique.",
+              "instance": "/v1/cardholders",
+              "id": "5cc541cb-f456-4331-b537-d2380fca0409",
+              "timestamp": "2026-02-26T10:34:47.522+00:00"
+            }
+          }
+        }
+      }
+    }
+  }
+}

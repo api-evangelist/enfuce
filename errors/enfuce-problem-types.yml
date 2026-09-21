@@ -1,0 +1,60 @@
+generated: '2026-09-21'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/enfuce-authorisation-request-api-api-openapi.yml
+- openapi/enfuce-create-card-api-openapi.yml
+- openapi/enfuce-create-pin-control-access-token-api-openapi.yml
+- openapi/enfuce-get-card-api-openapi.yml
+- openapi/enfuce-get-card-payment-info-api-openapi.yml
+- openapi/enfuce-get-plastic-manufacturing-history-api-openapi.yml
+- openapi/enfuce-update-card-api-openapi.yml
+format: rfc9457
+envelope:
+  media_type: application/problem+json
+  schema: ErrorResponse
+coverage:
+  operations: 13
+  statuses_declared: 6
+problems:
+- status: 400
+  title: Bad Request
+  description: Bad request
+  operations: 12
+  media_types:
+  - application/problem+json
+  schema: ErrorResponse
+- status: 401
+  title: Unauthorized
+  description: Unauthorized
+  operations: 12
+  media_types: []
+  schema: null
+- status: 403
+  title: Forbidden
+  description: Forbidden
+  operations: 12
+  media_types:
+  - application/problem+json
+  schema: ErrorResponse
+- status: 404
+  title: Not Found
+  description: Not found
+  operations: 11
+  media_types:
+  - application/problem+json
+  schema: ErrorResponse
+- status: 409
+  title: Conflict
+  description: Conflict
+  operations: 4
+  media_types:
+  - application/problem+json
+  schema: ErrorResponse
+- status: 500
+  title: Internal Server Error
+  description: Internal server error
+  operations: 12
+  media_types:
+  - application/problem+json
+  schema: ErrorResponse

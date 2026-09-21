@@ -1,0 +1,229 @@
+openapi: 3.2.0
+info:
+  description: 'Endpoints for doing various actions connected to the Card entity.
+
+    All date-time fields adhere to the ISO 8601 standard unless specified otherwise.
+
+    For example: 2024-05-31T06:55:17Z'
+  version: '1'
+  title: Card Create PIN Control access token API
+  contact:
+    name: Enfuce Financial Services
+    url: https://enfuce.com
+    email: info@enfuce.com
+servers:
+- url: https://api.{{tenant}}.ext-uat1-sandbox.mycore.enfuce.com/issuer
+  description: UAT Sandbox
+- url: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Create PIN Control access token
+paths:
+  /v1/cards/{id}/pinControl:
+    post:
+      tags:
+      - Create PIN Control access token
+      summary: Request PIN Control Access Token
+      description: 'Send a request to this endpoint to generate a PIN control access token for a specific card version. The requested `scope` determines which PIN operation the token authorises: `VIEW_PIN`, `SET_PIN` or `CHANGE_PIN`. If no `sequenceNumber` is provided, the latest card version is used.
+
+
+        For the `SET_PIN` scope, `sequenceNumber` is ignored and the latest card version is always used, because a PIN can only be set on the latest card version.
+
+
+        For multi-application cards, the `SET_PIN` and `CHANGE_PIN` scopes can only be requested for the main card, not for its card applications; requesting either scope for a card application returns `400`.
+
+
+        A successful response returns the token `id`, a `pinUrl` for the mobile device webview and a `pinFrameUrl` for the desktop browser iframe. Both URLs are specific to the requested `scope`. The token is valid for 30 seconds and is single-use: it is consumed by the first successful operation, so a reused or expired token is rejected. The token only authorises the `scope` it was created with; using it for another operation returns `400`.
+
+
+        For the mobile webview flow, the device sends another API request — a `POST` to the `pinUrl` with an `application/json` request body containing the token `id` in a field named `pinControlId`.
+
+
+        For the desktop browser flow, open an iframe to the `pinFrameUrl`. After the iframe has loaded, the browser makes a `window.postMessage()` call to the iframe. The message object contains an `operation` field (`view-pin` for the `VIEW_PIN` scope, `set-pin` for the `SET_PIN` and `CHANGE_PIN` scopes) and a `pinControlId` field (the token `id`).
+
+
+        Note that you must use `set-pin` as the `operation` for the `CHANGE_PIN` scope as well.
+
+
+        For the `SET_PIN` and `CHANGE_PIN` scopes, the cardholder submits the PIN with the button inside the iframe. If you prefer to drive the submission from your own page instead, send a second `window.postMessage()` call with the `operation` field set to `set-pin-set` and no other fields; the iframe then submits the PIN currently entered in it.'
+      operationId: createPinControl
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the card for which you want to access the PIN.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/x-audit-user'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PinControlInfoRequestBody'
+      responses:
+        '201':
+          description: Successful creation of the PIN control access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PinControlInfoResponseBody'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: 'JSON parse error: Unexpected character...'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0400
+            timestamp: '2026-02-24T12:34:56Z'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Internal Server Error
+            status: 500
+            detail: Unexpected error occurred.
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0500
+            timestamp: '2026-02-24T12:34:56Z'
+    Unauthorized:
+      description: Unauthorized
+    NotFound:
+      description: Not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Not Found
+            status: 404
+            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0404
+            timestamp: '2026-02-24T12:34:56Z'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Forbidden
+            status: 403
+            detail: Access Denied
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0403
+            timestamp: '2026-02-24T12:34:56Z'
+  schemas:
+    SequenceNumber:
+      type: integer
+      minimum: 1
+      description: The sequence number of the card version, this value is also known as PSN (pan sequence number)
+      example: 1
+    Id:
+      type: string
+      format: uuid
+      description: Unique identifier of a resource.
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
+    PinControlInfoResponseBody:
+      type: object
+      properties:
+        id:
+          allOf:
+          - $ref: '#/components/schemas/Id'
+          description: The ID of this PIN Control access token.
+        pinUrl:
+          type: string
+          description: The URL that the cardholder's mobile device webview should browse to for accessing the PIN.
+          example: https://api.tenant.sandbox.mycore.enfuce.com/issuer-web/pin/view
+        pinFrameUrl:
+          type: string
+          description: The URL of the iframe for desktop browser based flows for accessing PIN.
+          example: https://api.tenant.sandbox.mycore.enfuce.com/issuer-web/pin/view/frame
+      required:
+      - id
+      title: PinControlInfoResponseBody
+    PinControlInfoRequestBody:
+      type: object
+      properties:
+        scope:
+          $ref: '#/components/schemas/PinScope'
+        sequenceNumber:
+          $ref: '#/components/schemas/SequenceNumber'
+      required:
+      - scope
+      title: PinControlInfoRequestBody
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          description: The problem type.
+          type: string
+        title:
+          description: The reason phrase of HttpStatus.
+          type: string
+        status:
+          description: HTTP problem status.
+          type: number
+        detail:
+          description: The problem detail.
+          type: string
+        instance:
+          description: The request path.
+          type: string
+        id:
+          description: Unique error identifier.
+          type: string
+          format: uuid
+        timestamp:
+          description: Date-time when error occurred.
+          type: string
+          format: date-time
+    PinScope:
+      type: string
+      description: Describes the scope of the operation authorised by the user.
+      enum:
+      - VIEW_PIN
+      - SET_PIN
+      - CHANGE_PIN
+      example: VIEW_PIN
+  parameters:
+    x-audit-user:
+      in: header
+      name: x-audit-user
+      required: false
+      description: Optional audit user header
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

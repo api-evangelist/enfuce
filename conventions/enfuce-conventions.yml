@@ -1,0 +1,14 @@
+generated: '2026-09-21'
+method: none
+idempotency:
+  coverage: partial
+  header: x-idempotency-key
+  mechanism: request header / body token declared in the OpenAPI
+  evidence: x-idempotency-key on 5 of 9 mutating operations
+  verified: derived
+  scope:
+    - createCard
+    - replaceCard
+    - reissueCard
+    - activateCard
+    - reorderPin

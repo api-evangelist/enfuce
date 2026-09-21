@@ -1,0 +1,13 @@
+generated: '2026-09-21'
+method: derived
+source: openapi/card.openapi.json
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/card.openapi.json

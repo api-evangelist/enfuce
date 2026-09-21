@@ -1,0 +1,233 @@
+openapi: 3.2.0
+info:
+  description: 'Endpoints for doing various actions connected to the Card entity.
+
+    All date-time fields adhere to the ISO 8601 standard unless specified otherwise.
+
+    For example: 2024-05-31T06:55:17Z'
+  version: '1'
+  title: Card Get plastic manufacturing history API
+  contact:
+    name: Enfuce Financial Services
+    url: https://enfuce.com
+    email: info@enfuce.com
+servers:
+- url: https://api.{{tenant}}.ext-uat1-sandbox.mycore.enfuce.com/issuer
+  description: UAT Sandbox
+- url: https://api.{{tenant}}.eu.live.prod.mycore.enfuce.com/issuer
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Get plastic manufacturing history
+paths:
+  /v1/cards/{id}/manufacturing-history:
+    get:
+      tags:
+      - Get plastic manufacturing history
+      summary: Retrieve Manufacturing History of Card
+      description: Send a request to this endpoint to retrieve a detailed list of all past occurrences when the card has been physically manufactured.
+      operationId: manufacturingHistory
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the card for which you want to retrieve the manufacturing history.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/x-audit-user'
+      responses:
+        '200':
+          description: Successful lookup of the card's manufacturing history.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlasticManufacturingHistoryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: 'JSON parse error: Unexpected character...'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0400
+            timestamp: '2026-02-24T12:34:56Z'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Internal Server Error
+            status: 500
+            detail: Unexpected error occurred.
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0500
+            timestamp: '2026-02-24T12:34:56Z'
+    Unauthorized:
+      description: Unauthorized
+    NotFound:
+      description: Not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Not Found
+            status: 404
+            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0404
+            timestamp: '2026-02-24T12:34:56Z'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Forbidden
+            status: 403
+            detail: Access Denied
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0403
+            timestamp: '2026-02-24T12:34:56Z'
+  schemas:
+    PlasticManufacturingHistoryResponse:
+      type: object
+      properties:
+        manufacturingEntries:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                allOf:
+                - $ref: '#/components/schemas/Id'
+                description: Unique identifer of a manufacturing request.
+              createdAt:
+                $ref: '#/components/schemas/Created'
+              sentToManufacturerAt:
+                $ref: '#/components/schemas/SentToManufacturer'
+              manufacturerId:
+                allOf:
+                - $ref: '#/components/schemas/Id'
+                description: Unique identifier of the manufacturer to whom the the card data wants sent for printing the physical card.
+              cardVersionSequenceNumber:
+                $ref: '#/components/schemas/SequenceNumber'
+              manufacturingReason:
+                $ref: '#/components/schemas/manufacturingReason'
+              status:
+                $ref: '#/components/schemas/ManufacturingStatus'
+              data:
+                $ref: '#/components/schemas/PlasticManufacturingData'
+    SequenceNumber:
+      type: integer
+      minimum: 1
+      description: The sequence number of the card version, this value is also known as PSN (pan sequence number)
+      example: 1
+    Id:
+      type: string
+      format: uuid
+      description: Unique identifier of a resource.
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
+    PlasticManufacturingData:
+      type: string
+      description: The json data that was included in the plastic manufacturer file
+    SentToManufacturer:
+      type: string
+      format: date-time
+      description: The date and time when the card was sent to the manufacturer
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          description: The problem type.
+          type: string
+        title:
+          description: The reason phrase of HttpStatus.
+          type: string
+        status:
+          description: HTTP problem status.
+          type: number
+        detail:
+          description: The problem detail.
+          type: string
+        instance:
+          description: The request path.
+          type: string
+        id:
+          description: Unique error identifier.
+          type: string
+          format: uuid
+        timestamp:
+          description: Date-time when error occurred.
+          type: string
+          format: date-time
+    ManufacturingStatus:
+      type: string
+      description: '- AWAITING_CRYPTO_VALUES - The card is created and is awaiting to receive cryptographic values before being sent to the card manufacturer.
+
+        - CRYPTO_VALUES_PROCESSED - The card is awaiting to be included in the next embossing file.
+
+        - SENT_TO_MANUFACTURER - The card has been successfully processed and sent to the manufacturer.
+
+        - MANUFACTURING_ABORTED - The manufacturing process is aborted.
+
+        '
+      enum:
+      - AWAITING_CRYPTO_VALUES
+      - CRYPTO_VALUES_PROCESSED
+      - SENT_TO_MANUFACTURER
+      - MANUFACTURING_ABORTED
+      example: SENT_TO_MANUFACTURER
+    manufacturingReason:
+      title: ManufacturingReason
+      type: string
+      description: Reason for manufacturing the card.
+      enum:
+      - NEW_CARD
+      - REPLACE_CARD
+      - REISSUE_CARD
+      - REORDER_PIN
+      - RENEW_CARD
+      example: NEW_CARD
+    Created:
+      type: string
+      format: date-time
+      description: The date and time when the card was created.
+  parameters:
+    x-audit-user:
+      in: header
+      name: x-audit-user
+      required: false
+      description: Optional audit user header
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

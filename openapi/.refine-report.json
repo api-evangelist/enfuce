@@ -1,0 +1,31 @@
+{
+  "provider": "enfuce",
+  "sources": [
+    "_original/authorisation-control-v1.openapi.json",
+    "card.openapi.json"
+  ],
+  "outputs": [
+    "enfuce-authorisation-request-api-api-openapi.yml",
+    "enfuce-create-card-api-openapi.yml",
+    "enfuce-create-pin-control-access-token-api-openapi.yml",
+    "enfuce-get-card-payment-info-api-openapi.yml",
+    "enfuce-get-card-api-openapi.yml",
+    "enfuce-get-plastic-manufacturing-history-api-openapi.yml",
+    "enfuce-update-card-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/card.openapi.json"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "authorisation-control-v1.openapi.json: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "card.openapi.json: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "card.openapi.json: declared missing tag: Create PIN Control access token",
+    "card.openapi.json: declared missing tag: Get Card Payment Info",
+    "card.openapi.json: declared missing tag: Get plastic manufacturing history",
+    "apis.yml register: written (+7 apis, 7 total)"
+  ],
+  "skipped": []
+}
