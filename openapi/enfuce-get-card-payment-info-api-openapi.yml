@@ -141,21 +141,15 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
+  parameters:
+    x-audit-user:
+      in: header
+      name: x-audit-user
+      required: false
+      description: Optional audit user header
+      schema:
+        type: string
   responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Bad Request
-            status: 400
-            detail: 'JSON parse error: Unexpected character...'
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0400
-            timestamp: '2026-02-24T12:34:56Z'
     InternalServerError:
       description: Internal server error
       content:
@@ -172,20 +166,6 @@ components:
             timestamp: '2026-02-24T12:34:56Z'
     Unauthorized:
       description: Unauthorized
-    NotFound:
-      description: Not found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Not Found
-            status: 404
-            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0404
-            timestamp: '2026-02-24T12:34:56Z'
     Forbidden:
       description: Forbidden
       content:
@@ -200,58 +180,35 @@ components:
             instance: /v1/cards
             id: 5cc541cb-f456-4331-b537-d2380fca0403
             timestamp: '2026-02-24T12:34:56Z'
+    BadRequest:
+      description: Bad request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: 'JSON parse error: Unexpected character...'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0400
+            timestamp: '2026-02-24T12:34:56Z'
+    NotFound:
+      description: Not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Not Found
+            status: 404
+            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0404
+            timestamp: '2026-02-24T12:34:56Z'
   schemas:
-    SequenceNumber:
-      type: integer
-      minimum: 1
-      description: The sequence number of the card version, this value is also known as PSN (pan sequence number)
-      example: 1
-    ErrorResponse:
-      type: object
-      properties:
-        type:
-          description: The problem type.
-          type: string
-        title:
-          description: The reason phrase of HttpStatus.
-          type: string
-        status:
-          description: HTTP problem status.
-          type: number
-        detail:
-          description: The problem detail.
-          type: string
-        instance:
-          description: The request path.
-          type: string
-        id:
-          description: Unique error identifier.
-          type: string
-          format: uuid
-        timestamp:
-          description: Date-time when error occurred.
-          type: string
-          format: date-time
-    EncryptCardPaymentInfoResponseBody:
-      type: object
-      properties:
-        primaryAccountNumber:
-          type: string
-          description: The encrypted full card number (PAN) — Base64 encoded.
-          example: Z5zt5TbIc2jZ/iCnleh7pBIxxf/M046X7t7zhl/YPVl5wep3HulMqYKE3mgjqo/H+dUVlk6PcgvcQR4Gb/tYG6UVZhR+S9xfswEXB8RwLdqBc5mlCZNkCxlTeyqWfQcmknXdQY25+Yeg/z9DVEmNqxzhAOfx5KYsILdc8k9svMj+UWU64SDKbIqTVuP0D/UMbJEixLknRtyXu1j80ZOJCKGvW+aBwrEiOTp07teKcFu43ND5m083e9OqFE7qcnFAj7CNeIRRP9rDOK+qvEvs+h28yAytG2NS5Qwt9gulpaE9gz+ClS3wCVG9uPRyrrKtVGRrgDfDaf6AngVPmJ3EeA==
-        expirationDate:
-          type: string
-          description: The expiration date of the card in MMYY format.
-          example: '1227'
-        cvv2:
-          type: string
-          description: The encrypted CVV2 (for Visa) or CVC2 (for Mastercard) value — Base64 encoded.
-          example: PitrZmfUd6blAk8SLZFkCBXql+UKrR+Q79VImTrZfZu24zwGjYQML2h563HYM8KvoqdNIk2gQ6jSYt81d/0I/1ZoDmTcJsduoGmHSwATuQh2c926O/SMa4cbnR8JQHZ7FaExgsc2dZ/ZjYcf1Ehsg0r4CDcZ6MUYBrCUTlaPbTksjxQhj3fqovBBN1smfR4No5BHTyPvJmeUPQiqtlrLzBvQj+PxYRukrkxGkgZ+HmRg+zWNbS6sWmurvR0gb1l1GRPGG132L6oFcqpjZxZYTsq5yf0hEDXZdWo6oYc3JJ2s7SVxVNwoMvQQi7YV+iZD7wyPXgeHFFXZGhKyYY3F7w==
-      required:
-      - primaryAccountNumber
-      - expirationDate
-      - cvv2
-      title: EncryptCardPaymentInfoResponseBody
     EncryptCardPaymentInfoRequestBody:
       type: object
       properties:
@@ -286,14 +243,57 @@ components:
       - encryptionMethod
       - fields
       title: EncryptCardPaymentInfoRequestBody
-  parameters:
-    x-audit-user:
-      in: header
-      name: x-audit-user
-      required: false
-      description: Optional audit user header
-      schema:
-        type: string
+    SequenceNumber:
+      type: integer
+      minimum: 1
+      description: The sequence number of the card version, this value is also known as PSN (pan sequence number)
+      example: 1
+    EncryptCardPaymentInfoResponseBody:
+      type: object
+      properties:
+        primaryAccountNumber:
+          type: string
+          description: The encrypted full card number (PAN) — Base64 encoded.
+          example: Z5zt5TbIc2jZ/iCnleh7pBIxxf/M046X7t7zhl/YPVl5wep3HulMqYKE3mgjqo/H+dUVlk6PcgvcQR4Gb/tYG6UVZhR+S9xfswEXB8RwLdqBc5mlCZNkCxlTeyqWfQcmknXdQY25+Yeg/z9DVEmNqxzhAOfx5KYsILdc8k9svMj+UWU64SDKbIqTVuP0D/UMbJEixLknRtyXu1j80ZOJCKGvW+aBwrEiOTp07teKcFu43ND5m083e9OqFE7qcnFAj7CNeIRRP9rDOK+qvEvs+h28yAytG2NS5Qwt9gulpaE9gz+ClS3wCVG9uPRyrrKtVGRrgDfDaf6AngVPmJ3EeA==
+        expirationDate:
+          type: string
+          description: The expiration date of the card in MMYY format.
+          example: '1227'
+        cvv2:
+          type: string
+          description: The encrypted CVV2 (for Visa) or CVC2 (for Mastercard) value — Base64 encoded.
+          example: PitrZmfUd6blAk8SLZFkCBXql+UKrR+Q79VImTrZfZu24zwGjYQML2h563HYM8KvoqdNIk2gQ6jSYt81d/0I/1ZoDmTcJsduoGmHSwATuQh2c926O/SMa4cbnR8JQHZ7FaExgsc2dZ/ZjYcf1Ehsg0r4CDcZ6MUYBrCUTlaPbTksjxQhj3fqovBBN1smfR4No5BHTyPvJmeUPQiqtlrLzBvQj+PxYRukrkxGkgZ+HmRg+zWNbS6sWmurvR0gb1l1GRPGG132L6oFcqpjZxZYTsq5yf0hEDXZdWo6oYc3JJ2s7SVxVNwoMvQQi7YV+iZD7wyPXgeHFFXZGhKyYY3F7w==
+      required:
+      - primaryAccountNumber
+      - expirationDate
+      - cvv2
+      title: EncryptCardPaymentInfoResponseBody
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          description: The problem type.
+          type: string
+        title:
+          description: The reason phrase of HttpStatus.
+          type: string
+        status:
+          description: HTTP problem status.
+          type: number
+        detail:
+          description: The problem detail.
+          type: string
+        instance:
+          description: The request path.
+          type: string
+        id:
+          description: Unique error identifier.
+          type: string
+          format: uuid
+        timestamp:
+          description: Date-time when error occurred.
+          type: string
+          format: date-time
   securitySchemes:
     bearerAuth:
       type: http

@@ -55,66 +55,11 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
-  responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Bad Request
-            status: 400
-            detail: 'JSON parse error: Unexpected character...'
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0400
-            timestamp: '2026-02-24T12:34:56Z'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Internal Server Error
-            status: 500
-            detail: Unexpected error occurred.
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0500
-            timestamp: '2026-02-24T12:34:56Z'
-    Unauthorized:
-      description: Unauthorized
-    NotFound:
-      description: Not found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Not Found
-            status: 404
-            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0404
-            timestamp: '2026-02-24T12:34:56Z'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Forbidden
-            status: 403
-            detail: Access Denied
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0403
-            timestamp: '2026-02-24T12:34:56Z'
   schemas:
+    SentToManufacturer:
+      type: string
+      format: date-time
+      description: The date and time when the card was sent to the manufacturer
     PlasticManufacturingHistoryResponse:
       type: object
       properties:
@@ -143,23 +88,34 @@ components:
                 $ref: '#/components/schemas/ManufacturingStatus'
               data:
                 $ref: '#/components/schemas/PlasticManufacturingData'
+    manufacturingReason:
+      title: ManufacturingReason
+      type: string
+      description: Reason for manufacturing the card.
+      enum:
+      - NEW_CARD
+      - REPLACE_CARD
+      - REISSUE_CARD
+      - REORDER_PIN
+      - RENEW_CARD
+      example: NEW_CARD
     SequenceNumber:
       type: integer
       minimum: 1
       description: The sequence number of the card version, this value is also known as PSN (pan sequence number)
       example: 1
+    Created:
+      type: string
+      format: date-time
+      description: The date and time when the card was created.
+    PlasticManufacturingData:
+      type: string
+      description: The json data that was included in the plastic manufacturer file
     Id:
       type: string
       format: uuid
       description: Unique identifier of a resource.
       example: 20218aae-b15e-406c-9e9f-23735cd86a48
-    PlasticManufacturingData:
-      type: string
-      description: The json data that was included in the plastic manufacturer file
-    SentToManufacturer:
-      type: string
-      format: date-time
-      description: The date and time when the card was sent to the manufacturer
     ErrorResponse:
       type: object
       properties:
@@ -203,21 +159,6 @@ components:
       - SENT_TO_MANUFACTURER
       - MANUFACTURING_ABORTED
       example: SENT_TO_MANUFACTURER
-    manufacturingReason:
-      title: ManufacturingReason
-      type: string
-      description: Reason for manufacturing the card.
-      enum:
-      - NEW_CARD
-      - REPLACE_CARD
-      - REISSUE_CARD
-      - REORDER_PIN
-      - RENEW_CARD
-      example: NEW_CARD
-    Created:
-      type: string
-      format: date-time
-      description: The date and time when the card was created.
   parameters:
     x-audit-user:
       in: header
@@ -226,6 +167,65 @@ components:
       description: Optional audit user header
       schema:
         type: string
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Internal Server Error
+            status: 500
+            detail: Unexpected error occurred.
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0500
+            timestamp: '2026-02-24T12:34:56Z'
+    Unauthorized:
+      description: Unauthorized
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Forbidden
+            status: 403
+            detail: Access Denied
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0403
+            timestamp: '2026-02-24T12:34:56Z'
+    BadRequest:
+      description: Bad request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: 'JSON parse error: Unexpected character...'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0400
+            timestamp: '2026-02-24T12:34:56Z'
+    NotFound:
+      description: Not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Not Found
+            status: 404
+            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0404
+            timestamp: '2026-02-24T12:34:56Z'
   securitySchemes:
     bearerAuth:
       type: http

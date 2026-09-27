@@ -18,12 +18,14 @@ tags:
 - Card Issuing
 - Fintech
 - API Platform
+- A2A
 tags_raw:
 - Company
 - Payments
 - Card Issuing
 - FinTech
 - API Platform
+- A2A
 apis:
 - aid: enfuce:enfuce-authorisation-request-api-api
   name: Enfuce Authorisation Request API
@@ -168,3 +170,10 @@ x-enrichment:
   artifacts_added: 19
   pass: modular-v1
   engine: identity=local,contract=local,surfaces=local,docs=local,docs (promoted)=anthropic
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://docs.enfuce.com/.well-known/agent-card.json"
+  grade: "conformant"
+  protocol_version: "0.3"
+  control: 404

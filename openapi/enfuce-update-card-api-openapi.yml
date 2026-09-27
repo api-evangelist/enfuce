@@ -239,136 +239,12 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
-  responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Bad Request
-            status: 400
-            detail: 'JSON parse error: Unexpected character...'
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0400
-            timestamp: '2026-02-24T12:34:56Z'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Internal Server Error
-            status: 500
-            detail: Unexpected error occurred.
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0500
-            timestamp: '2026-02-24T12:34:56Z'
-    Unauthorized:
-      description: Unauthorized
-    Conflict:
-      description: Conflict
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Conflict
-            status: 409
-            detail: Customer number is not unique.
-            instance: /v1/cardholders
-            id: 5cc541cb-f456-4331-b537-d2380fca0409
-            timestamp: '2026-02-26T10:34:47.522+00:00'
-    NotFound:
-      description: Not found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Not Found
-            status: 404
-            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0404
-            timestamp: '2026-02-24T12:34:56Z'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Forbidden
-            status: 403
-            detail: Access Denied
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0403
-            timestamp: '2026-02-24T12:34:56Z'
   schemas:
-    Id:
-      type: string
-      format: uuid
-      description: Unique identifier of a resource.
-      example: 20218aae-b15e-406c-9e9f-23735cd86a48
-    AdditionalValues:
-      type: object
-      description: 'You can include up to **30 additional key-value pairs** in the embossing file sent to the card manufacturer.
-
-
-        - **Keys** must follow the pattern: `^[a-zA-Z0-9-]{1,36}$` (only letters, numbers, and hyphens, with a maximum length of 36 characters).
-
-        - **Values** must follow the pattern: `^[a-zA-Z0-9|\-_ +.@éàèùçâêîôûëïü''/=]{1,1000}$`.
-
-
-        Enfuce **does not perform any additional validation** on these key-value pairs beyond ensuring they match the specified patterns.
-
-
-        These fields are intended for **storing data without further processing**. If you need to store a **complex structure**, you can **base64 encode** the value. The encoded value will be passed as entered, without modifications.
-
-
-        ⚠ **Important:** Any usage of these fields should be agreed upon with the manufacturer.
-
-        '
-      maxProperties: 30
-      additionalProperties:
-        type: string
-      example:
-        keyWithPlainTextValue: value1
-        keyWithBase64Value: dmFsdWUyYmFzZTY0ZW5jb2RlZA==
-    ErrorResponse:
+    ReissueCardBody:
       type: object
       properties:
-        type:
-          description: The problem type.
-          type: string
-        title:
-          description: The reason phrase of HttpStatus.
-          type: string
-        status:
-          description: HTTP problem status.
-          type: number
-        detail:
-          description: The problem detail.
-          type: string
-        instance:
-          description: The request path.
-          type: string
-        id:
-          description: Unique error identifier.
-          type: string
-          format: uuid
-        timestamp:
-          description: Date-time when error occurred.
-          type: string
-          format: date-time
+        pinStatus:
+          $ref: '#/components/schemas/ChangePinStatus'
     ResourceResponse:
       type: object
       properties:
@@ -379,6 +255,36 @@ components:
           allOf:
           - $ref: '#/components/schemas/Id'
           description: A unique identifier assigned to identify the endpoint request.
+    ExternalLayoutCode:
+      type: string
+      description: Unique code forwarded to the embossing house; the code identifies the plastic layout to be used for printing the new card. Ensure beforehand, the selected embossing house is aligned with the code used for each layout.
+      minLength: 1
+      maxLength: 32
+      pattern: ^[a-zA-Z0-9-_]+$
+      example: 1
+    ImpactTokenStatus:
+      type: boolean
+      default: true
+      description: 'If set to true, the card status change will impact the status of all tokens.
+
+        If set to false, the card status change will not impact the status of all tokens.
+
+        '
+    AccountId:
+      type: string
+      description: Unique identifier of an account.
+      minLength: 1
+      maxLength: 36
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
+      pattern: ^[a-zA-Z0-9-]+$
+    Printed:
+      type: boolean
+      description: 'Indicates whether the specific card would be printed or not. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      example: true
     CardStatus:
       type: string
       description: '- ACTIVE - Card is active and is enabled for normal usage.
@@ -408,46 +314,32 @@ components:
       - CLOSED
       - CLOSED_EXPIRED
       example: ACTIVE
-    Printed:
-      type: boolean
-      description: 'Indicates whether the specific card would be printed or not. Only applicable to multi-application cards.
-
-        Otherwise, the request will return 400 Bad Request.
-
-        '
-      example: true
-    UpdatePlasticBody:
+    ErrorResponse:
       type: object
       properties:
-        embossingName:
-          $ref: '#/components/schemas/EmbossingName'
-        preferredCardAddress:
-          $ref: '#/components/schemas/Address'
-        preferredCardDeliveryType:
-          $ref: '#/components/schemas/CardDeliveryType'
-        preferredPinAddress:
-          $ref: '#/components/schemas/Address'
-        preferredPinDeliveryType:
-          $ref: '#/components/schemas/PinDeliveryType'
-        manufacturerId:
-          $ref: '#/components/schemas/OptionalId'
-        externalLayoutCode:
-          $ref: '#/components/schemas/ExternalLayoutCode'
-    ExternalLayoutCode:
-      type: string
-      description: Unique code forwarded to the embossing house; the code identifies the plastic layout to be used for printing the new card. Ensure beforehand, the selected embossing house is aligned with the code used for each layout.
-      minLength: 1
-      maxLength: 32
-      pattern: ^[a-zA-Z0-9-_]+$
-      example: 1
-    ChipEnabled:
-      type: boolean
-      description: 'Whether the card should be visible in card terminal or not. Only applicable to multi-application cards.
-
-        Otherwise, the request will return 400 Bad Request.
-
-        '
-      example: true
+        type:
+          description: The problem type.
+          type: string
+        title:
+          description: The reason phrase of HttpStatus.
+          type: string
+        status:
+          description: HTTP problem status.
+          type: number
+        detail:
+          description: The problem detail.
+          type: string
+        instance:
+          description: The request path.
+          type: string
+        id:
+          description: Unique error identifier.
+          type: string
+          format: uuid
+        timestamp:
+          description: Date-time when error occurred.
+          type: string
+          format: date-time
     EmbossingName:
       type: string
       description: The name to be embossed on the card. Max character limit is 26.
@@ -455,14 +347,24 @@ components:
       maxLength: 26
       pattern: ^[A-Za-z0-9 /.,&+'\- ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ ĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹ ĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰű ŲųŴŵŶŷŸŹźŻżŽžſǪǫȘșȚțȪȫȮȯȲȳḐḑṢṣẞỌọ]+$
       example: John Doe
-    ImpactTokenStatus:
-      type: boolean
-      default: true
-      description: 'If set to true, the card status change will impact the status of all tokens.
-
-        If set to false, the card status change will not impact the status of all tokens.
+    ReplaceCardBody:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of why the card should be replaced.
+          example: The cardholder’s wallet was stolen, so the card must be replaced.
+        pinStatus:
+          $ref: '#/components/schemas/ChangePinStatus'
+    FeeConfigId:
+      type: string
+      description: 'Unique identifier of a fee configuration. When provided, this value overrides the program default. This feature must be enabled for the tenant; otherwise, this field can be left null and will not be used.
 
         '
+      minLength: 1
+      maxLength: 36
+      example: SILVER
+      pattern: ^[a-zA-Z0-9_-]+$
     Address:
       type: object
       properties:
@@ -517,6 +419,45 @@ components:
       - city
       - country
       - zipCode
+    UpdatePlasticBody:
+      type: object
+      properties:
+        embossingName:
+          $ref: '#/components/schemas/EmbossingName'
+        preferredCardAddress:
+          $ref: '#/components/schemas/Address'
+        preferredCardDeliveryType:
+          $ref: '#/components/schemas/CardDeliveryType'
+        preferredPinAddress:
+          $ref: '#/components/schemas/Address'
+        preferredPinDeliveryType:
+          $ref: '#/components/schemas/PinDeliveryType'
+        manufacturerId:
+          $ref: '#/components/schemas/OptionalId'
+        externalLayoutCode:
+          $ref: '#/components/schemas/ExternalLayoutCode'
+    DigitalLayoutCode:
+      type: string
+      description: The digital layout code for the card. Max character limit is 36.
+      minLength: 1
+      maxLength: 36
+      pattern: ^[a-zA-Z0-9-]+$
+      example: 9
+    AutomaticRenewal:
+      type: boolean
+      description: A flag indicating whether automatic renewal is enabled or not.
+    OptionalId:
+      type:
+      - string
+      - 'null'
+      format: uuid
+      description: Unique identifier of an entity.
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
+    Id:
+      type: string
+      format: uuid
+      description: Unique identifier of a resource.
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
     CardDeliveryType:
       type: string
       description: Select the type of delivery you prefer for the new card being created. - MAIL - The card would be sent via mail services. - COURIER - The card would be sent via courier services. - CUSTOM_1–CUSTOM_5 - Custom delivery types that can be used for shipping methods agreed between the customer and the bureau.
@@ -529,22 +470,31 @@ components:
       - CUSTOM_4
       - CUSTOM_5
       example: MAIL
-    ReplaceCardBody:
+    AdditionalValues:
       type: object
-      properties:
-        description:
-          type: string
-          description: Description of why the card should be replaced.
-          example: The cardholder’s wallet was stolen, so the card must be replaced.
-        pinStatus:
-          $ref: '#/components/schemas/ChangePinStatus'
-    AccountId:
-      type: string
-      description: Unique identifier of an account.
-      minLength: 1
-      maxLength: 36
-      example: 20218aae-b15e-406c-9e9f-23735cd86a48
-      pattern: ^[a-zA-Z0-9-]+$
+      description: 'You can include up to **30 additional key-value pairs** in the embossing file sent to the card manufacturer.
+
+
+        - **Keys** must follow the pattern: `^[a-zA-Z0-9-]{1,36}$` (only letters, numbers, and hyphens, with a maximum length of 36 characters).
+
+        - **Values** must follow the pattern: `^[a-zA-Z0-9|\-_ +.@éàèùçâêîôûëïü''/=]{1,1000}$`.
+
+
+        Enfuce **does not perform any additional validation** on these key-value pairs beyond ensuring they match the specified patterns.
+
+
+        These fields are intended for **storing data without further processing**. If you need to store a **complex structure**, you can **base64 encode** the value. The encoded value will be passed as entered, without modifications.
+
+
+        ⚠ **Important:** Any usage of these fields should be agreed upon with the manufacturer.
+
+        '
+      maxProperties: 30
+      additionalProperties:
+        type: string
+      example:
+        keyWithPlainTextValue: value1
+        keyWithBase64Value: dmFsdWUyYmFzZTY0ZW5jb2RlZA==
     ContactPriorityLevel:
       type: integer
       description: 'The contact priority level for given card. Only applicable to multi-application cards.
@@ -554,14 +504,23 @@ components:
         '
       format: int32
       minimum: 0
-    PinDeliveryType:
+    UpdatePinStatus:
       type: string
-      description: Select the type of delivery you prefer for sending the card PIN. - MAIL - The card PIN would be sent via mail services. - COURIER - The card PIN would be sent via courier services. - EPIN - The card PIN would be sent digitally.
+      description: '- GENERATED - A pin should be randomly generated for the card.
+
+        '
       enum:
-      - MAIL
-      - COURIER
-      - EPIN
-      example: MAIL
+      - GENERATED
+      example: GENERATED
+    ContactlessPriorityLevel:
+      type: integer
+      description: 'The contactless priority level of the given card. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      format: int32
+      minimum: 0
     ApplicationName:
       type: string
       description: 'Name of the application. Max character limit is 16. Only applicable to multi-application cards.
@@ -573,17 +532,6 @@ components:
       maxLength: 16
       pattern: ^[a-zA-Z ]+$
       example: Credit Application
-    AutomaticRenewal:
-      type: boolean
-      description: A flag indicating whether automatic renewal is enabled or not.
-    UpdatePinStatus:
-      type: string
-      description: '- GENERATED - A pin should be randomly generated for the card.
-
-        '
-      enum:
-      - GENERATED
-      example: GENERATED
     ChangePinStatus:
       type: string
       description: '- GENERATED - A pin should be randomly generated for the card.
@@ -595,31 +543,6 @@ components:
       - GENERATED
       - WAITING
       example: GENERATED
-    ContactlessPriorityLevel:
-      type: integer
-      description: 'The contactless priority level of the given card. Only applicable to multi-application cards.
-
-        Otherwise, the request will return 400 Bad Request.
-
-        '
-      format: int32
-      minimum: 0
-    FeeConfigId:
-      type: string
-      description: 'Unique identifier of a fee configuration. When provided, this value overrides the program default. This feature must be enabled for the tenant; otherwise, this field can be left null and will not be used.
-
-        '
-      minLength: 1
-      maxLength: 36
-      example: SILVER
-      pattern: ^[a-zA-Z0-9_-]+$
-    OptionalId:
-      type:
-      - string
-      - 'null'
-      format: uuid
-      description: Unique identifier of an entity.
-      example: 20218aae-b15e-406c-9e9f-23735cd86a48
     UpdateCardBody:
       type: object
       properties:
@@ -654,18 +577,95 @@ components:
         feeConfigId:
           allOf:
           - $ref: '#/components/schemas/FeeConfigId'
-    DigitalLayoutCode:
+    PinDeliveryType:
       type: string
-      description: The digital layout code for the card. Max character limit is 36.
-      minLength: 1
-      maxLength: 36
-      pattern: ^[a-zA-Z0-9-]+$
-      example: 9
-    ReissueCardBody:
-      type: object
-      properties:
-        pinStatus:
-          $ref: '#/components/schemas/ChangePinStatus'
+      description: Select the type of delivery you prefer for sending the card PIN. - MAIL - The card PIN would be sent via mail services. - COURIER - The card PIN would be sent via courier services. - EPIN - The card PIN would be sent digitally.
+      enum:
+      - MAIL
+      - COURIER
+      - EPIN
+      example: MAIL
+    ChipEnabled:
+      type: boolean
+      description: 'Whether the card should be visible in card terminal or not. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      example: true
+  responses:
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Forbidden
+            status: 403
+            detail: Access Denied
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0403
+            timestamp: '2026-02-24T12:34:56Z'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Conflict
+            status: 409
+            detail: Customer number is not unique.
+            instance: /v1/cardholders
+            id: 5cc541cb-f456-4331-b537-d2380fca0409
+            timestamp: '2026-02-26T10:34:47.522+00:00'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Internal Server Error
+            status: 500
+            detail: Unexpected error occurred.
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0500
+            timestamp: '2026-02-24T12:34:56Z'
+    Unauthorized:
+      description: Unauthorized
+    BadRequest:
+      description: Bad request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: 'JSON parse error: Unexpected character...'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0400
+            timestamp: '2026-02-24T12:34:56Z'
+    NotFound:
+      description: Not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Not Found
+            status: 404
+            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0404
+            timestamp: '2026-02-24T12:34:56Z'
   parameters:
     x-audit-user:
       in: header

@@ -29,39 +29,75 @@ paths:
                 $ref: '#/components/schemas/authResponseBody'
 components:
   schemas:
-    approvedTransaction:
-      allOf:
-      - $ref: '#/components/schemas/transaction'
-      - type: object
-        properties:
-          transactionType:
-            $ref: '#/components/schemas/transactionType'
-          approvedAmount:
-            allOf:
-            - $ref: '#/components/schemas/money'
-            description: 'Amount approved at the current payment processing stage; the amount might be further reduced in the subsequent stages, when the Ledger performs additional validations.
-
-              If any issuer transaction fee is applied (see the issuerTransactionFees field), the approvedAmount also includes those fees.
-
-              '
-            title: money
-          processedDateTime:
-            type: string
-            format: date-time
-            example: '2099-12-31T03:00:00.000Z'
-            description: Time when processed by Enfuce.
-    money:
-      description: Amount including currency.
+    currency:
+      type: string
+      description: A valid ISO 4217 currency code
+      pattern: '[A-Z]{3}'
+      example: EUR
+    country:
+      type: string
+      description: A valid ISO-3166-1 alpha-3 country code.
+      pattern: '[A-Z]{3}'
+      example: FIN
+    authorizationMetadata:
       type: object
-      required:
-      - amount
-      - currency
       properties:
-        amount:
-          type: number
-          example: 3.14
-        currency:
-          $ref: '#/components/schemas/currency'
+        id:
+          $ref: '#/components/schemas/id'
+        transactionId:
+          $ref: '#/components/schemas/transactionId'
+        messageCategory:
+          allOf:
+          - $ref: '#/components/schemas/messageCategoryAuthorization'
+          title: messageCategory
+        messageFunction:
+          allOf:
+          - $ref: '#/components/schemas/messageFunctionAuthorization'
+          title: messageFunction
+    card:
+      type: object
+      description: Information about the card used for the payment.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 'Enfuce generated unique ID assigned to each card used — enables you to identify the card that you must authorise.
+
+            '
+        expirationDate:
+          allOf:
+          - $ref: '#/components/schemas/expiration'
+          description: Card expiration date as received in the scheme message.
+          title: expiration
+        sequenceNumber:
+          type: integer
+          minimum: 0
+          description: Card sequence number as received in the scheme message.
+        accountId:
+          type: string
+          pattern: '[a-zA-Z0-9-]{1,36}'
+          description: Ledger provided account ID associated with the card.
+        cardholderId:
+          type: string
+          format: uuid
+          description: Unique ID of the cardholder associated with the card.
+        groups:
+          type: array
+          items:
+            type: object
+            required:
+            - groupId
+            properties:
+              groupId:
+                type: string
+                description: Unique ID assigned to the parent card group.
+          description: Information about any parent card group associated with the card.
+        applicationSelection:
+          type: string
+          enum:
+          - DEBIT
+          - CREDIT
+          description: The type of card application used for the transaction.
     transaction:
       type: object
       properties:
@@ -139,6 +175,34 @@ components:
         originalTransactionId:
           type: string
           description: This value is present only for recurring transaction, and it's value is first original authorisation request in the chain.
+    cardholderVerificationMethod:
+      type: string
+      format: enum
+      description: 'The method used for verifying the cardholder:
+
+        - PIN_VERIFIED_BY_CARD: The card''s PIN is verified.
+
+        - PIN_VERIFIED_BY_ISSUER: The card''s PIN is verified by issuer.
+
+        - WALLET: The cardholder is verified by the digital wallet.
+
+        - THREE_DS: The cardholder is 3DS authenticated.
+
+        - BIOMETRIC: The cardholder is verified by biometrics data.
+
+        - SIGNATURE: The cardholder''s signature verified.
+
+        - NO_VERIFICATION: No verification is performed.
+
+        '
+      enum:
+      - PIN_VERIFIED_BY_CARD
+      - PIN_VERIFIED_BY_ISSUER
+      - WALLET
+      - THREE_DS
+      - BIOMETRIC
+      - SIGNATURE
+      - NO_VERIFICATION
     transactionType:
       type: string
       format: enum
@@ -160,35 +224,26 @@ components:
       - BALANCE_TRANSFER
       - REVERSAL
       - AFT
-    authResponseBody:
-      type: object
-      required:
-      - authResponseCode
-      properties:
-        authResponseCode:
-          $ref: '#/components/schemas/authResponseCode'
-        account:
-          $ref: '#/components/schemas/account'
-        partialApprovalAmount:
-          allOf:
-          - $ref: '#/components/schemas/money'
-          description: "Return when there is a partial approval.\nWhen the balance is less than the transaction amount, return the available amount that you authorise.\nReturn this attribute only when in the request `merchant.partialApprovalCapable` is true (i.e. the merchant \napproves that a smaller amount than the full transaction amount is authorised), and `authResponseCode` \nshould be `PARTIALLY_APPROVED`. \n"
-          title: money
-    account:
-      type: object
-      required:
-      - availableAmount
-      properties:
-        availableAmount:
-          allOf:
-          - $ref: '#/components/schemas/money'
-          description: Available amount before this transaction has been processed.
-          title: money
-    country:
+    cardEntryMode:
       type: string
-      description: A valid ISO-3166-1 alpha-3 country code.
-      pattern: '[A-Z]{3}'
-      example: FIN
+      format: enum
+      description: Describes how the card credentials were captured.
+      enum:
+      - CHIP
+      - CHIP_CONTACTLESS
+      - MAGNETIC_STRIPE
+      - MANUAL_ENTRY
+      - WALLET_CONTACTLESS
+      - ECOMMERCE
+      - WALLET_ECOMMERCE
+      - CREDENTIALS_ON_FILE
+      - UNKNOWN
+    messageFunctionAuthorization:
+      type: string
+      format: enum
+      description: Identifies the message function of the authorisation request.
+      enum:
+      - REQUEST
     token:
       type: object
       description: Information about the token associated with the card.
@@ -204,50 +259,99 @@ components:
           - GOOGLE_PAY
           - SAMSUNG_PAY
           - REMOTE_COMMERCE_PROGRAMS
-    card:
+    expiration:
       type: object
-      description: Information about the card used for the payment.
+      required:
+      - year
+      - month
       properties:
-        id:
-          type: string
-          format: uuid
-          description: 'Enfuce generated unique ID assigned to each card used — enables you to identify the card that you must authorise.
-
-            '
-        expirationDate:
-          allOf:
-          - $ref: '#/components/schemas/expiration'
-          description: Card expiration date as received in the scheme message.
-          title: expiration
-        sequenceNumber:
+        year:
           type: integer
-          minimum: 0
-          description: Card sequence number as received in the scheme message.
-        accountId:
-          type: string
-          pattern: '[a-zA-Z0-9-]{1,36}'
-          description: Ledger provided account ID associated with the card.
-        cardholderId:
-          type: string
-          format: uuid
-          description: Unique ID of the cardholder associated with the card.
-        groups:
-          type: array
-          items:
-            type: object
-            required:
-            - groupId
-            properties:
-              groupId:
-                type: string
-                description: Unique ID assigned to the parent card group.
-          description: Information about any parent card group associated with the card.
-        applicationSelection:
-          type: string
-          enum:
-          - DEBIT
-          - CREDIT
-          description: The type of card application used for the transaction.
+          format: int32
+          description: Expiration year in YYYY format.
+          example: 2024
+        month:
+          type: integer
+          format: int32
+          description: Expiration month in MM format.
+          example: 1
+      title: expiration
+    authResponseBody:
+      type: object
+      required:
+      - authResponseCode
+      properties:
+        authResponseCode:
+          $ref: '#/components/schemas/authResponseCode'
+        account:
+          $ref: '#/components/schemas/account'
+        partialApprovalAmount:
+          allOf:
+          - $ref: '#/components/schemas/money'
+          description: "Return when there is a partial approval.\nWhen the balance is less than the transaction amount, return the available amount that you authorise.\nReturn this attribute only when in the request `merchant.partialApprovalCapable` is true (i.e. the merchant \napproves that a smaller amount than the full transaction amount is authorised), and `authResponseCode` \nshould be `PARTIALLY_APPROVED`. \n"
+          title: money
+    authRequestBody:
+      allOf:
+      - $ref: '#/components/schemas/authorizationMetadata'
+      - type: object
+        required:
+        - card
+        - merchant
+        - transaction
+        properties:
+          token:
+            $ref: '#/components/schemas/token'
+          card:
+            $ref: '#/components/schemas/card'
+          merchant:
+            $ref: '#/components/schemas/merchant'
+          transaction:
+            allOf:
+            - $ref: '#/components/schemas/approvedTransaction'
+            title: transaction
+    messageCategoryAuthorization:
+      type: string
+      format: enum
+      description: "Message category sent in the authorisation control webhook. Possible enums:\n  - INITIAL_AUTHORIZATION: Initial authorisation of the card payment.\n  - INCREMENTAL_AUTHORIZATION: Additional authorisation for a previously authorised transaction.\n  - BALANCE_INQUIRY: Enquiring about the current balance of the funding account from the external application.\n  - PIN_MANAGEMENT: Request to change the card PIN.\n"
+      enum:
+      - INITIAL_AUTHORIZATION
+      - INCREMENTAL_AUTHORIZATION
+      - BALANCE_INQUIRY
+      - PIN_MANAGEMENT
+    transactionId:
+      type: string
+      format: uuid
+      description: 'Enfuce generated unique ID assigned to each card transaction. Transaction events for the same card payment includes the same `transactionId`.  For example, authorisation, incremental authorisation, and adjustment for the same transaction includes the same `transactionID`.
+
+        '
+    account:
+      type: object
+      required:
+      - availableAmount
+      properties:
+        availableAmount:
+          allOf:
+          - $ref: '#/components/schemas/money'
+          description: Available amount before this transaction has been processed.
+          title: money
+    money:
+      description: Amount including currency.
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          type: number
+          example: 3.14
+        currency:
+          $ref: '#/components/schemas/currency'
+    id:
+      type: string
+      format: uuid
+      description: 'Unique system generated ID assigned to each event in the payment processing workflow. For example, an ID assigned to the initial authorisation event.
+
+        '
     merchant:
       type: object
       properties:
@@ -307,79 +411,6 @@ components:
           description: 'Data an acquirer supplies in an acquirer-originated message, might be required for the issuer  to return to the acquirer in a subsequent message.
 
             '
-    currency:
-      type: string
-      description: A valid ISO 4217 currency code
-      pattern: '[A-Z]{3}'
-      example: EUR
-    transactionId:
-      type: string
-      format: uuid
-      description: 'Enfuce generated unique ID assigned to each card transaction. Transaction events for the same card payment includes the same `transactionId`.  For example, authorisation, incremental authorisation, and adjustment for the same transaction includes the same `transactionID`.
-
-        '
-    cardEntryMode:
-      type: string
-      format: enum
-      description: Describes how the card credentials were captured.
-      enum:
-      - CHIP
-      - CHIP_CONTACTLESS
-      - MAGNETIC_STRIPE
-      - MANUAL_ENTRY
-      - WALLET_CONTACTLESS
-      - ECOMMERCE
-      - WALLET_ECOMMERCE
-      - CREDENTIALS_ON_FILE
-      - UNKNOWN
-    authRequestBody:
-      allOf:
-      - $ref: '#/components/schemas/authorizationMetadata'
-      - type: object
-        required:
-        - card
-        - merchant
-        - transaction
-        properties:
-          token:
-            $ref: '#/components/schemas/token'
-          card:
-            $ref: '#/components/schemas/card'
-          merchant:
-            $ref: '#/components/schemas/merchant'
-          transaction:
-            allOf:
-            - $ref: '#/components/schemas/approvedTransaction'
-            title: transaction
-    id:
-      type: string
-      format: uuid
-      description: 'Unique system generated ID assigned to each event in the payment processing workflow. For example, an ID assigned to the initial authorisation event.
-
-        '
-    messageFunctionAuthorization:
-      type: string
-      format: enum
-      description: Identifies the message function of the authorisation request.
-      enum:
-      - REQUEST
-    expiration:
-      type: object
-      required:
-      - year
-      - month
-      properties:
-        year:
-          type: integer
-          format: int32
-          description: Expiration year in YYYY format.
-          example: 2024
-        month:
-          type: integer
-          format: int32
-          description: Expiration month in MM format.
-          example: 1
-      title: expiration
     authResponseCode:
       type: string
       format: enum
@@ -394,34 +425,27 @@ components:
       - EXCEEDS_WITHDRAWAL_FREQUENCY_LIMIT
       - SYSTEM_ERROR
       description: "Indicates whether the authorisation request is approved or declined. \nPossible enums:\n  * `APPROVED` - Approved\n  * `PARTIALLY_APPROVED` - Approved for partial amount\n  * `DO_NOT_HONOR` - Do not honor (**Note**: Card schemes recommend to use this only when other options do not apply)\n  * `NOT_SUFFICIENT_FUNDS` - Inadequate funds\n  * `NOT_PERMITTED` - Transaction not permitted to cardholder\n  * `EXCEEDS_AMOUNT_LIMIT` - Exceeds approval amount limit\n  * `RESTRICTED_CARD` - Restricted card (card invalid in region or country)\n  * `EXCEEDS_WITHDRAWAL_FREQUENCY_LIMIT` - Exceeds withdrawal frequency limit\n  * `SYSTEM_ERROR` - System malfunction\n"
-    cardholderVerificationMethod:
-      type: string
-      format: enum
-      description: 'The method used for verifying the cardholder:
+    approvedTransaction:
+      allOf:
+      - $ref: '#/components/schemas/transaction'
+      - type: object
+        properties:
+          transactionType:
+            $ref: '#/components/schemas/transactionType'
+          approvedAmount:
+            allOf:
+            - $ref: '#/components/schemas/money'
+            description: 'Amount approved at the current payment processing stage; the amount might be further reduced in the subsequent stages, when the Ledger performs additional validations.
 
-        - PIN_VERIFIED_BY_CARD: The card''s PIN is verified.
+              If any issuer transaction fee is applied (see the issuerTransactionFees field), the approvedAmount also includes those fees.
 
-        - PIN_VERIFIED_BY_ISSUER: The card''s PIN is verified by issuer.
-
-        - WALLET: The cardholder is verified by the digital wallet.
-
-        - THREE_DS: The cardholder is 3DS authenticated.
-
-        - BIOMETRIC: The cardholder is verified by biometrics data.
-
-        - SIGNATURE: The cardholder''s signature verified.
-
-        - NO_VERIFICATION: No verification is performed.
-
-        '
-      enum:
-      - PIN_VERIFIED_BY_CARD
-      - PIN_VERIFIED_BY_ISSUER
-      - WALLET
-      - THREE_DS
-      - BIOMETRIC
-      - SIGNATURE
-      - NO_VERIFICATION
+              '
+            title: money
+          processedDateTime:
+            type: string
+            format: date-time
+            example: '2099-12-31T03:00:00.000Z'
+            description: Time when processed by Enfuce.
     transactionFee:
       type: object
       properties:
@@ -440,30 +464,6 @@ components:
           - $ref: '#/components/schemas/money'
           description: Transaction fee amount in cardholder billing currency.
           title: money
-    messageCategoryAuthorization:
-      type: string
-      format: enum
-      description: "Message category sent in the authorisation control webhook. Possible enums:\n  - INITIAL_AUTHORIZATION: Initial authorisation of the card payment.\n  - INCREMENTAL_AUTHORIZATION: Additional authorisation for a previously authorised transaction.\n  - BALANCE_INQUIRY: Enquiring about the current balance of the funding account from the external application.\n  - PIN_MANAGEMENT: Request to change the card PIN.\n"
-      enum:
-      - INITIAL_AUTHORIZATION
-      - INCREMENTAL_AUTHORIZATION
-      - BALANCE_INQUIRY
-      - PIN_MANAGEMENT
-    authorizationMetadata:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/id'
-        transactionId:
-          $ref: '#/components/schemas/transactionId'
-        messageCategory:
-          allOf:
-          - $ref: '#/components/schemas/messageCategoryAuthorization'
-          title: messageCategory
-        messageFunction:
-          allOf:
-          - $ref: '#/components/schemas/messageFunctionAuthorization'
-          title: messageFunction
   requestBodies:
     authRequestBody:
       required: true
