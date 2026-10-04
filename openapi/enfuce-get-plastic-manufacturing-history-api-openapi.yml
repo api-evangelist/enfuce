@@ -56,15 +56,6 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    SentToManufacturer:
-      type: string
-      format: date-time
-      description: The date and time when the card was sent to the manufacturer
-    Id:
-      type: string
-      format: uuid
-      description: Unique identifier of a resource.
-      example: 20218aae-b15e-406c-9e9f-23735cd86a48
     manufacturingReason:
       title: ManufacturingReason
       type: string
@@ -76,6 +67,22 @@ components:
       - REORDER_PIN
       - RENEW_CARD
       example: NEW_CARD
+    PlasticManufacturingData:
+      type: string
+      description: The json data that was included in the plastic manufacturer file
+    Id:
+      type: string
+      format: uuid
+      description: Unique identifier of a resource.
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
+    Created:
+      type: string
+      format: date-time
+      description: The date and time when the card was created.
+    SentToManufacturer:
+      type: string
+      format: date-time
+      description: The date and time when the card was sent to the manufacturer
     SequenceNumber:
       type: integer
       minimum: 1
@@ -135,10 +142,6 @@ components:
                 $ref: '#/components/schemas/ManufacturingStatus'
               data:
                 $ref: '#/components/schemas/PlasticManufacturingData'
-    Created:
-      type: string
-      format: date-time
-      description: The date and time when the card was created.
     ManufacturingStatus:
       type: string
       description: '- AWAITING_CRYPTO_VALUES - The card is created and is awaiting to receive cryptographic values before being sent to the card manufacturer.
@@ -156,9 +159,6 @@ components:
       - SENT_TO_MANUFACTURER
       - MANUFACTURING_ABORTED
       example: SENT_TO_MANUFACTURER
-    PlasticManufacturingData:
-      type: string
-      description: The json data that was included in the plastic manufacturer file
   responses:
     NotFound:
       description: Not found
@@ -173,34 +173,6 @@ components:
             detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
             instance: /v1/cards
             id: 5cc541cb-f456-4331-b537-d2380fca0404
-            timestamp: '2026-02-24T12:34:56Z'
-    BadRequest:
-      description: Bad request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Bad Request
-            status: 400
-            detail: 'JSON parse error: Unexpected character...'
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0400
-            timestamp: '2026-02-24T12:34:56Z'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Internal Server Error
-            status: 500
-            detail: Unexpected error occurred.
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0500
             timestamp: '2026-02-24T12:34:56Z'
     Forbidden:
       description: Forbidden
@@ -218,6 +190,34 @@ components:
             timestamp: '2026-02-24T12:34:56Z'
     Unauthorized:
       description: Unauthorized
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Internal Server Error
+            status: 500
+            detail: Unexpected error occurred.
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0500
+            timestamp: '2026-02-24T12:34:56Z'
+    BadRequest:
+      description: Bad request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: 'JSON parse error: Unexpected character...'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0400
+            timestamp: '2026-02-24T12:34:56Z'
   parameters:
     x-audit-user:
       in: header

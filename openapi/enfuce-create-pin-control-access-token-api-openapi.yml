@@ -83,32 +83,6 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    PinControlInfoResponseBody:
-      type: object
-      properties:
-        id:
-          allOf:
-          - $ref: '#/components/schemas/Id'
-          description: The ID of this PIN Control access token.
-        pinUrl:
-          type: string
-          description: The URL that the cardholder's mobile device webview should browse to for accessing the PIN.
-          example: https://api.tenant.sandbox.mycore.enfuce.com/issuer-web/pin/view
-        pinFrameUrl:
-          type: string
-          description: The URL of the iframe for desktop browser based flows for accessing PIN.
-          example: https://api.tenant.sandbox.mycore.enfuce.com/issuer-web/pin/view/frame
-      required:
-      - id
-      title: PinControlInfoResponseBody
-    PinScope:
-      type: string
-      description: Describes the scope of the operation authorised by the user.
-      enum:
-      - VIEW_PIN
-      - SET_PIN
-      - CHANGE_PIN
-      example: VIEW_PIN
     PinControlInfoRequestBody:
       type: object
       properties:
@@ -155,6 +129,32 @@ components:
           description: Date-time when error occurred.
           type: string
           format: date-time
+    PinScope:
+      type: string
+      description: Describes the scope of the operation authorised by the user.
+      enum:
+      - VIEW_PIN
+      - SET_PIN
+      - CHANGE_PIN
+      example: VIEW_PIN
+    PinControlInfoResponseBody:
+      type: object
+      properties:
+        id:
+          allOf:
+          - $ref: '#/components/schemas/Id'
+          description: The ID of this PIN Control access token.
+        pinUrl:
+          type: string
+          description: The URL that the cardholder's mobile device webview should browse to for accessing the PIN.
+          example: https://api.tenant.sandbox.mycore.enfuce.com/issuer-web/pin/view
+        pinFrameUrl:
+          type: string
+          description: The URL of the iframe for desktop browser based flows for accessing PIN.
+          example: https://api.tenant.sandbox.mycore.enfuce.com/issuer-web/pin/view/frame
+      required:
+      - id
+      title: PinControlInfoResponseBody
   responses:
     NotFound:
       description: Not found
@@ -169,34 +169,6 @@ components:
             detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
             instance: /v1/cards
             id: 5cc541cb-f456-4331-b537-d2380fca0404
-            timestamp: '2026-02-24T12:34:56Z'
-    BadRequest:
-      description: Bad request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Bad Request
-            status: 400
-            detail: 'JSON parse error: Unexpected character...'
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0400
-            timestamp: '2026-02-24T12:34:56Z'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Internal Server Error
-            status: 500
-            detail: Unexpected error occurred.
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0500
             timestamp: '2026-02-24T12:34:56Z'
     Forbidden:
       description: Forbidden
@@ -214,6 +186,34 @@ components:
             timestamp: '2026-02-24T12:34:56Z'
     Unauthorized:
       description: Unauthorized
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Internal Server Error
+            status: 500
+            detail: Unexpected error occurred.
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0500
+            timestamp: '2026-02-24T12:34:56Z'
+    BadRequest:
+      description: Bad request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: 'JSON parse error: Unexpected character...'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0400
+            timestamp: '2026-02-24T12:34:56Z'
   parameters:
     x-audit-user:
       in: header
