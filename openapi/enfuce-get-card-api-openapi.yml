@@ -131,39 +131,32 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
+  parameters:
+    x-audit-user:
+      in: header
+      name: x-audit-user
+      required: false
+      description: Optional audit user header
+      schema:
+        type: string
   schemas:
-    UpdateCount:
-      type: integer
-      description: The version number of the entity.
-      example: 1
-    ExpirationTime:
+    CardVersionStatus:
       type: string
-      format: date-time
-      description: 'The expiration date-time of the card, always at 23:59:59 UTC on the last day of a month.
+      description: '- ACTIVE - The card is completely operational. You can perform all actions with the card.
 
+        - ACTIVE_LIMITED - The card version is usable for digital transactions only. Provisioning, token payments and e-commerce transactions are allowed, while physical entry modes (chip, contactless, magstripe and ATM) are declined.
 
-        If a different expiry than the program default is specified during card creation, it is
+        - INITIAL - The specific card version is awaiting activation. During this state, the card can have limited usage, such as being added to a digital wallet or cardholder can view the PIN (if it is a plastic card). However, in the INITIAL state, the card cannot be used for payments.
 
-        converted to UTC (if a different offset is given) and rounded up to 23:59:59 of the last day of
-
-        its own month.
-
-
-        To be sure of the exact expiration month, always specify this value with a Z (UTC) offset. For
-
-        example, to expire the card in August 2030, set "2030-08-31T23:59:59Z".
+        - CLOSED - The previous versions of the card are no longer valid as a new version is activated or the card is closed.
 
         '
-      example: '2030-08-31T23:59:59Z'
-    ContactlessPriorityLevel:
-      type: integer
-      description: 'The contactless priority level of the given card. Only applicable to multi-application cards.
-
-        Otherwise, the request will return 400 Bad Request.
-
-        '
-      format: int32
-      minimum: 0
+      enum:
+      - ACTIVE
+      - ACTIVE_LIMITED
+      - INITIAL
+      - CLOSED
+      example: ACTIVE
     CardDataControlTokenResponseBody:
       type: object
       properties:
@@ -182,23 +175,13 @@ components:
       required:
       - token
       title: CardDataControlTokenResponseBody
-    CardVersionStatus:
+    ExternalLayoutCode:
       type: string
-      description: '- ACTIVE - The card is completely operational. You can perform all actions with the card.
-
-        - ACTIVE_LIMITED - The card version is usable for digital transactions only. Provisioning, token payments and e-commerce transactions are allowed, while physical entry modes (chip, contactless, magstripe and ATM) are declined.
-
-        - INITIAL - The specific card version is awaiting activation. During this state, the card can have limited usage, such as being added to a digital wallet or cardholder can view the PIN (if it is a plastic card). However, in the INITIAL state, the card cannot be used for payments.
-
-        - CLOSED - The previous versions of the card are no longer valid as a new version is activated or the card is closed.
-
-        '
-      enum:
-      - ACTIVE
-      - ACTIVE_LIMITED
-      - INITIAL
-      - CLOSED
-      example: ACTIVE
+      description: Unique code forwarded to the embossing house; the code identifies the plastic layout to be used for printing the new card. Ensure beforehand, the selected embossing house is aligned with the code used for each layout.
+      minLength: 1
+      maxLength: 32
+      pattern: ^[a-zA-Z0-9-_]+$
+      example: 1
     ControlTokenRequestBody:
       type: object
       properties:
@@ -211,103 +194,10 @@ components:
 
             '
       title: ControlTokenRequestBody
-    Plastic:
-      type: object
-      properties:
-        embossingName:
-          $ref: '#/components/schemas/EmbossingName'
-        preferredCardAddress:
-          $ref: '#/components/schemas/Address'
-        preferredCardDeliveryType:
-          $ref: '#/components/schemas/CardDeliveryType'
-        preferredPinAddress:
-          $ref: '#/components/schemas/Address'
-        preferredPinDeliveryType:
-          $ref: '#/components/schemas/PinDeliveryType'
-        manufacturerId:
-          $ref: '#/components/schemas/Id'
-        externalLayoutCode:
-          $ref: '#/components/schemas/ExternalLayoutCode'
-        createdAt:
-          $ref: '#/components/schemas/Created'
-        updatedAt:
-          $ref: '#/components/schemas/Updated'
-    PinDeliveryType:
+    Updated:
       type: string
-      description: Select the type of delivery you prefer for sending the card PIN. - MAIL - The card PIN would be sent via mail services. - COURIER - The card PIN would be sent via courier services. - EPIN - The card PIN would be sent digitally.
-      enum:
-      - MAIL
-      - COURIER
-      - EPIN
-      example: MAIL
-    SequenceNumber:
-      type: integer
-      minimum: 1
-      description: The sequence number of the card version, this value is also known as PSN (pan sequence number)
-      example: 1
-    CardRole:
-      type: string
-      description: The role of the card. Multi application cards will have one main card and multiple card applications. Single cards will be treated as main cards.
-      enum:
-      - MAIN_CARD
-      - CARD_APPLICATION
-      example: MAIN_CARD
-    MultiApplicationProperties:
-      type: object
-      properties:
-        applicationName:
-          $ref: '#/components/schemas/ApplicationName'
-        applicationIndex:
-          $ref: '#/components/schemas/ApplicationIndex'
-        contactPriorityLevel:
-          $ref: '#/components/schemas/ContactPriorityLevel'
-        contactlessPriorityLevel:
-          $ref: '#/components/schemas/ContactlessPriorityLevel'
-        printed:
-          $ref: '#/components/schemas/Printed'
-        chipEnabled:
-          $ref: '#/components/schemas/ChipEnabled'
-    AdditionalValues:
-      type: object
-      description: 'You can include up to **30 additional key-value pairs** in the embossing file sent to the card manufacturer.
-
-
-        - **Keys** must follow the pattern: `^[a-zA-Z0-9-]{1,36}$` (only letters, numbers, and hyphens, with a maximum length of 36 characters).
-
-        - **Values** must follow the pattern: `^[a-zA-Z0-9|\-_ +.@éàèùçâêîôûëïü''/=]{1,1000}$`.
-
-
-        Enfuce **does not perform any additional validation** on these key-value pairs beyond ensuring they match the specified patterns.
-
-
-        These fields are intended for **storing data without further processing**. If you need to store a **complex structure**, you can **base64 encode** the value. The encoded value will be passed as entered, without modifications.
-
-
-        ⚠ **Important:** Any usage of these fields should be agreed upon with the manufacturer.
-
-        '
-      maxProperties: 30
-      additionalProperties:
-        type: string
-      example:
-        keyWithPlainTextValue: value1
-        keyWithBase64Value: dmFsdWUyYmFzZTY0ZW5jb2RlZA==
-    EmbossingName:
-      type: string
-      description: The name to be embossed on the card. Max character limit is 26.
-      minLength: 1
-      maxLength: 26
-      pattern: ^[A-Za-z0-9 /.,&+'\- ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ ĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹ ĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰű ŲųŴŵŶŷŸŹźŻżŽžſǪǫȘșȚțȪȫȮȯȲȳḐḑṢṣẞỌọ]+$
-      example: John Doe
-    Id:
-      type: string
-      format: uuid
-      description: Unique identifier of a resource.
-      example: 20218aae-b15e-406c-9e9f-23735cd86a48
-    MaskedPrimaryAccountNumber:
-      type: string
-      description: A masked version of the primary account number
-      example: '123456______4285'
+      format: date-time
+      description: The date and time when the object/entity was updated last time.
     Address:
       type: object
       properties:
@@ -362,49 +252,6 @@ components:
       - city
       - country
       - zipCode
-    CardConfigurationType:
-      type: string
-      description: The type of card defined by this card configuration.
-      enum:
-      - DEBIT
-      - CREDIT
-      - COMBO
-      example: CREDIT
-    AccountId:
-      type: string
-      description: Unique identifier of an account.
-      minLength: 1
-      maxLength: 36
-      example: 20218aae-b15e-406c-9e9f-23735cd86a48
-      pattern: ^[a-zA-Z0-9-]+$
-    ApplicationIndex:
-      type: integer
-      description: The index of the application
-      example: 1
-    FeeConfigId:
-      type: string
-      description: 'Unique identifier of a fee configuration. When provided, this value overrides the program default. This feature must be enabled for the tenant; otherwise, this field can be left null and will not be used.
-
-        '
-      minLength: 1
-      maxLength: 36
-      example: SILVER
-      pattern: ^[a-zA-Z0-9_-]+$
-    Updated:
-      type: string
-      format: date-time
-      description: The date and time when the object/entity was updated last time.
-    ApplicationName:
-      type: string
-      description: 'Name of the application. Max character limit is 16. Only applicable to multi-application cards.
-
-        Otherwise, the request will return 400 Bad Request.
-
-        '
-      minLength: 1
-      maxLength: 16
-      pattern: ^[a-zA-Z ]+$
-      example: Credit Application
     CardResponse:
       type: object
       title: Create Single Card
@@ -471,22 +318,63 @@ components:
         feeConfigId:
           allOf:
           - $ref: '#/components/schemas/FeeConfigId'
-    Created:
+    MultiApplicationProperties:
+      type: object
+      properties:
+        applicationName:
+          $ref: '#/components/schemas/ApplicationName'
+        applicationIndex:
+          $ref: '#/components/schemas/ApplicationIndex'
+        contactPriorityLevel:
+          $ref: '#/components/schemas/ContactPriorityLevel'
+        contactlessPriorityLevel:
+          $ref: '#/components/schemas/ContactlessPriorityLevel'
+        printed:
+          $ref: '#/components/schemas/Printed'
+        chipEnabled:
+          $ref: '#/components/schemas/ChipEnabled'
+    AdditionalValues:
+      type: object
+      description: 'You can include up to **30 additional key-value pairs** in the embossing file sent to the card manufacturer.
+
+
+        - **Keys** must follow the pattern: `^[a-zA-Z0-9-]{1,36}$` (only letters, numbers, and hyphens, with a maximum length of 36 characters).
+
+        - **Values** must follow the pattern: `^[a-zA-Z0-9|\-_ +.@éàèùçâêîôûëïü''/=]{1,1000}$`.
+
+
+        Enfuce **does not perform any additional validation** on these key-value pairs beyond ensuring they match the specified patterns.
+
+
+        These fields are intended for **storing data without further processing**. If you need to store a **complex structure**, you can **base64 encode** the value. The encoded value will be passed as entered, without modifications.
+
+
+        ⚠ **Important:** Any usage of these fields should be agreed upon with the manufacturer.
+
+        '
+      maxProperties: 30
+      additionalProperties:
+        type: string
+      example:
+        keyWithPlainTextValue: value1
+        keyWithBase64Value: dmFsdWUyYmFzZTY0ZW5jb2RlZA==
+    PinStatus:
       type: string
-      format: date-time
-      description: The date and time when the card was created.
-    CardDeliveryType:
-      type: string
-      description: Select the type of delivery you prefer for the new card being created. - MAIL - The card would be sent via mail services. - COURIER - The card would be sent via courier services. - CUSTOM_1–CUSTOM_5 - Custom delivery types that can be used for shipping methods agreed between the customer and the bureau.
+      description: '- GENERATED - A pin has been randomly generated for the card.
+
+        - WAITING - A pin is waiting to be set on the card.
+
+        - SET - A pin has been manually set on the card.
+
+        - INHERITED - For card applications only. The pin status is inherited from the main card.
+
+        '
       enum:
-      - MAIL
-      - COURIER
-      - CUSTOM_1
-      - CUSTOM_2
-      - CUSTOM_3
-      - CUSTOM_4
-      - CUSTOM_5
-      example: MAIL
+      - GENERATED
+      - WAITING
+      - SET
+      - INHERITED
+      example: GENERATED
     CardStatus:
       type: string
       description: '- ACTIVE - Card is active and is enabled for normal usage.
@@ -516,92 +404,6 @@ components:
       - CLOSED
       - CLOSED_EXPIRED
       example: ACTIVE
-    ContactPriorityLevel:
-      type: integer
-      description: 'The contact priority level for given card. Only applicable to multi-application cards.
-
-        Otherwise, the request will return 400 Bad Request.
-
-        '
-      format: int32
-      minimum: 0
-    CardVersion:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/CardVersionStatus'
-        expirationTime:
-          $ref: '#/components/schemas/ExpirationTime'
-        renewalDate:
-          $ref: '#/components/schemas/RenewalDate'
-        sequenceNumber:
-          $ref: '#/components/schemas/SequenceNumber'
-        keySetId:
-          $ref: '#/components/schemas/KeySetId'
-        createdAt:
-          $ref: '#/components/schemas/Created'
-        updatedAt:
-          $ref: '#/components/schemas/Updated'
-    DigitalLayoutCode:
-      type: string
-      description: The digital layout code for the card. Max character limit is 36.
-      minLength: 1
-      maxLength: 36
-      pattern: ^[a-zA-Z0-9-]+$
-      example: 9
-    AutomaticRenewal:
-      type: boolean
-      description: A flag indicating whether automatic renewal is enabled or not.
-    CardScheme:
-      type: string
-      enum:
-      - MASTERCARD
-      - VISA
-      example: MASTERCARD
-    PinStatus:
-      type: string
-      description: '- GENERATED - A pin has been randomly generated for the card.
-
-        - WAITING - A pin is waiting to be set on the card.
-
-        - SET - A pin has been manually set on the card.
-
-        - INHERITED - For card applications only. The pin status is inherited from the main card.
-
-        '
-      enum:
-      - GENERATED
-      - WAITING
-      - SET
-      - INHERITED
-      example: GENERATED
-    ChipEnabled:
-      type: boolean
-      description: 'Whether the card should be visible in card terminal or not. Only applicable to multi-application cards.
-
-        Otherwise, the request will return 400 Bad Request.
-
-        '
-      example: true
-    CardConfigurationCode:
-      type: string
-      description: A unique code to identify the card configuration. Max character limit is 36.
-      example: MC_DEBIT_1
-      minLength: 1
-      maxLength: 36
-      pattern: ^[A-Za-z0-9_-]+$
-    Printed:
-      type: boolean
-      description: 'Indicates whether the specific card would be printed or not. Only applicable to multi-application cards.
-
-        Otherwise, the request will return 400 Bad Request.
-
-        '
-      example: true
-    RenewalDate:
-      type: string
-      format: date
-      description: The date when the auto renewal occurs.
     ErrorResponse:
       type: object
       properties:
@@ -628,57 +430,225 @@ components:
           description: Date-time when error occurred.
           type: string
           format: date-time
-    ExternalLayoutCode:
+    ApplicationName:
       type: string
-      description: Unique code forwarded to the embossing house; the code identifies the plastic layout to be used for printing the new card. Ensure beforehand, the selected embossing house is aligned with the code used for each layout.
+      description: 'Name of the application. Max character limit is 16. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
       minLength: 1
-      maxLength: 32
-      pattern: ^[a-zA-Z0-9-_]+$
-      example: 1
+      maxLength: 16
+      pattern: ^[a-zA-Z ]+$
+      example: Credit Application
     KeySetId:
       type: string
       format: uuid
       description: The id of the key set used by this card version
       example: 01b20ad2-3c2a-48d2-ac2e-5bf6d8b246cd
-  parameters:
-    x-audit-user:
-      in: header
-      name: x-audit-user
-      required: false
-      description: Optional audit user header
-      schema:
-        type: string
+    RenewalDate:
+      type: string
+      format: date
+      description: The date when the auto renewal occurs.
+    Id:
+      type: string
+      format: uuid
+      description: Unique identifier of a resource.
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
+    FeeConfigId:
+      type: string
+      description: 'Unique identifier of a fee configuration. When provided, this value overrides the program default. This feature must be enabled for the tenant; otherwise, this field can be left null and will not be used.
+
+        '
+      minLength: 1
+      maxLength: 36
+      example: SILVER
+      pattern: ^[a-zA-Z0-9_-]+$
+    CardConfigurationCode:
+      type: string
+      description: A unique code to identify the card configuration. Max character limit is 36.
+      example: MC_DEBIT_1
+      minLength: 1
+      maxLength: 36
+      pattern: ^[A-Za-z0-9_-]+$
+    AutomaticRenewal:
+      type: boolean
+      description: A flag indicating whether automatic renewal is enabled or not.
+    SequenceNumber:
+      type: integer
+      minimum: 1
+      description: The sequence number of the card version, this value is also known as PSN (pan sequence number)
+      example: 1
+    ApplicationIndex:
+      type: integer
+      description: The index of the application
+      example: 1
+    DigitalLayoutCode:
+      type: string
+      description: The digital layout code for the card. Max character limit is 36.
+      minLength: 1
+      maxLength: 36
+      pattern: ^[a-zA-Z0-9-]+$
+      example: 9
+    Printed:
+      type: boolean
+      description: 'Indicates whether the specific card would be printed or not. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      example: true
+    CardDeliveryType:
+      type: string
+      description: Select the type of delivery you prefer for the new card being created. - MAIL - The card would be sent via mail services. - COURIER - The card would be sent via courier services. - CUSTOM_1–CUSTOM_5 - Custom delivery types that can be used for shipping methods agreed between the customer and the bureau.
+      enum:
+      - MAIL
+      - COURIER
+      - CUSTOM_1
+      - CUSTOM_2
+      - CUSTOM_3
+      - CUSTOM_4
+      - CUSTOM_5
+      example: MAIL
+    CardConfigurationType:
+      type: string
+      description: The type of card defined by this card configuration.
+      enum:
+      - DEBIT
+      - CREDIT
+      - COMBO
+      example: CREDIT
+    EmbossingName:
+      type: string
+      description: The name to be embossed on the card. Max character limit is 26.
+      minLength: 1
+      maxLength: 26
+      pattern: ^[A-Za-z0-9 /.,&+'\- ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ ĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹ ĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰű ŲųŴŵŶŷŸŹźŻżŽžſǪǫȘșȚțȪȫȮȯȲȳḐḑṢṣẞỌọ]+$
+      example: John Doe
+    PinDeliveryType:
+      type: string
+      description: Select the type of delivery you prefer for sending the card PIN. - MAIL - The card PIN would be sent via mail services. - COURIER - The card PIN would be sent via courier services. - EPIN - The card PIN would be sent digitally.
+      enum:
+      - MAIL
+      - COURIER
+      - EPIN
+      example: MAIL
+    UpdateCount:
+      type: integer
+      description: The version number of the entity.
+      example: 1
+    AccountId:
+      type: string
+      description: Unique identifier of an account.
+      minLength: 1
+      maxLength: 36
+      example: 20218aae-b15e-406c-9e9f-23735cd86a48
+      pattern: ^[a-zA-Z0-9-]+$
+    ChipEnabled:
+      type: boolean
+      description: 'Whether the card should be visible in card terminal or not. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      example: true
+    ExpirationTime:
+      type: string
+      format: date-time
+      description: 'The expiration date-time of the card, always at 23:59:59 UTC on the last day of a month.
+
+
+        If a different expiry than the program default is specified during card creation, it is
+
+        converted to UTC (if a different offset is given) and rounded up to 23:59:59 of the last day of
+
+        its own month.
+
+
+        To be sure of the exact expiration month, always specify this value with a Z (UTC) offset. For
+
+        example, to expire the card in August 2030, set "2030-08-31T23:59:59Z".
+
+        '
+      example: '2030-08-31T23:59:59Z'
+    CardVersion:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/CardVersionStatus'
+        expirationTime:
+          $ref: '#/components/schemas/ExpirationTime'
+        renewalDate:
+          $ref: '#/components/schemas/RenewalDate'
+        sequenceNumber:
+          $ref: '#/components/schemas/SequenceNumber'
+        keySetId:
+          $ref: '#/components/schemas/KeySetId'
+        createdAt:
+          $ref: '#/components/schemas/Created'
+        updatedAt:
+          $ref: '#/components/schemas/Updated'
+    Plastic:
+      type: object
+      properties:
+        embossingName:
+          $ref: '#/components/schemas/EmbossingName'
+        preferredCardAddress:
+          $ref: '#/components/schemas/Address'
+        preferredCardDeliveryType:
+          $ref: '#/components/schemas/CardDeliveryType'
+        preferredPinAddress:
+          $ref: '#/components/schemas/Address'
+        preferredPinDeliveryType:
+          $ref: '#/components/schemas/PinDeliveryType'
+        manufacturerId:
+          $ref: '#/components/schemas/Id'
+        externalLayoutCode:
+          $ref: '#/components/schemas/ExternalLayoutCode'
+        createdAt:
+          $ref: '#/components/schemas/Created'
+        updatedAt:
+          $ref: '#/components/schemas/Updated'
+    ContactlessPriorityLevel:
+      type: integer
+      description: 'The contactless priority level of the given card. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      format: int32
+      minimum: 0
+    ContactPriorityLevel:
+      type: integer
+      description: 'The contact priority level for given card. Only applicable to multi-application cards.
+
+        Otherwise, the request will return 400 Bad Request.
+
+        '
+      format: int32
+      minimum: 0
+    MaskedPrimaryAccountNumber:
+      type: string
+      description: A masked version of the primary account number
+      example: '123456______4285'
+    CardRole:
+      type: string
+      description: The role of the card. Multi application cards will have one main card and multiple card applications. Single cards will be treated as main cards.
+      enum:
+      - MAIN_CARD
+      - CARD_APPLICATION
+      example: MAIN_CARD
+    Created:
+      type: string
+      format: date-time
+      description: The date and time when the card was created.
+    CardScheme:
+      type: string
+      enum:
+      - MASTERCARD
+      - VISA
+      example: MASTERCARD
   responses:
-    NotFound:
-      description: Not found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Not Found
-            status: 404
-            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0404
-            timestamp: '2026-02-24T12:34:56Z'
-    Unauthorized:
-      description: Unauthorized
-    Forbidden:
-      description: Forbidden
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            type: about:blank
-            title: Forbidden
-            status: 403
-            detail: Access Denied
-            instance: /v1/cards
-            id: 5cc541cb-f456-4331-b537-d2380fca0403
-            timestamp: '2026-02-24T12:34:56Z'
     InternalServerError:
       description: Internal server error
       content:
@@ -693,6 +663,22 @@ components:
             instance: /v1/cards
             id: 5cc541cb-f456-4331-b537-d2380fca0500
             timestamp: '2026-02-24T12:34:56Z'
+    Unauthorized:
+      description: Unauthorized
+    NotFound:
+      description: Not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Not Found
+            status: 404
+            detail: 'Entity not found - Program with id: 2ec117b7-454e-4cc5-8b89-dea5485aab2b'
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0404
+            timestamp: '2026-02-24T12:34:56Z'
     BadRequest:
       description: Bad request
       content:
@@ -706,6 +692,20 @@ components:
             detail: 'JSON parse error: Unexpected character...'
             instance: /v1/cards
             id: 5cc541cb-f456-4331-b537-d2380fca0400
+            timestamp: '2026-02-24T12:34:56Z'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            type: about:blank
+            title: Forbidden
+            status: 403
+            detail: Access Denied
+            instance: /v1/cards
+            id: 5cc541cb-f456-4331-b537-d2380fca0403
             timestamp: '2026-02-24T12:34:56Z'
   securitySchemes:
     bearerAuth:
