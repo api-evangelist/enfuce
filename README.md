@@ -64,5 +64,121 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Enfuce is a company surfaced via the API Evangelist harvest backlog (source: payments) and added to the network as a stub for full-pipeline profiling.
-- https://enfuce.com/
+Enfuce provides a cloud‑native, tenant‑isolated, API‑first platform for card issuing, processing, licensing, ledger, fraud & dispute management, and data analytics. It serves banks, fintechs, fleet providers and enterprises, offering real‑time decisioning at scale, modular services, and compliance with PSD3, DORA and AMLA standards.
+
+**Areas:** Company · Payments · Card Issuing · Fintech · API Platform · A2A
+
+## Enfuce on APIs.io
+
+Everything profiled for Enfuce is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/enfuce/](https://apis.io/providers/enfuce/)** — or go straight to one of the APIs or properties below.
+
+### APIs (7)
+
+- [Enfuce Authorisation Request API](https://apis.io/apis/enfuce/enfuce-authorisation-request-api-api/) — The Authorisation Request API API from Enfuce — 1 operation(s) for authorisation request api.
+- [Enfuce Create Card API](https://apis.io/apis/enfuce/enfuce-create-card-api/) — Endpoints for creating a card
+- [Enfuce Create PIN Control access token API](https://apis.io/apis/enfuce/enfuce-create-pin-control-access-token-api/) — The Create PIN Control access token API from Enfuce — 1 operation(s) for create pin control access token.
+- [Enfuce Get card API](https://apis.io/apis/enfuce/enfuce-get-card-api/) — Endpoints for fetching a card
+- [Enfuce Get Card Payment Info API](https://apis.io/apis/enfuce/enfuce-get-card-payment-info-api/) — The Get Card Payment Info API from Enfuce — 1 operation(s) for get card payment info.
+- [Enfuce Get plastic manufacturing history API](https://apis.io/apis/enfuce/enfuce-get-plastic-manufacturing-history-api/) — The Get plastic manufacturing history API from Enfuce — 1 operation(s) for get plastic manufacturing history.
+- [Enfuce Update card API](https://apis.io/apis/enfuce/enfuce-update-card-api/) — Endpoints for updating a card
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Enfuce Agentic Access](https://apis.io/agentic-access/enfuce/enfuce-agentic-access/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Enfuce Advanced Spend Control V1 Overlay](https://apis.io/overlays/enfuce/enfuce-advanced-spend-control-v1-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Enfuce Authentication](https://apis.io/security/enfuce/enfuce-authentication/)
+- [Enfuce Domain Security](https://apis.io/security/enfuce/enfuce-domain-security/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Enfuce Rate Limits](https://apis.io/rate-limits/enfuce/enfuce-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://enfuce.com/)
+- [Documentation](https://docs.enfuce.com/)
+- [Getting started](https://docs.enfuce.com/guides/start-developing-with-enfuce.md)
+- [API reference](https://docs.enfuce.com/payment/api)
+- [Pricing](https://enfuce.com/pricing)
+- [Support](https://enfuce.com/contact)
+- [Changelog](https://docs.enfuce.com/updates/release-notes)
+- [Blog](https://enfuce.com/blog)
+- [Terms of service](https://enfuce.com/website-terms-of-use)
+- [Privacy policy](https://enfuce.com/privacy-and-data-protection)
+- [GitHub](https://github.com/enfuce)
+- [Status](https://status.enfuce.com/)
+
+## API Evangelist rating
+
+**Kin Score 49.3** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 49.9 |
+| Contract governance | 18.2 |
+| Operational transparency | 57.9 |
+| Developer ergonomics | 49.4 |
+| Access clarity | 44.7 |
+
+**Agent readiness 28.4** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | verified |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 29.5** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/enfuce/](https://apis.io/providers/enfuce/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Enfuce: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/enfuce/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
